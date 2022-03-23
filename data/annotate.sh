@@ -22,7 +22,7 @@ RESULTS="$3"
 TMP_PATH="$4"
  
 #implementing plass
-if notExists "${TMP_PATH}/result.dbtype"; then 
+if notExists "${TMP_PATH}/#.fasta"; then 
 	shellcheck disable=SC2086
 	"$PLASS" assemble "${INPUT}" "${TMP_PATH}/assembly.fasta" "${TMP_PATH}/plass_tmp" ${ASSEMBLY_PAR} \ #or nuclassemble???
 		|| fail "PLASS assembly died"
