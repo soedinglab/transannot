@@ -17,7 +17,7 @@ notExists() {
 
 #defining
 INPUT="$1"
-TARGET="$2"  #user should give a target at the beginning of annotation?
+#TARGET="$2"  #user should give a target at the beginning of annotation? or we simply download UniProt??
 RESULTS="$3"
 TMP_PATH="$4"
  
