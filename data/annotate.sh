@@ -9,8 +9,8 @@ notExists() {
 }
 
 #preprocessing
-[ -z "$PLASS" ] && echo "Please set the environment variable \$PLASS to your current binary." && exit 1;
-[ -z "$MMSEQS" ] && echo "Please set the environment variable \$MMSEQS to your current binary." && exit 1;
+[ -z "${LIB}/PLASS" ] && echo "Please set the environment variable \$PLASS to your current binary." && exit 1;
+[ -z "${LIB}/MMSEQS" ] && echo "Please set the environment variable \$MMSEQS to your current binary." && exit 1;
 [ ! -f "$1.dbtype" ] && echo "$1.dbtype not found!" && exit 1; 
 [   -f "$3.dbtype"] && echo "$3.dbtype exists already!" && exit 1;
 [ ! -d "$4" ] && echo "tmp directory $4 not found!" && mkdir -p "$4";
