@@ -22,15 +22,17 @@ RESULTS="$3"
 TMP_PATH="$4"
  
 #implementing plass
-if notExists "${TMP_PATH}/#.fasta"; then 
+if notExists "${TMP_PATH}/*.fasta"; then 
 	shellcheck disable=SC2086
 	"$PLASS" assemble "${INPUT}" "${TMP_PATH}/assembly.fasta" "${TMP_PATH}/plass_tmp" ${ASSEMBLY_PAR} \ #or nuclassemble???
 		|| fail "PLASS assembly died"
 fi
 
 #MMSEQS2 download UniProt database to search against
-cd "${TMP_PATH}"
-"$MMSEQS" databases ${UniProtKB} "${TMP_PATH}/UniProt" "${TMP_PATH}/download_tmp" 
+cd "${TMP_PATH}" #check whether db exists already + whether user-given one -> createdb
+if notExists "${TMP_PATH}/UniProt"; then
+	"$MMSEQS" databases ${UniProtKB} "${TMP_PATH}/UniProt" "${TMP_PATH}/download_tmp" 
+fi
 
 #MMSEQS2 create database
 if notExists "${TMP_PATH}/assembly.fasta"; then #which plass file do we give here
@@ -53,7 +55,6 @@ fi
 if notExists.......; then
 	shellcheck disable=SC2086
 	"$MMSEQS" rbh "${QUERY}" "${TARGET}" "${TMP_PATH}/result" "${TMP_PATH}/rbh_tmp" ${SEARCH_PAR} \ #should we use rbh or easy-rbh???
-		#easy-rbh is also a workflow, so probably rbh is better!
 		|| fail "rbh search died"
 fi
 
