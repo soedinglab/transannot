@@ -54,7 +54,7 @@ fi
 #MMSEQS2 RBH
 if notExists.......; then
 	shellcheck disable=SC2086
-	"$MMSEQS" rbh "${QUERY}" "${TARGET}" "${TMP_PATH}/result" "${TMP_PATH}/rbh_tmp" ${SEARCH_PAR} \ #should we use rbh or easy-rbh???
+	"$MMSEQS" rbh "${QUERY}" "${TARGET}" "${TMP_PATH}/result" "${TMP_PATH}/rbh_tmp" ${SEARCH_PAR} \ #should we use rbh or easy-rbh??? -> rbh is relatively an elaborate procedure and hence we can try rbh directly.
 		|| fail "rbh search died"
 fi
 
@@ -68,6 +68,6 @@ fi
 if [ -n "${REMOVE_TMP}" ]; then
 	shellcheck disable=SC2086
 	echo "Remove temporary files"
-	rm -rf "${TMP_PATH}/annotate_tmp"  #current name of tmp pathway DO we really have annotate_tmp? or rbh_tmp? or smth else?
+	rm -rf "${TMP_PATH}/annotate_tmp"  #current name of tmp pathway DO we really have annotate_tmp? or rbh_tmp? or smth else? -> we can create one tmp file for all steps and remove them at one go.
 	#rm -f "${TMP_PATH}/annotate.sh"   #current name of this file	
 fi
