@@ -5,12 +5,12 @@
 // #include "annotate.sh.h" (how do they create/ where do the get such a file?????)
 
 void setAnnotateDefault (Parameters *p){
-    p ->;
+    // p ->;
 
 }
 
 void setAnnotateMode (Parameters *p){
-    p ->;
+    // p ->;
 }
 
 int annotate(int argc, const char **argv, const Command &command){

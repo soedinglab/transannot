@@ -9,8 +9,8 @@ notExists() {
 }
 
 #preprocessing
-[ -z "${LIB}/PLASS" ] && echo "Please set the environment variable \$PLASS to your current binary." && exit 1;
-[ -z "${LIB}/MMSEQS" ] && echo "Please set the environment variable \$MMSEQS to your current binary." && exit 1;
+[ -z "$PLASS" ] && echo "Please set the environment variable \$PLASS to your current binary." && exit 1;
+[ -z "$MMSEQS" ] && echo "Please set the environment variable \$MMSEQS to your current binary." && exit 1;
 [ ! -f "$1.dbtype" ] && echo "$1.dbtype not found!" && exit 1; 
 [   -f "$3.dbtype"] && echo "$3.dbtype exists already!" && exit 1;
 [ ! -d "$4" ] && echo "tmp directory $4 not found!" && mkdir -p "$4";
@@ -24,8 +24,8 @@ TMP_PATH="$4"
 #implementing plass
 if notExists "${TMP_PATH}/*.fasta"; then 
 	shellcheck disable=SC2086
-	"$PLASS" assemble "${INPUT}" "${TMP_PATH}/assembly.fasta" "${TMP_PATH}/plass_tmp" ${ASSEMBLY_PAR} \ #or nuclassemble???
-		|| fail "PLASS assembly died"
+	"${LIB}/PLASS" assemble "${INPUT}" "${TMP_PATH}/assembly.fasta" "${TMP_PATH}/plass_tmp" ${ASSEMBLY_PAR} \
+        || fail "PLASS assembly died"
 fi
 
 #MMSEQS2 download UniProt database to search against
@@ -67,6 +67,7 @@ fi
 #remove everything unnecessary for user
 if [ -n "${REMOVE_TMP}" ]; then
 	shellcheck disable=SC2086
+	echo "Remove temporary files"
 	rm -rf "${TMP_PATH}/annotate_tmp"  #current name of tmp pathway DO we really have annotate_tmp? or rbh_tmp? or smth else?
 	#rm -f "${TMP_PATH}/annotate.sh"   #current name of this file	
 fi
