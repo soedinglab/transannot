@@ -20,7 +20,7 @@ MMSEQS="$LIB/plass/lib/mmseqs/mmseqs_exec";
 [ "$#" -ne 2 ] && echo "Please provide <queryDB> <tmp>" && exit 1;
 #checking whether files exist
 [ ! -f "$1.dbtype" ] && echo "$1.dbtype not found!" && exit 1; 
-[   -f "$3.dbtype"] && echo "$3.dbtype exists already!" && exit 1; ##results - not defined yet
+#[   -f "$3.dbtype"] && echo "$3.dbtype exists already!" && exit 1; ##results - not defined yet
 [ ! -d "$2" ] && echo "tmp directory $2 not found!" && mkdir -p "$2"; #change to 4 later $2 -> $4
 
 #defining
@@ -30,6 +30,7 @@ INPUT="$1"
 TMP_PATH="$2" #change to $4 later!!!
  
 #implementing plass
+mkdir -p "${TMP_PATH}/plass_tmp"
 if notExists "${TMP_PATH}/*.fasta"; then 
 	#shellcheck disable=SC2086
 	"$PLASS" assemble "${INPUT}" "${TMP_PATH}/assembly.fasta" "${TMP_PATH}/plass_tmp" ${ASSEMBLY_PAR} \
@@ -39,6 +40,7 @@ fi
 #MMSEQS2 download UniProt database to search against
 cd "${TMP_PATH}" #check whether db exists already + whether user-given one -> createdb
 if notExists "${TMP_PATH}/UniProt"; then
+	mkdir -p "${TMP_PATH}/download_tmp" #do we need to create?
 	"$MMSEQS" databases ${UniProtKB} "${TMP_PATH}/UniProt" "${TMP_PATH}/download_tmp" 
 fi
 
