@@ -10,26 +10,29 @@ notExists() {
 
 #setting plass and mmseqs
 LIB="/mariia-zelenskaia/annotation_tool/lib";
-PLASS="$LIB/plass/plass_exec";
+PLASS="$LIB/plass";
 MMSEQS="$LIB/plass/lib/mmseqs/mmseqs_exec";
 
 #preprocessing
 [ -z "$PLASS" ] && echo "Please set the environment variable \$PLASS to your current binary." && exit 1;
 [ -z "$MMSEQS" ] && echo "Please set the environment variable \$MMSEQS to your current binary." && exit 1;
+#how many input variables?
+[ "$#" -ne 2 ] && echo "Please provide <queryDB> <tmp>" && exit 1;
+#checking whether files exist
 [ ! -f "$1.dbtype" ] && echo "$1.dbtype not found!" && exit 1; 
-[   -f "$3.dbtype"] && echo "$3.dbtype exists already!" && exit 1;
-[ ! -d "$4" ] && echo "tmp directory $4 not found!" && mkdir -p "$4";
+[   -f "$3.dbtype"] && echo "$3.dbtype exists already!" && exit 1; ##results - not defined yet
+[ ! -d "$2" ] && echo "tmp directory $2 not found!" && mkdir -p "$2"; #change to 4 later $2 -> $4
 
 #defining
 INPUT="$1"
 #TARGET="$2"  #user should give a target at the beginning of annotation? or we simply download UniProt??
-RESULTS="$3"
-TMP_PATH="$4"
+#RESULTS="$3"
+TMP_PATH="$2"
  
 #implementing plass
 if notExists "${TMP_PATH}/*.fasta"; then 
-	shellcheck disable=SC2086
-	"${LIB}/PLASS" assemble "${INPUT}" "${TMP_PATH}/assembly.fasta" "${TMP_PATH}/plass_tmp" ${ASSEMBLY_PAR} \
+	#shellcheck disable=SC2086
+	"$PLASS" assemble "${INPUT}" "${TMP_PATH}/assembly.fasta" "${TMP_PATH}/plass_tmp" ${ASSEMBLY_PAR} \
         || fail "PLASS assembly died"
 fi
 
