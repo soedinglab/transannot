@@ -27,7 +27,7 @@ MMSEQS="$LIB/plass/lib/mmseqs/mmseqs_exec";
 INPUT="$1"
 #TARGET="$2"  #user should give a target at the beginning of annotation? or we simply download UniProt??
 #RESULTS="$3"
-TMP_PATH="$2"
+TMP_PATH="$2" #change to $4 later!!!
  
 #implementing plass
 if notExists "${TMP_PATH}/*.fasta"; then 
