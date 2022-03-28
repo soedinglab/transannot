@@ -8,6 +8,11 @@ notExists() {
 	[ ! -f "$1" ]
 }
 
+#setting plass and mmseqs
+LIB="/mariia-zelenskaia/annotation_tool/lib";
+PLASS="$LIB/plass/plass_exec";
+MMSEQS="$LIB/plass/lib/mmseqs/mmseqs_exec";
+
 #preprocessing
 [ -z "$PLASS" ] && echo "Please set the environment variable \$PLASS to your current binary." && exit 1;
 [ -z "$MMSEQS" ] && echo "Please set the environment variable \$MMSEQS to your current binary." && exit 1;
