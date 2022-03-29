@@ -11,7 +11,7 @@ notExists() {
 #setting plass and mmseqs
 LIB="/mariia-zelenskaia/annotation_tool/lib";
 PLASS="$LIB/plass";
-MMSEQS="$LIB/plass/lib/mmseqs/mmseqs_exec";
+MMSEQS="$LIB/plass/lib/mmseqs";
 
 #preprocessing
 [ -z "$PLASS" ] && echo "Please set the environment variable \$PLASS to your current binary." && exit 1;
@@ -19,7 +19,8 @@ MMSEQS="$LIB/plass/lib/mmseqs/mmseqs_exec";
 #how many input variables?
 [ "$#" -ne 2 ] && echo "Please provide <queryDB> <tmp>" && exit 1;
 #checking whether files exist
-[ ! -f "$1.dbtype" ] && echo "$1.dbtype not found!" && exit 1; 
+#!!! using mmseqs dbtype here!!! is it ok?
+[ ! -f "$("${MMSEQS}" dbtype "$1")" ] && echo "$1.dbtype not found!" && exit 1; 
 #[   -f "$3.dbtype"] && echo "$3.dbtype exists already!" && exit 1; ##results - not defined yet
 [ ! -d "$2" ] && echo "tmp directory $2 not found!" && mkdir -p "$2"; #change to 4 later $2 -> $4
 
