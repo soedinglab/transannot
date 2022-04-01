@@ -5,7 +5,7 @@ fail() {
 }
 
 notExists() {
-	[ ! -f "$1" ]
+		[ ! -f "$1" ]
 }
 
 #setting plass and mmseqs
@@ -20,8 +20,7 @@ HTTP="$LIB/httpie"
 #how many input variables?
 [ "$#" -ne 2 ] && echo "Please provide <queryDB> <tmp>" && exit 1;
 #checking whether files exist
-#!!! using mmseqs dbtype here!!! is it ok?
-[ ! -f "$("${MMSEQS}" dbtype "$1")" ] && echo "$1.dbtype not found!" && exit 1; 
+#[ ! -f "$("${MMSEQS}" dbtype "$1")" ] && echo "$1.dbtype not found!" && exit 1; 
 #[   -f "$3.dbtype"] && echo "$3.dbtype exists already!" && exit 1; ##results - not defined yet
 [ ! -d "$2" ] && echo "tmp directory $2 not found!" && mkdir -p "$2"; #change to 4 later $2 -> $4
 
@@ -40,7 +39,7 @@ if notExists "${TMP_PATH}/*.fasta"; then
 fi
 
 #MMSEQS2 download UniProt database to search against
-cd "${TMP_PATH}" #check whether db exists already + whether user-given one -> createdb
+cd "${TMP_PATH}" #check whether db exists already + whether user-given one -> createdb !!! don't nec. need
 if notExists "${TMP_PATH}/UniProt"; then
 	mkdir -p "${TMP_PATH}/download_tmp" #do we need to create?
 	"$MMSEQS" databases ${UniProtKB} "${TMP_PATH}/UniProt" "${TMP_PATH}/download_tmp" 
