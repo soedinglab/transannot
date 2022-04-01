@@ -12,6 +12,7 @@ notExists() {
 LIB="/mariia-zelenskaia/annotation_tool/lib";
 PLASS="$LIB/plass";
 MMSEQS="$LIB/mmseqs";
+HTTP="$LIB/httpie"
 
 #preprocessing
 [ -z "$PLASS" ] && echo "Please set the environment variable \$PLASS to your current binary." && exit 1;
@@ -64,20 +65,22 @@ fi
 
 #MMSEQS2 RBH
 if notExists.......; then
-	shellcheck disable=SC2086
+	#shellcheck disable=SC2086
 	"$MMSEQS" rbh "${QUERY}" "${TARGET}" "${TMP_PATH}/result" "${TMP_PATH}/rbh_tmp" ${SEARCH_PAR} \ #should we use rbh or easy-rbh??? -> rbh is relatively an elaborate procedure and hence we can try rbh directly.
 		|| fail "rbh search died"
 fi
 
 #get GO-IDs
-if notExists......; then
-	shellcheck disable=SC2086
-
+#read more whether we need GET module
+if notExists "${RESULTS}/go_ids"; then
+	#shellcheck disable=SC2086
+	"$HTTP" GET https://www.uniprot.org/uniprot/?query=....&sort=score&columns=id,entry name,reviewed,protein names,genese,organism,length&format=tab > "${RESULTS}/go_ids"
+		|| fail "get GO-IDs died"
 fi
 
 #remove everything unnecessary for user
 if [ -n "${REMOVE_TMP}" ]; then
-	shellcheck disable=SC2086
+	#shellcheck disable=SC2086
 	echo "Remove temporary files"
 	rm -rf "${TMP_PATH}/annotate_tmp"  #current name of tmp pathway DO we really have annotate_tmp? or rbh_tmp? or smth else? -> we can create one tmp file for all steps and remove them at one go.
 	#rm -f "${TMP_PATH}/annotate.sh"   #current name of this file	
