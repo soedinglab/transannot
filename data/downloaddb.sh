@@ -9,3 +9,4 @@ notExists() {
         [ ! -f "$1" ]
 }
 
+[-z "$MMSEQS"] && echo "Please set the environment variable \$MMSEQS to your current binary." && exit 1;
