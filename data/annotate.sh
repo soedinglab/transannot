@@ -33,7 +33,7 @@ TMP_PATH="$2" #change to $4 later!!!
 #implementing plass
 mkdir -p "${TMP_PATH}/plass_tmp"
 if notExists "${TMP_PATH}/*.fasta"; then 
-	#shellcheck disable=SC2086
+	#shellcheck disable=SC
 	"$PLASS" assemble "${INPUT}" "${TMP_PATH}/assembly.fasta" "${TMP_PATH}/plass_tmp" ${ASSEMBLY_PAR} \
         || fail "PLASS assembly died"
 fi
@@ -47,7 +47,7 @@ fi
 
 #MMSEQS2 create database
 if notExists "${TMP_PATH}/assembly.fasta"; then #which plass file do we give here
-	shellcheck disable=SC2086
+	#shellcheck disable=SC
 	"$MMSEQS" createdb "${TMP_PATH}/assembly.fasta" "${TMP_PATH}/query"  ${CREATEDB_QUERY_PAR} \
 		|| fail "query createdb died"
 	QUERY="${TMP_PATH}/query"
@@ -72,7 +72,7 @@ fi
 #get GO-IDs
 #read more whether we need GET module
 if notExists "${RESULTS}/go_ids"; then
-	#shellcheck disable=SC2086
+	#shellcheck disable=SC
 	"$HTTP" GET https://www.uniprot.org/uniprot/?query=....&sort=score&columns=id,entry name,reviewed,protein names,genese,organism,length&format=tab > "${RESULTS}/go_ids"
 		|| fail "get GO-IDs died"
 fi
