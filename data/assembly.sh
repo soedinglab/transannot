@@ -11,3 +11,22 @@ notExists(){
 
 #pre-processing
 [ -z "$PLASS"] && echo "Please set the environment variable \$PLASS to your current binary." && exit 1;
+
+INPUT="$1"
+RESULTS="$2"
+TMP_PATH="$3"
+
+mkdir -p "${TMP_PATH}/plass_tmp"
+if notExists "${RESULTS}/plass_assembly.fas"; then
+    #shellcheck disable=SC
+    "$PLASS" assemble "${INPUT}" "${RESULTS}/plass_assembly.fas" "${TMP_PATH}/plass_tmp" "${ASSEMBLY_PAR}"
+        || fail "PLASS assembly died"
+fi
+
+#remove temporary files
+if [ -n "$REMOVE_TMP" ]; then
+    #shellcheck disable=SC
+    echo "Remove temporary files and directories"
+    rm -rf "${TMP_PATH}/plass_tmp"
+    rm -f "${TMP_PATH}/assembly.sh" #why tmp_path?
+fi
