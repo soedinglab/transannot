@@ -11,10 +11,14 @@ notExists() {
 
 [ -z "$MMSEQS" ] && echo "Please set the environment variable \$MMSEQS to your current binary." && exit 1;
 
-[ -z "$1"] && echo "Default UniProtKB database will be downloaded." && INPUT="UniProtKB";
+[ -z "$1"] && echo "Default UniProtKB database will be downloaded." && SELECTION="UniProtKB";
 
-INPUT="$1" #database to download, default UniProtKB, see L14
-OUT_PATH="$2"
+SELECTION="$1" #database to download, default UniProtKB, see L14
+OUTDB_PATH="$2"
 TMP_PATH="$3"
 
-
+if notExists "${OUTDB_PATH}/${SELECTION}.fasta.gz"
+    #shellcheck disable=SC
+    "$MMSEQS" databases "${SELECTION}" "${OUTDB_PATH}/${SELECTION}.fasta.gz" "${TMP_PATH}/download_db.tmp"
+        || fail "download database died"
+fi
