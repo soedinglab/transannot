@@ -19,8 +19,10 @@ if notExists "${TMP_PATH}/queryDB"; then
         || fail "Create database died"
 fi
 
+#only INPUT goes to this script, everything else will be automatically genrated in easytaxonomy
+#only one variable should be given
 
-"$MMSEQS" taxonomy 
+"$MMSEQS" easytaxonomy 
 
 if [ -n "$REMOVE_TMP" ]; then
     #shellcheck disable=SC
