@@ -19,7 +19,7 @@ if notExists "${TMP_PATH}/queryDB"; then
         || fail "Create database died"
 fi
 
-#only INPUT goes to this script, everything else will be automatically genrated in easytaxonomy
+#only INPUT goes to this script, everything else will be automatically generated in easytaxonomy
 #only one variable should be given
 
 "$MMSEQS" easytaxonomy 
