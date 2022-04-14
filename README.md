@@ -11,6 +11,8 @@ Possible inputs are:
 * metatranscriptomes
 * single-organism transcriptomes, in such case it is possible to check for the contamonation based on MMseqs2 taxonomy with `contamination` module
 
+## Running
+
 ### Modules
 
 * `assembly`            Assemble ...
