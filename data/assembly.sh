@@ -1,5 +1,4 @@
 #!/bin/sh -e
-
 fail(){
     echo "Error: $1"
     exit 1
@@ -19,7 +18,7 @@ TMP_PATH="$3"
 mkdir -p "${TMP_PATH}/plass_tmp"
 if notExists "${RESULTS}/plass_assembly.fas"; then
     #shellcheck disable=SC
-    "$PLASS" assemble "${INPUT}" "${RESULTS}/plass_assembly.fas" "${TMP_PATH}/plass_tmp" "${ASSEMBLY_PAR}"
+    "$PLASS" assemble "${INPUT}" "${RESULTS}/plass_assembly.fas" "${TMP_PATH}/plass_tmp" ${ASSEMBLY_PAR} \
         || fail "PLASS assembly died"
 fi
 
