@@ -9,7 +9,7 @@ Possible inputs are:
 * assembled (e.g. with Trinity) transcriptomes
 * non-assembled transcriptomes, which will be assembled with `plass`
 * metatranscriptomes
-* single-organism transcriptomes, in such case it is possible to check for the contamonation based on MMseqs2 taxonomy with `contamination` module
+* single-organism transcriptomes, in such case it is possible to check for the contamination with `contamination` module, which is based on MMseqs2 taxonomy workflow
 
 ## Running
 
