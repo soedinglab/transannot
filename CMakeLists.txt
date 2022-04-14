@@ -3,11 +3,12 @@ project(annotate)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/lib/mmseqs/cmake")
 
-set(FRAMEWORK_ONLY CACHE INTERNAL "" FORCE)
+set(FRAMEWORK_ONLY 1 CACHE INTERNAL "" FORCE)
 include(MMSeqsSetupDerivedTarget)
 add_subdirectory(lib/mmseqs)
 add_subdirectory(lib/plass)
 add_subdirectory(lib/httpie)
+
 include_directories(lib)
 add_subdirectory(src)
 add_subdirectory(data)
