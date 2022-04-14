@@ -1,5 +1,4 @@
 #!/bin/sh -e
-
 fail() {
     echo "Error: $1"
     exit 1
@@ -15,7 +14,7 @@ notExists() {
 
 if notExists "${TMP_PATH}/queryDB"; then
     #shellcheck disable=SC
-    "$MMSEQS" createdb "${RESULTS}/plass_assembly.fas" "${TMP_PATH}/queryDB" "${CREATEDB_PAR}" \
+    "$MMSEQS" createdb "${RESULTS}/plass_assembly.fas" "${TMP_PATH}/queryDB" ${CREATEDB_PAR} \
         || fail "Create database died"
 fi
 
