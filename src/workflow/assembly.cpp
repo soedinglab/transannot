@@ -7,5 +7,5 @@
 
 const char* binary_name = "Transannot";
 const char* tool_name = "Transannot";
-const char* tool_introduction = "Transannot: An annotation pipeline that predict functions of transcripts using homology search via MMseqs2"
+const char* tool_introduction = "Transannot: An annotation pipeline that predicts functions of de novo assembled transcripts based on homology search using MMseqs2"
 std::vector<Command> commands = {};
