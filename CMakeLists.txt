@@ -7,7 +7,7 @@ set(FRAMEWORK_ONLY 1 CACHE INTERNAL "" FORCE)
 include(MMSeqsSetupDerivedTarget)
 add_subdirectory(lib/mmseqs)
 add_subdirectory(lib/plass)
-add_subdirectory(lib/httpie)
+# we don't add httpie because it is python library
 
 include_directories(lib)
 add_subdirectory(src)
