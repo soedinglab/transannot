@@ -24,7 +24,6 @@ HTTP="$LIB/httpie"
 #[   -f "$3.dbtype"] && echo "$3.dbtype exists already!" && exit 1; ##results - not defined yet
 [ ! -d "$2" ] && echo "tmp directory $2 not found!" && mkdir -p "$2"; #change to 4 later $2 -> $4
 
-#defining
 INPUT="$1"
 #TARGET="$2"  #user should give a target at the beginning of annotation? or we simply download UniProt??
 #RESULTS="$3"
@@ -63,7 +62,7 @@ fi
 #fi
 
 #MMSEQS2 RBH
-#if we assemle with plass we get "${RESULTS}/plass_assembly.fas" as input
+#if we assemble with plass we get "${RESULTS}/plass_assembly.fas" as input
 #otherwise we have .fas file which must be translated into protein sequence
 if notExists.......; then
 	#shellcheck disable=SC2086
@@ -79,7 +78,7 @@ if notExists "${RESULTS}/go_ids"; then
 		|| fail "get GO-IDs died"
 fi
 
-#remove everything unnecessary for user
+#remove temporary files and directories
 if [ -n "${REMOVE_TMP}" ]; then
 	#shellcheck disable=SC
 	echo "Remove temporary files"
