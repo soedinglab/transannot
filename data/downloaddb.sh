@@ -36,15 +36,22 @@ SELECTION="$1"
 OUTDB="$(abspath "$2")"
 TMP_PATH="$(abspath "$3")"
 
-if notExists "${OUTDB}/${SELECTION}.fasta.gz"
+if notExists "${OUTDB}/${SELECTION}.fasta.gz"; then
     #shellcheck disable=SC
-    "$MMSEQS" databases "${SELECTION}" "${OUTDB}/${SELECTION}.fasta.gz" "${TMP_PATH}/download_db.tmp" ${DOWNLOADDB_PAR} \
+    "$MMSEQS" databases "${SELECTION}" "${TMP_PATH}/${SELECTION}.fasta.gz" "${TMP_PATH}/download_db.tmp" ${DOWNLOADDB_PAR} \
         || fail "download database died"
+fi
+
+if notExists "${OUTDB}/${SELECTION}.dbtype"; then
+    #shellcheck disable=SC
+    gzip "${TMP_PATH}/${SELECTION}.fasta.gz"
+    "$MMSEQS" createdb "${TMP_PATH}/${SELECTION}.fasta" "${OUTDB}" ${CREATEDB_PAR} \
+        || fail "createsetdb died"
 fi
 
 if [ -n "$REMOVE_TMP" ]; then
     #shellcheck disable=SC
-    echo "remove temporary files and directories"
+    echo "Remove temporary files and directories"
     rm -rf "${TMP_PATH}/download_db.tmp"
     rm -f "${TMP_PATH}/downloaddb.sh"
 fi
