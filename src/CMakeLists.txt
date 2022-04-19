@@ -11,9 +11,9 @@ add_executable(transannot
     LocalCommandDeclarations.h
     transannot.cpp 
     )
-mmseqs_setup_derived_target(annotation_tool)
+mmseqs_setup_derived_target(transannot)
 #target_link_libraries(annotate version)
 
-add_dependencies(annotation_tool local-generated)
+add_dependencies(transannot local-generated)
 
-install(TARGETS annotation_tool DESTINATION bin)
+install(TARGETS transannot DESTINATION bin)
