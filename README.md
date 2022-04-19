@@ -19,3 +19,15 @@ Possible inputs are:
 * `annotate`            Annotate with rbh ...
 * `contamination`       Check for the contamination with `mmseqs taxonomy`
 * `downloaddb`          Download database to search against
+
+### Dowloading databases
+
+In this step database to search against will be downloaded, if you want to download default UniProtKB database just type:
+
+    transannot downloaddb default outDB tmp
+
+or:
+
+    transannot downloaddb UniProtKB outDB tmp
+    
+results are equal in both cases - UniProtKB will be downloaded
