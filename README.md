@@ -1,4 +1,4 @@
-# A transcriptome annotation pipeline
+# TransAnnot - a transcriptome annotation pipeline
 It predicts protein functions, orthologous relationships and biological pathways for the whole newly sequenced transcriptome.
 It first performs PLASS (Protein-Level ASSembler) to assemble raw sequence reads on protein level and uses MMseqs2 reciprocal best hit to obtain closest homologs.
 Based on the functions of homologs, the pipeline infers protein functions.
@@ -7,7 +7,7 @@ Based on the functions of homologs, the pipeline infers protein functions.
 Possible inputs are:
 
 * assembled (e.g. with Trinity) transcriptomes
-* non-assembled transcriptomes, which will be assembled with `plass`
+* non-assembled transcriptomes, which will be assembled on protein level with `plass`
 * metatranscriptomes
 * single-organism transcriptomes, in such case it is possible to check for the contamination with `contamination` module, which is based on MMseqs2 taxonomy workflow
 
