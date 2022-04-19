@@ -10,7 +10,7 @@ public:
     }
 
     static LocalParameters& getLocalInstance() {
-        if (instance == NULL) {
+        if (instance == nullptr) {
             initInstance();
         }
         return static_cast<LocalParameters&>(LocalParameters::getInstance());
@@ -20,6 +20,8 @@ public:
     std::vector<MMseqsParameter*> annotateworkflow;
     std::vector<MMseqsParameter*> downloaddb;
     std::vector<MMseqsParameter*> contaminationworkflow;
+
+private:
 
     LocalParameters(LocalParameters const&);
     ~LocalParameters() {};
