@@ -8,62 +8,34 @@ notExists() {
 		[ ! -f "$1" ]
 }
 
-#setting plass and mmseqs
-LIB="/mariia-zelenskaia/annotation_tool/lib";
-PLASS="$LIB/plass";
-MMSEQS="$LIB/mmseqs";
-HTTP="$LIB/httpie"
-
 #pre-processing
 [ -z "$PLASS" ] && echo "Please set the environment variable \$PLASS to your current binary." && exit 1;
 [ -z "$MMSEQS" ] && echo "Please set the environment variable \$MMSEQS to your current binary." && exit 1;
-#how many input variables?
-[ "$#" -ne 2 ] && echo "Please provide <queryDB> <tmp>" && exit 1;
-#checking whether files exist
-#[ ! -f "$("${MMSEQS}" dbtype "$1")" ] && echo "$1.dbtype not found!" && exit 1; 
+
+#checking how many input variables are provided
+[ "$#" -ne 4 ] && echo "Please provide <assembled transciptome> <targetDB> <outDB> <tmp>" && exit 1;
+#checking whether files already exist
+[ ! -f "$1.dbtype" ] && echo "$1.dbtype not found!" && exit 1;
+[ ! -f "$2.dbtype" ] && echo "$2.dbtype not found!" && exit 1;
 #[   -f "$3.dbtype"] && echo "$3.dbtype exists already!" && exit 1; ##results - not defined yet
-[ ! -d "$2" ] && echo "tmp directory $2 not found!" && mkdir -p "$2"; #change to 4 later $2 -> $4
+[ ! -d "$4" ] && echo "tmp directory $4 not found! tmp will be created." && mkdir -p "$4"; 
 
-INPUT="$1"
-#TARGET="$2"  #user should give a target at the beginning of annotation? or we simply download UniProt??
-#RESULTS="$3"
-TMP_PATH="$2" #change to $4 later!!!
+INPUT="$1" #assembled sequence
+TARGET="$2"  #already downloaded datbase
+RESULTS="$3"
+TMP_PATH="$4" 
  
-#implementing plass
-mkdir -p "${TMP_PATH}/plass_tmp"
-if notExists "${TMP_PATH}/*.fasta"; then 
+#MMSEQS2 create set database
+if notExists "${TMP_PATH}/assembly.fasta"; then 
 	#shellcheck disable=SC
-	"$PLASS" assemble "${INPUT}" "${TMP_PATH}/assembly.fasta" "${TMP_PATH}/plass_tmp" ${ASSEMBLY_PAR} \
-        || fail "PLASS assembly died"
-fi
-
-#MMSEQS2 download UniProt database to search against
-cd "${TMP_PATH}" #check whether db exists already + whether user-given one -> createdb !!! don't nec. need
-if notExists "${TMP_PATH}/UniProt"; then
-	mkdir -p "${TMP_PATH}/download_tmp" #do we need to create?
-	"$MMSEQS" databases ${UniProtKB} "${TMP_PATH}/UniProt" "${TMP_PATH}/download_tmp" 
-fi
-
-#MMSEQS2 create database
-if notExists "${TMP_PATH}/assembly.fasta"; then #which plass file do we give here
-	#shellcheck disable=SC
-	"$MMSEQS" createdb "${TMP_PATH}/assembly.fasta" "${TMP_PATH}/query"  ${CREATEDB_QUERY_PAR} \
+	"$MMSEQS" createdb "${TMP_PATH}/plass_assembly.fas" "${TMP_PATH}/query"  ${CREATEDB_QUERY_PAR} \
 		|| fail "query createdb died"
 	QUERY="${TMP_PATH}/query"
 fi	
 
-#if notExists "${TARGET}.dbtype"; then
-#	if notExists "${TMP_PATH}/target"; then
-#		shellcheck disable=SC2086
-#		"$MMSEQS" createdb "${TARGET}" "${TMP_PATH}/target" ${CREATEDB_PAR} \
-#		|| fail "target createdb died"
-#	fi
-#	TARGET="${TMP_PATH}/target"
-#fi
-
 #MMSEQS2 RBH
-#if we assemble with plass we get "${RESULTS}/plass_assembly.fas" as input
-#otherwise we have .fas file which must be translated into protein sequence
+#if we assemble with plass we get "${RESULTS}/plass_assembly.fas" in MMseqs db format as input
+#otherwise we have .fas file which must be translated into protein sequence and turned into MMseqs db
 if notExists.......; then
 	#shellcheck disable=SC2086
 	"$MMSEQS" rbh "${QUERY}" "${TARGET}" "${TMP_PATH}/result" "${TMP_PATH}/rbh_tmp" ${SEARCH_PAR} \ #should we use rbh or easy-rbh??? -> rbh is relatively an elaborate procedure and hence we can try rbh directly.
