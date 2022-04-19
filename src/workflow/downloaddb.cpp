@@ -26,4 +26,12 @@ int downloaddb(int argc, const char **argv, const Command& command) {
     //cmd.addVariable("");
 
     cmd.addVariable("REMOVE_TMP", par.removeTmpFiles ? "TRUE" : NULL);
+
+    std::string program(tmpDir + "/downloaddb.sh");
+    FileUtil::writeFile(program, downloaddb_sh, downloaddb_sh_len);
+    cmd.execProgram(program.c_str(), par.filenames);
+
+    // never get here
+    assert(false);
+    EXIT(EXIT_FAILURE);
 }
