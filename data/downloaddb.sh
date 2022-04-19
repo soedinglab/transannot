@@ -24,7 +24,7 @@ abspath(){
 }
 
 #pre-processing
-[ "$#" -ne 3 ] && echo "Please provide <DB to download> <outDBpath> <tmp>." && exit 1;
+[ "$#" -ne 3 ] && echo "Please provide <selection> <outDBpath> <tmp>." && exit 1;
 [ -z "$MMSEQS" ] && echo "Please set the environment variable \$MMSEQS to your current binary." && exit 1;
 
 SELECTION="$1"
