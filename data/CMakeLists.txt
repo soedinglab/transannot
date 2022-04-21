@@ -5,7 +5,7 @@ set(COMPILED_RESOURCES
     annotate.sh
     contamination.sh
     assembly.sh
-    createsetdb.sh
+    createdb.sh
     )
 
 set(GENERATED_OUTPUT_HEADERS "")

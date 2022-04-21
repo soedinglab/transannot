@@ -36,7 +36,7 @@ if notExists "${OUT_DB}.dbtype"; then
     if notExists "${INPUT}.dbtype"; then
         #shellcheck disable=SC
         "${MMSEQS}" createdb "${INPUT}" "${OUT_DB}" ${CREATEDB_PAR} \
-            || fail "createsetdb died"
+            || fail "createdb died"
     else #if setdb is already created
         cp -f "$1" 
         cp -f "$1.dbtype" "${OUT_DB}.dbtype"
