@@ -15,9 +15,9 @@ notExists() {
 #checking how many input variables are provided
 [ "$#" -ne 4 ] && echo "Please provide <assembled transciptome> <targetDB> <outDB> <tmp>" && exit 1;
 #checking whether files already exist
-[ ! -f "$1.dbtype" ] && echo "$1.dbtype not found!" && exit 1;
+[ ! -f "$1.dbtype" ] && echo "$1.dbtype not found! please make sure that MMseqs db is already created." && exit 1;
 [ ! -f "$2.dbtype" ] && echo "$2.dbtype not found!" && exit 1;
-#[   -f "$3.dbtype"] && echo "$3.dbtype exists already!" && exit 1; ##results - not defined yet
+[   -f "$3.dbtype"] && echo "$3.dbtype exists already!" && exit 1; ##results - not defined yet
 [ ! -d "$4" ] && echo "tmp directory $4 not found! tmp will be created." && mkdir -p "$4"; 
 
 INPUT="$1" #assembled sequence
@@ -26,12 +26,12 @@ RESULTS="$3"
 TMP_PATH="$4" 
  
 #MMSEQS2 create set database
-if notExists "${TMP_PATH}/assembly.fasta"; then 
-	#shellcheck disable=SC
-	"$MMSEQS" createdb "${TMP_PATH}/plass_assembly.fas" "${TMP_PATH}/query"  ${CREATEDB_QUERY_PAR} \
-		|| fail "query createdb died"
-	QUERY="${TMP_PATH}/query"
-fi	
+#if notExists "${TMP_PATH}/assembly.fasta"; then 
+#	#shellcheck disable=SC
+#	"$MMSEQS" createdb "${TMP_PATH}/plass_assembly.fas" "${TMP_PATH}/query"  ${CREATEDB_QUERY_PAR} \
+#		|| fail "query createdb died"
+#	QUERY="${TMP_PATH}/query"
+#fi	
 
 #MMSEQS2 RBH
 #if we assemble with plass we get "${RESULTS}/plass_assembly.fas" in MMseqs db format as input
@@ -53,7 +53,7 @@ fi
 #remove temporary files and directories
 if [ -n "${REMOVE_TMP}" ]; then
 	#shellcheck disable=SC
-	echo "Remove temporary files"
+	echo "Remove temporary files and directories"
 	rm -rf "${TMP_PATH}/annotate_tmp"  #current name of tmp pathway DO we really have annotate_tmp? or rbh_tmp? or smth else? -> we can create one tmp file for all steps and remove them at one go.
-	#rm -f "${TMP_PATH}/annotate.sh"   #current name of this file	
+	rm -f "${TMP_PATH}/annotate.sh"   #current name of this file	
 fi
