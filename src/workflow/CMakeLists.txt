@@ -3,5 +3,6 @@ set(workflow_source_files
         workflow/annotate.cpp
         workflow/contamination.cpp
         workflow/assembly.cpp
+        workflow/createdb.cpp
         PARENT_SCORE
         )
