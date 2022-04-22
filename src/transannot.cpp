@@ -22,10 +22,12 @@ std::vector<struct Command> commands = {
     {"downloaddb",  downloaddb,     &localPar.downloaddb, COMMAND_MAIN,
         "Download database to run reciprocal best hit (RBH) against",
         "Mariia Zelenskaia mariia.zelenskaia@mpinat.mpg.de", "Yazhini A. yazhini@mpinat.mpg.de",
+        "<i:selection> <outPath> <tmpDir>",
         NO_CITATION, {}
         
     },
 
+<<<<<<< HEAD
     {"contamination",   contamination, &localPar.contamination, COMMAND_MAIN,
         "Check for the contamination with MMseqs taxonomy",
         "May be used with the non-metatranscriptomes",
@@ -35,4 +37,8 @@ std::vector<struct Command> commands = {
     },
 
     
+=======
+    {}
+
+>>>>>>> 21336648c0bd67b1b87f2274d73aa9816d5d0599
 };

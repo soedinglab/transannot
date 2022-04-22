@@ -18,12 +18,13 @@ int downloaddb(int argc, const char **argv, const Command& command) {
         hash = FileUtil::getHashFromSymLink(tmpDir + "/latest");
     }
     tmpDir = FileUtil::createTemporaryDirectory(tmpDir, hash);
+    par.filenames.pop_back();
+    par.filenames.push_back(tmpDir);
 
     CommandCaller cmd;
     cmd.addVariable("TMP_PATH", tmpDir.c_str());
     cmd.addVariable("OUTDB", outDb.c_str());
-    cmd.addVariable("REMOVE_TMP", par.removeTmpFiles ? "TRUE" : NULL);
-    //cmd.addVariable("");
+    
 
     cmd.addVariable("REMOVE_TMP", par.removeTmpFiles ? "TRUE" : NULL);
 
@@ -31,7 +32,7 @@ int downloaddb(int argc, const char **argv, const Command& command) {
     FileUtil::writeFile(program, downloaddb_sh, downloaddb_sh_len);
     cmd.execProgram(program.c_str(), par.filenames);
 
-    // never get here
+    // Should never get here
     assert(false);
     EXIT(EXIT_FAILURE);
 }
