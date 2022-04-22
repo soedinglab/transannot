@@ -21,11 +21,11 @@ notExists() {
 [ ! -d "$4" ] && echo "tmp directory $4 not found! tmp will be created." && mkdir -p "$4"; 
 
 INPUT="$1" #assembled sequence
-TARGET="$2"  #already downloaded datbase
+TARGET="$2"  #already downloaded datbase - after dowload it will be turned into MMSeqs database type as well
 RESULTS="$3"
 TMP_PATH="$4" 
  
-#MMSEQS2 create set database
+#MMSEQS2 create database
 #if notExists "${TMP_PATH}/assembly.fasta"; then 
 #	#shellcheck disable=SC
 #	"$MMSEQS" createdb "${TMP_PATH}/plass_assembly.fas" "${TMP_PATH}/query"  ${CREATEDB_QUERY_PAR} \
@@ -36,7 +36,7 @@ TMP_PATH="$4"
 #MMSEQS2 RBH
 #if we assemble with plass we get "${RESULTS}/plass_assembly.fas" in MMseqs db format as input
 #otherwise we have .fas file which must be translated into protein sequence and turned into MMseqs db
-if notExists.......; then
+if notExists "${RESULTS}.dbtype"; then
 	#shellcheck disable=SC2086
 	"$MMSEQS" rbh "${QUERY}" "${TARGET}" "${TMP_PATH}/result" "${TMP_PATH}/rbh_tmp" ${SEARCH_PAR} \ #should we use rbh or easy-rbh??? -> rbh is relatively an elaborate procedure and hence we can try rbh directly.
 		|| fail "rbh search died"
