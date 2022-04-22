@@ -26,11 +26,12 @@ abspath(){
 
 #pre-processing
 [ -z "$MMSEQS"] && echo "Please set the environment variable \$MMSEQS to your current binary." && exit 1;
-[ "$#" -ne 2] && echo "Please provide <assembled transcriptome> <outDB>" && exit 1;
+[ "$#" -ne 3] && echo "Please provide <assembled transcriptome> <outDB> <tmp>" && exit 1;
 [ ! -d "$2" ] && echo "tmp directory $4 not found! tmp will be created." && mkdir -p "$4";
 
 INPUT="$1" #assembled transcriptome
 OUT_DB="$(abspath "$2")"
+TMP_PATH="$(abspath "$3")"
 
 if notExists "${OUT_DB}.dbtype"; then
     if notExists "${INPUT}.dbtype"; then
