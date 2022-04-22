@@ -22,7 +22,11 @@ std::vector<struct Command> commands = {
     {"downloaddb",  downloaddb,     &localPar.downloaddb, COMMAND_MAIN,
         "Download database to run reciprocal best hit (RBH) against",
         "Mariia Zelenskaia mariia.zelenskaia@mpinat.mpg.de", "Yazhini A. yazhini@mpinat.mpg.de",
+        "<i:selection> <outPath> <tmpDir>",
         NO_CITATION, {}
         
-    }
+    },
+
+    {}
+
 };
