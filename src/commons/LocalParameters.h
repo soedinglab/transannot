@@ -5,9 +5,6 @@
 
 class LocalParameters : public  Parameters {
 public:
-    static void initInstance() {
-        //new LocalParameters;
-    }
 
     static LocalParameters& getLocalInstance() {
         if (instance == nullptr) {
@@ -20,6 +17,9 @@ public:
     std::vector<MMseqsParameter*> annotateworkflow;
     std::vector<MMseqsParameter*> downloaddb;
     std::vector<MMseqsParameter*> contaminationworkflow;
+
+    std::vector<MMseqsParameter*> combineList(const std::vector<MMseqsParameter*> &par1,
+                                            const std::vector<MMseqsParameter*> &par2);
 
 private:
 
