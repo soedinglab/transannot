@@ -24,5 +24,15 @@ std::vector<struct Command> commands = {
         "Mariia Zelenskaia mariia.zelenskaia@mpinat.mpg.de", "Yazhini A. yazhini@mpinat.mpg.de",
         NO_CITATION, {}
         
-    }
+    },
+
+    {"contamination",   contamination, &localPar.contamination, COMMAND_MAIN,
+        "Check for the contamination with MMseqs taxonomy",
+        "May be used with the non-metatranscriptomes",
+        "Mariia Zelenskaia mariia.zelenskaia@mpinat.mpg.de", "Yazhini A. yazhini@mpinat.mpg.de",
+        NO_CITATION, {}
+        
+    },
+
+    
 };
