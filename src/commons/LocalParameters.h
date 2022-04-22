@@ -17,6 +17,8 @@ public:
     std::vector<MMseqsParameter*> annotateworkflow;
     std::vector<MMseqsParameter*> downloaddb;
     std::vector<MMseqsParameter*> contaminationworkflow;
+    std::vector<MMseqsParameter*> createdb;
+
 
     std::vector<MMseqsParameter*> combineList(const std::vector<MMseqsParameter*> &par1,
                                             const std::vector<MMseqsParameter*> &par2);
