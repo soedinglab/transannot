@@ -22,23 +22,35 @@ std::vector<struct Command> commands = {
     {"downloaddb",  downloaddb,     &localPar.downloaddb, COMMAND_MAIN,
         "Download database to run reciprocal best hit (RBH) against",
         "Mariia Zelenskaia mariia.zelenskaia@mpinat.mpg.de", "Yazhini A. yazhini@mpinat.mpg.de",
-        "<i:selection> <outPath> <tmpDir>",
+        "<name> <outPath> <tmpDir>",
         NO_CITATION, {}
         
     },
 
-<<<<<<< HEAD
-    {"contamination",   contamination, &localPar.contamination, COMMAND_MAIN,
+    {"contamination",   contamination, &localPar.contaminationworkflow, COMMAND_MAIN,
         "Check for the contamination with MMseqs taxonomy",
         "May be used with the non-metatranscriptomes",
         "Mariia Zelenskaia mariia.zelenskaia@mpinat.mpg.de", "Yazhini A. yazhini@mpinat.mpg.de",
+        "<>",
         NO_CITATION, {}
         
     },
 
-    
-=======
-    {}
+    {"annotate",    annotate, &localPar.annotateworkflow, COMMAND_MAIN,
+        "Run RBH of MMseqs2 to find homology",
+        "Afterwards get GeneOntology ID (GO-IDs) to find out the functions and pathways",
+        "Mariia Zelenskaia mariia.zelenskaia@mpinat.mpg.de", "Yazhini A. yazhini@mpinat.mpg.de",
+        "<i:queryFastaFile[.gz]> <i:targetDB> <o:outputPath> <tmpDir>",
+        NO_CITATION, {}
 
->>>>>>> 21336648c0bd67b1b87f2274d73aa9816d5d0599
+    },
+
+    {"createdb",    createdb, &localPar.createdb, COMMAND_MAIN,
+        "Create MMseqs database from assembled sequences (with transannot annotate or other tool)",
+        "Mariia Zelenskaia mariia.zelenskaia@mpinat.mpg.de", "Yazhini A. yazhini@mpinat.mpg.de",
+        "<i:fastaFile> <o:sequenceDB> <tmpDir>",
+        NO_CITATION, {}
+    }
+
+    
 };
