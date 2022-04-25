@@ -17,15 +17,15 @@ TMP_PATH="$3"
 
 mkdir -p "${TMP_PATH}/plass_tmp"
 if notExists "${RESULTS}/plass_assembly.fas"; then
-    #shellcheck disable=SC
+    #shellcheck disable=SC2086
     "$PLASS" assemble "${INPUT}" "${RESULTS}/plass_assembly.fas" "${TMP_PATH}/plass_tmp" ${ASSEMBLY_PAR} \
         || fail "PLASS assembly died"
 fi
 
 #remove temporary files
 if [ -n "$REMOVE_TMP" ]; then
-    #shellcheck disable=SC
+    #shellcheck disable=SC2086
     echo "Remove temporary files and directories"
     rm -rf "${TMP_PATH}/plass_tmp"
-    rm -f "${TMP_PATH}/assembly.sh" #why tmp_path?
+    rm -f "${TMP_PATH}/assembly.sh" 
 fi
