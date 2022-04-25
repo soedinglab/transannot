@@ -6,7 +6,7 @@
 //#include "createsetdb.sh.h"
 #include "LocalParameters.h"
 
-int createsetdb(int argc, const char **argv, const Command& command) {
+int createdb(int argc, const char **argv, const Command& command) {
 
 
 }
