@@ -1,4 +1,4 @@
-include(MMseqsResourceCompiler)
+include(/lib/plass/lib/mmseqs/cmake/MMseqsResourceCompiler.cmake) #not sure whether we need a full pathway
 
 set(COMPILED_RESOURCES
     downloaddb.sh
@@ -14,4 +14,4 @@ FOREACH(INPUT_FILE ${COMPILED_RESOURCES})
     list(APPEND GENERATED_OUTPUT_HEADERS "${OUTPUT_FILE}")
 ENDFOREACH()
 
-add_custom_target(local-generated ALL DEPENDS ${GENERATED_OUTPUT_HEADERS})
+add_custom_target(transannot-local-generated ALL DEPENDS ${GENERATED_OUTPUT_HEADERS}) 
