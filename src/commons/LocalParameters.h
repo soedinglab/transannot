@@ -5,6 +5,9 @@
 
 class LocalParameters : public  Parameters {
 public:
+    static void initInstance() {
+        new LocalParameters;
+    }
 
     static LocalParameters& getLocalInstance() {
         if (instance == nullptr) {
