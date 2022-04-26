@@ -30,6 +30,7 @@ TMP_PATH="$4"
 #otherwise we have .fas file which must be translated into protein sequence and turned into MMseqs db
 if notExists "${RESULTS}*.dbtype"; then
 	# shellcheck disable=SC2086
+	mkdir -p "${TMP_PATH}/alignmentDB"
 	"$MMSEQS" rbh "${QUERY}" "${TARGET}" "${TMP_PATH}/alignmentDB" "${TMP_PATH}/rbh_tmp" ${SEARCH_PAR} \ #rbh returns alignmentDB
 		|| fail "rbh search died"
 fi
