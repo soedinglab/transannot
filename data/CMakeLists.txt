@@ -1,4 +1,4 @@
-include(/lib/plass/lib/mmseqs/cmake/MMseqsResourceCompiler.cmake) #not sure whether we need a full pathway
+include(MMseqsResourceCompiler) #not sure whether we need a full pathway
 
 set(COMPILED_RESOURCES
     downloaddb.sh
