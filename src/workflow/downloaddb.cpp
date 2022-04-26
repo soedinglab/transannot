@@ -32,7 +32,5 @@ int downloaddb(int argc, const char **argv, const Command& command) {
     FileUtil::writeFile(program, downloaddb_sh, downloaddb_sh_len);
     cmd.execProgram(program.c_str(), par.filenames);
 
-    // Should never get here
-    assert(false);
-    EXIT(EXIT_FAILURE);
+    return(EXIT_SUCCESS);
 }

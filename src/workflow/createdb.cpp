@@ -7,6 +7,6 @@
 #include "LocalParameters.h"
 
 int createdb(int argc, const char **argv, const Command& command) {
-
+    LocalParameters &par = LocalParameters::getLocalInstance();
 
 }
