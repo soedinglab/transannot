@@ -51,5 +51,5 @@ fi
 
 if [ -n "${REMOVE_TMP}" ]; then
     echo "Remove temporary files"
-    rm -f "${TMP_PATH}/createsetdb.sh"
+    rm -f "${TMP_PATH}/createdb.sh"
 fi
