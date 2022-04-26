@@ -10,13 +10,14 @@ const char* tool_introduction =
 // const char* main_author = 
 
 LocalParameters& localPar = LocalParameters::getLocalInstance();
+
 std::vector<struct Command> commands = {
     {"assembly",    assembly,   &localPar.assembly, COMMAND_MAIN,
         "Assembly of de novo transcriptomes on protein level with PLASS",
         "It is also possible to give already assembled (e.g. with Trinity) files as input",
         "Mariia Zelenskaia mariia.zelenskaia@mpinat.mpg.de & Yazhini A. yazhini@mpinat.mpg.de",
-        "<i:fast(a|q)File[.gz]> | <i:fastqFile1_1[.gz] ... <i:fastqFileN_1[.gz] <i:fastqFileN_2[.gz]> <o:fastaFile> <tmpDir>",
-        NO_CITATION, {{"",DbType::ACCESS_MODE_INPUT, DbType::NEED_DATA, NULL}}},
+        "<i:fast(a|q)File[.gz]> | <i:fastqFile1_1[.gz]> ... <i:fastqFileN_1[.gz]> <o:fastaFile> <tmpDir>",
+        NO_CITATION, {{"",DbType::ACCESS_MODE_INPUT, DbType::NEED_DATA, NULL}},
 
     },
 
@@ -44,13 +45,12 @@ std::vector<struct Command> commands = {
         NO_CITATION, {}
     },
 
-     {"contamination",   contamination, &localPar.contaminationworkflow, COMMAND_EXPERT,
+    {"contamination",   contamination, &localPar.contaminationworkflow, COMMAND_EXPERT,
         "Check for the contamination with MMseqs taxonomy",
         "Assigns taxaIDs and then finds organisms with minor frequency",
         "Mariia Zelenskaia mariia.zelenskaia@mpinat.mpg.de & Yazhini A. yazhini@mpinat.mpg.de",
         "<>",
-        NO_CITATION, {}
-        
+        NO_CITATION, {}  
     }
 
     
