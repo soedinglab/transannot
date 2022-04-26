@@ -6,28 +6,33 @@
 // #include "assembly.sh.h"
 #include "LocalParameters.h"
 
-// const char* binary_name = "Transannot";
-// const char* tool_name = "Transannot";
-// const char* tool_introduction = "Transannot: An annotation pipeline that predicts functions of de novo assembled transcripts based on homology search using MMseqs2";
 
  int assembly(int argc, const char **argv, const Command& command) {
     LocalParameters &par = LocalParameters::getLocalInstance();
     std::string outDb = par.filenames.back();
     std::string tmpDir = par.filenames.back();
 
-    par.filenames.pop_back();
-    std::string hash = SSTR(par.hashParameter(command.databases, par.filenames, par.assembly));
+    std::string hash = SSTR(par.hashParameter(command.databases, par.filenames, *command.params));
     if (par.reuseLatest) {
         hash = FileUtil::getHashFromSymLink(tmpDir + "/latest");
     }
 
-
-
     tmpDir = FileUtil::createTemporaryDirectory(tmpDir, hash);
-    par.filenames.pop_back();
-    par.filenames.push_back(tmpDir);
 
-     CommandCaller cmd;
+    char *p = realpath(tmpDir.c_str(), NULL);
+    if (p == NULL) {
+        Debug(Debug::ERROR) << "Could not get the real path of " << tmpDir << "!\n";
+    }
+
+    CommandCaller cmd;
     cmd.addVariable("REMOVE_TMP", par.removeTmpFiles ? "TRUE" : NULL);
+    cmd.addVariable("TMP_PATH", p);
+    par.filenames.pop_back();
+    free(p);
 
+    FileUtil::writeFile(tmpDir + "assembly.sh", assembly_sh, assembly_sh_len);
+    std::string program(tmpDir + "assembly.sh");
+    cmd.execProgram(program.c_str(), par.filenames);
+
+    return EXIT_SUCCESS;
  }
