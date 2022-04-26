@@ -46,7 +46,7 @@ if notExists "${OUTDB}/${SELECTION}.dbtype"; then
     #shellcheck disable=SC
     gzip "${TMP_PATH}/${SELECTION}.fasta.gz"
     "$MMSEQS" createdb "${TMP_PATH}/${SELECTION}.fasta" "${OUTDB}" ${CREATEDB_PAR} \
-        || fail "createsetdb died"
+        || fail "createdb died"
 fi
 
 if [ -n "$REMOVE_TMP" ]; then
