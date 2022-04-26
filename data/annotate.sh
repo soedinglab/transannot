@@ -25,20 +25,12 @@ TARGET="$2"  #already downloaded datbase
 RESULTS="$3"
 TMP_PATH="$4" 
  
-#MMSEQS2 create set database
-#if notExists "${TMP_PATH}/assembly.fasta"; then 
-#	#shellcheck disable=SC
-#	"$MMSEQS" createdb "${TMP_PATH}/plass_assembly.fas" "${TMP_PATH}/query"  ${CREATEDB_QUERY_PAR} \
-#		|| fail "query createdb died"
-#	QUERY="${TMP_PATH}/query"
-#fi	
-
 #MMSEQS2 RBH
 #if we assemble with plass we get "${RESULTS}/plass_assembly.fas" in MMseqs db format as input
 #otherwise we have .fas file which must be translated into protein sequence and turned into MMseqs db
-if notExists.......; then
+if notExists "${RESULTS}*.dbtype"; then
 	# shellcheck disable=SC2086
-	"$MMSEQS" rbh "${QUERY}" "${TARGET}" "${TMP_PATH}/result" "${TMP_PATH}/rbh_tmp" ${SEARCH_PAR} \ #should we use rbh or easy-rbh??? -> rbh is relatively an elaborate procedure and hence we can try rbh directly.
+	"$MMSEQS" rbh "${QUERY}" "${TARGET}" "${TMP_PATH}/alignmentDB" "${TMP_PATH}/rbh_tmp" ${SEARCH_PAR} \ #rbh returns alignmentDB
 		|| fail "rbh search died"
 fi
 
@@ -48,6 +40,13 @@ if notExists "${RESULTS}/go_ids"; then
 	# shellcheck disable=SC2086
 	"$HTTP" GET https://www.uniprot.org/uniprot/?query=....&sort=score&columns=id,entry name,reviewed,protein names,genese,organism,length&format=tab > "${RESULTS}/go_ids"
 		|| fail "get GO-IDs died"
+fi
+
+#create output in .tsv format
+if notExists "${RESULTS}*.tsv"; then
+	# shellcheck disable=SC2086
+	"$MMSEQS" createtsv "${}" "${}" "${RESULTS}results.tsv" ${CREATETSV_PAR} \
+		|| fail "createtsv died"
 fi
 
 #remove temporary files and directories
