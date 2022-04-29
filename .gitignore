@@ -1,4 +1,37 @@
+# Compiled object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Compiled dynamic libraries
+*.so.*
+*.dylib
+*.dll
+
+# Compiled static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+#debug
+*.dSYM
+*.swp
+
+#programs
+*.depend
+
 build/
+.idea/
 cmake-build-*/
 .DS_Store
+temp/
+
 .vscode/
+vsc.code-workspace
