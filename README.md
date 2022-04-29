@@ -31,3 +31,7 @@ or:
     transannot downloaddb UniProtKB outDB tmp
     
 results are equal in both cases - UniProtKB will be downloaded
+
+### Annotate workflow
+
+Calling `annotate -h` returns information on all types of sequence information, that user may get using annotate module. 
