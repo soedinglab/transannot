@@ -53,4 +53,4 @@ Contamination module checks for the contamination in a given data. It uses mmseq
 
     transannot contamination <Input.fasta> <targetDB> <outpath> <tmp> [options]
  
-You can find the taxonomy report in <outPath>.
+You can find the taxonomy report in `outPath`.
