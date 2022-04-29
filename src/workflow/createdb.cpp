@@ -9,4 +9,8 @@
 int createdb(int argc, const char **argv, const Command& command) {
     LocalParameters &par = LocalParameters::getLocalInstance();
 
+    CommandCaller cmd
+    cmd.addVariable("REMOVE_TMP", par.removeTmpFiles ? "TRUE" : NULL);
+
+    return EXIT_SUCCESS;
 }
