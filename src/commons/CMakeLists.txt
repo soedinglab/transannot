@@ -1,4 +1,4 @@
-set(common_source_files
+set(commons_source_files
         commons/LocalParameters.h
         commons/LocalParameters.cpp
         PARENT_SCOPE)
