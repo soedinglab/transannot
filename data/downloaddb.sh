@@ -23,11 +23,6 @@ abspath(){
     fi
 }
 
-if [ "$1" == 'default' ]; then
-    echo "UniProtKB will be downloaded."
-    SELECTION="UniProtKB"
-fi
-
 #pre-processing
 [ "$#" -ne 3 ] && echo "Please provide <selection> <outDBpath> <tmp>." && exit 1;
 [ -z "$MMSEQS" ] && echo "Please set the environment variable \$MMSEQS to your current binary." && exit 1;
@@ -36,21 +31,17 @@ SELECTION="$1"
 OUTDB="$(abspath "$2")"
 TMP_PATH="$(abspath "$3")"
 
-if notExists "${OUTDB}/${SELECTION}.fasta.gz"; then
-    #shellcheck disable=SC
-    "$MMSEQS" databases "${SELECTION}" "${TMP_PATH}/${SELECTION}.fasta.gz" "${TMP_PATH}/download_db.tmp" ${DOWNLOADDB_PAR} \
+mkdir -p "${TMP_PATH}/download_db.tmp"
+if notExists "${OUTDB}/${SELECTION}/.dbtype"; then
+    #shellcheck disable=SC2086
+    "$MMSEQS" databases "${SELECTION}" "${OUTDB}/${SELECTION}/" "${TMP_PATH}/download_db.tmp" ${DOWNLOADDB_PAR} \
         || fail "download database died"
 fi
 
-if notExists "${OUTDB}/${SELECTION}.dbtype"; then
-    #shellcheck disable=SC
-    gzip "${TMP_PATH}/${SELECTION}.fasta.gz"
-    "$MMSEQS" createdb "${TMP_PATH}/${SELECTION}.fasta" "${OUTDB}" ${CREATEDB_PAR} \
-        || fail "createdb died"
-fi
+# downloaddb creates db as well
 
 if [ -n "$REMOVE_TMP" ]; then
-    #shellcheck disable=SC
+    #shellcheck disable=SC2086
     echo "Remove temporary files and directories"
     rm -rf "${TMP_PATH}/download_db.tmp"
     rm -f "${TMP_PATH}/downloaddb.sh"

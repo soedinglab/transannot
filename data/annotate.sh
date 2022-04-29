@@ -9,7 +9,6 @@ notExists() {
 }
 
 #pre-processing
-[ -z "$PLASS" ] && echo "Please set the environment variable \$PLASS to your current binary." && exit 1;
 [ -z "$MMSEQS" ] && echo "Please set the environment variable \$MMSEQS to your current binary." && exit 1;
 
 #checking how many input variables are provided
