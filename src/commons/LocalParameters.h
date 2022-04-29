@@ -27,7 +27,14 @@ public:
                                             const std::vector<MMseqsParameter*> &par2);
 
 private:
+    LocalParameters() :
+        Parameters(),
 
+
+    {
+        downloaddb.push_back(&PARAM_HELP);
+        downloaddb.push_back(&PARAM_HELP_LONG);
+    }
     LocalParameters(LocalParameters const&);
     ~LocalParameters() {};
     void operator=(LocalParameters const&);
