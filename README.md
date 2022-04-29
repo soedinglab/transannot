@@ -51,6 +51,6 @@ Calling `annotate -h` returns details on what type of information about sequence
 
 Contamination module checks for the contamination in a given data. It uses mmseqs `easy-taxonomy` module. As target DB you may use the database, that was downloaded to run annotation. To run:
 
-    transannot contamination <Input.fasta> <targetDB> <outpath> <tmp> [options]
+    transannot contamination <Input.fasta> <targetDB> <outPath> <tmp> [options]
  
 You can find the taxonomy report in `outPath`.
