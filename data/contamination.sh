@@ -28,10 +28,13 @@ TMP_PATH="$4"
 #only INPUT goes to this script, everything else will be automatically generated in easytaxonomy
 #only one variable should be given
 
+mkdir -p "${TMP_PATH}/easy_taxonomy_tmp"
 mkdir -p "${OUT_PATH}/taxonomyReport"
 #shellcheck disable=SC2086
-"$MMSEQS" easytaxonomy "${INPUT}" "${TARGET}" "${OUT_PATH}/taxonomyReport" "${TMP_PATH}/easy_taxonomy_tmp" ${EASYTAXONOMY_PAR} \
-        || fail "get taxonomy report died"
+"$MMSEQS" easy-taxonomy "${INPUT}" "${TARGET}" "${OUT_PATH}/taxonomyReport" "${TMP_PATH}/easy_taxonomy_tmp" ${EASYTAXONOMY_PAR} \
+        || fail "easytaxonomy died"
+
+#easy taxonomy returns output in .tsv format
 
 if [ -n "$REMOVE_TMP" ]; then
     #shellcheck disable=SC
