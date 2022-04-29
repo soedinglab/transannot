@@ -13,16 +13,16 @@ Possible inputs are:
 
 ## Running
 
-### tmp
+### about tmp
 
-`tmp` is a folder to keep temporary files. Default all the intermediate outputs will be kept in this folder after running each module. To clear tmp pass `--remove-tmp-files` parameter.
+`tmp` is a folder to keep temporary files. By the default all the intermediate outputs will be kept in this folder after running each module. To clear tmp pass `--remove-tmp-files` parameter.
 
 ### Modules
 
 * `assembly`            Assemble ...
 * `annotate`            Annotate with rbh ...
 * `contamination`       Check for the contamination with `mmseqs easy-taxonomy`
-* `createdb`            Create mmseqs database from the sequence, which was not assembled with transannot plass
+* `createdb`            Create mmseqs database from the sequence, which was not assembled with transannot assembly
 * `downloaddb`          Download database to search against
 
 ### Dowloading databases
@@ -36,7 +36,9 @@ However, if you would like to download other databases, run:
 
     mmseqs databases -h
 
-for an extended information about the databases that can be downloaded.
+for an extended information about the databases that can be downloaded. 
+Possible databases are for example Swiss-Prot and PDB. 
+
 Then run:
 
     transannot downloaddb <selection> <outDB> <tmp> [options]
