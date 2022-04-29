@@ -17,21 +17,26 @@ Possible inputs are:
 
 * `assembly`            Assemble ...
 * `annotate`            Annotate with rbh ...
-* `contamination`       Check for the contamination with `mmseqs taxonomy`
+* `contamination`       Check for the contamination with `mmseqs easy-taxonomy`
+* `createdb`            Create mmseqs database from the sequence, which was not assembled with transannot plass
 * `downloaddb`          Download database to search against
 
 ### Dowloading databases
 
-In this step database to search against will be downloaded, if you want to download default UniProtKB database just type:
+In this step database to search against will be downloaded.
+Default database is UniProtKB, so if you want to download this database simply run:
 
-    transannot downloaddb default outDB tmp
-
-or:
-
-    transannot downloaddb UniProtKB outDB tmp
+    transannot downloaddb UniProtKB <outDB> <tmp>
     
-results are equal in both cases - UniProtKB will be downloaded
+However, if you would like to download other databases, run:
+
+    mmseqs databases -h
+
+for an extended information about the databases that can be downloaded.
+Then run:
+
+    transannot downloaddb <selection> <outDB> <tmp>
 
 ### Annotate workflow
 
-Calling `annotate -h` returns information on all types of sequence information, that user may get using annotate module. 
+Calling `annotate -h` returns details on what type of information about sequence user may get using annotate module. 
