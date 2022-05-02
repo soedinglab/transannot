@@ -42,6 +42,7 @@ if notExists "${RESULTS}/go_ids"; then
 		|| fail "get GO-IDs died"
 fi
 
+#TO-DO we can make programmtic access to UniProt
 #create output in .tsv format
 if notExists "${RESULTS}*.tsv"; then
 	# shellcheck disable=SC2086
