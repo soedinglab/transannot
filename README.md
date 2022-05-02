@@ -6,8 +6,7 @@ Prior to functional annotation, it can perform transcriptome sequence assembly u
 ## Input
 Possible inputs are:
 
-* assembled (e.g. with Trinity) transcriptomes
-* non-assembled transcriptomes, which will be assembled on protein level with `plass`
+* assembled transcriptomes (obtained e.g. using Trinity) or raw transcriptome reads, which will be assembled at protein level using `plass`
 * metatranscriptomes
 * single-organism transcriptomes, in such case it is possible to check for the contamination with `contamination` module, which is based on MMseqs2 taxonomy workflow
 
