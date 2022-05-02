@@ -3,7 +3,7 @@
 #include "Util.h"
 #include "FileUtil.h"
 #include "CommandCaller.h"
-//#include "downloaddb.sh.h"
+#include "downloaddb.sh.h"
 #include "LocalParameters.h"
 
 int downloaddb(int argc, const char **argv, const Command& command) {

@@ -3,7 +3,7 @@
 #include "Util.h"
 #include "FileUtil.h"
 #include "CommandCaller.h"
-// #include "assembly.sh.h"
+#include "assembly.sh.h"
 #include "LocalParameters.h"
 
 

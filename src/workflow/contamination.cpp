@@ -3,4 +3,4 @@
 #include "Util.h"
 #include "FileUtil.h"
 #include "CommandCaller.h"
-// #include "contamination.sh.h"
+#include "contamination.sh.h"

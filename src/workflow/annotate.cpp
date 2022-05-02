@@ -3,7 +3,7 @@
 #include "Util.h"
 #include "FileUtil.h"
 #include "CommandCaller.h"
-// #include "annotate.sh"  // add sh.h later
+#include "annotate.sh" 
 
 #include <cassert>
 
