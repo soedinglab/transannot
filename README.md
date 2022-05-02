@@ -1,7 +1,7 @@
 # TransAnnot - a transcriptome annotation pipeline
-It predicts protein functions, orthologous relationships and biological pathways for the whole newly sequenced transcriptome.
-It first performs PLASS (Protein-Level ASSembler) to assemble raw sequence reads on protein level and uses MMseqs2 reciprocal best hit to obtain closest homologs.
-Based on the functions of homologs, the pipeline infers protein functions.
+TransAnnot predicts protein functions, orthologous relationships and biological pathways for the whole newly sequenced transcriptome.
+It uses MMseqs2 reciprocal best hit to obtain closest homologs from UniProtKB database (or user defined database) and infer protein function, structure and orthologous groups based on the identified homologs.
+Prior to functional annotation, it can perform transcriptome sequence assembly using PLASS (Protein-Level ASSembler) to assemble raw sequence reads on protein level upon user request.
 
 ## Input
 Possible inputs are:
