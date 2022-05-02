@@ -14,6 +14,6 @@ add_executable(transannot
 mmseqs_setup_derived_target(transannot)
 #target_link_libraries(annotate version)
 
-add_dependencies(transannot local-generated)
+add_dependencies(transannot transannot-local-generated)
 
 install(TARGETS transannot DESTINATION bin)
