@@ -26,7 +26,7 @@ public:
     std::vector<MMseqsParameter*> combineList(const std::vector<MMseqsParameter*> &par1,
                                             const std::vector<MMseqsParameter*> &par2);
 
-    int infoSelect
+    int infoSelect;
 
 private:
     LocalParameters() :
