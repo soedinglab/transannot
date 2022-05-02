@@ -30,8 +30,8 @@ TMP_PATH="$4"
 if notExists "${RESULTS}*.dbtype"; then
 	# shellcheck disable=SC2086
 	mkdir -p "${TMP_PATH}/alignmentDB"
-	"$MMSEQS" rbh "${QUERY}" "${TARGET}" "${TMP_PATH}/alignmentDB" "${TMP_PATH}/rbh_tmp" ${SEARCH_PAR} \ #rbh returns alignmentDB
-	|| fail "rbh search died"
+	"$MMSEQS" rbh "${QUERY}" "${TARGET}" "${TMP_PATH}/alignmentDB" "${TMP_PATH}/rbh_tmp" ${SEARCH_PAR} |
+    fail "rbh search died"
 fi
 
 #get GO-IDs
