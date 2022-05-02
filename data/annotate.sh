@@ -16,7 +16,7 @@ notExists() {
 #checking whether files already exist
 [ ! -f "$1.dbtype" ] && echo "$1.dbtype not found! please make sure that MMseqs db is already created." && exit 1;
 [ ! -f "$2.dbtype" ] && echo "$2.dbtype not found!" && exit 1;
-[   -f "$3.dbtype"] && echo "$3.dbtype exists already!" && exit 1; ##results - not defined yet
+[   -f "$3.dbtype" ] && echo "$3.dbtype exists already!" && exit 1; ##results - not defined yet
 [ ! -d "$4" ] && echo "tmp directory $4 not found! tmp will be created." && mkdir -p "$4"; 
 
 INPUT="$1" #assembled sequence
@@ -31,7 +31,7 @@ if notExists "${RESULTS}*.dbtype"; then
 	# shellcheck disable=SC2086
 	mkdir -p "${TMP_PATH}/alignmentDB"
 	"$MMSEQS" rbh "${QUERY}" "${TARGET}" "${TMP_PATH}/alignmentDB" "${TMP_PATH}/rbh_tmp" ${SEARCH_PAR} \ #rbh returns alignmentDB
-		|| fail "rbh search died"
+	|| fail "rbh search died"
 fi
 
 #get GO-IDs
