@@ -6,11 +6,12 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/lib/mmse
 set(FRAMEWORK_ONLY 1 CACHE INTERNAL "" FORCE)
 include(MMSeqsSetupDerivedTarget)
 
+add_subdirectory(lib/mmseqs)
+add_subdirectory(lib/plass)
+
 include_directories(lib/mmseqs)
 include_directories(lib/plass)
 
-add_subdirectory(lib/mmseqs)
-add_subdirectory(lib/plass)
 # we don't add httpie because it is python library
 add_subdirectory(src)
 add_subdirectory(data)
