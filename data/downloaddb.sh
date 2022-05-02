@@ -12,7 +12,7 @@ notExists() {
 abspath(){
     if [ -d "$1" ]; then
         (cd "$1"; pwd)
-    elif [ -f "$1"]; then #if file exists
+    elif [ -f "$1" ]; then #if file exists
         if [ -z "${1##*/*}" ]; then
             echo "$(cd "${1%/*}"; pwd)/${13##*/}"
         else
