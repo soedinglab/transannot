@@ -9,8 +9,8 @@ notExists() {
 }
 
 #pre-processing
-[-z "$MMSEQS"] && echo "Please set the environment variable \$MMSEQS to your current binary" && exit 1;
-["$#" -ne 4] && echo "Please provide <InputSeq> <targetDB> <outPath> <tmp>" && exit 1; #easytaxonomy takes fasta file as an input
+[ -z "$MMSEQS" ] && echo "Please set the environment variable \$MMSEQS to your current binary" && exit 1;
+[ "$#" -ne 4 ] && echo "Please provide <InputSeq> <targetDB> <outPath> <tmp>" && exit 1; #easytaxonomy takes fasta file as an input
 [ ! -f "$2.dbtype" ] && echo "Please make sure proper target database is provided and mmseqs database is created!" && exit 1;
 [ ! -d "$4" ] && echo "tmp directory $4 not found! tmp will be created." && mkdir -p "$4";
 
@@ -29,7 +29,6 @@ TMP_PATH="$4"
 #only one variable should be given
 
 mkdir -p "${TMP_PATH}/easy_taxonomy_tmp"
-mkdir -p "${OUT_PATH}/taxonomyReport"
 #shellcheck disable=SC2086
 "$MMSEQS" easy-taxonomy "${INPUT}" "${TARGET}" "${OUT_PATH}/taxonomyReport" "${TMP_PATH}/easy_taxonomy_tmp" ${EASYTAXONOMY_PAR} \
         || fail "easytaxonomy died"
@@ -37,7 +36,7 @@ mkdir -p "${OUT_PATH}/taxonomyReport"
 #easy taxonomy returns output in .tsv format
 
 if [ -n "$REMOVE_TMP" ]; then
-    #shellcheck disable=SC
+    #shellcheck disable=SC2086
     echo "Remove temporary files and directories"
     rm -rf "${TMP_PATH}/easy_taxonomy_tmp"
     rm -f "${TMP_PATH}/contamination.sh"

@@ -27,32 +27,34 @@ TMP_PATH="$4"
 #MMSEQS2 RBH
 #if we assemble with plass we get "${RESULTS}/plass_assembly.fas" in MMseqs db format as input
 #otherwise we have .fas file which must be translated into protein sequence and turned into MMseqs db
+#alignment DB is not a directory and may not be created
 if notExists "${RESULTS}*.dbtype"; then
-	# shellcheck disable=SC2086
-	mkdir -p "${TMP_PATH}/alignmentDB"
-	"$MMSEQS" rbh "${QUERY}" "${TARGET}" "${TMP_PATH}/alignmentDB" "${TMP_PATH}/rbh_tmp" ${SEARCH_PAR} |
-    fail "rbh search died"
+	#shellcheck disable=SC2086
+	"$MMSEQS" rbh "${INPUT}" "${TARGET}" "${TMP_PATH}/alignmentDB" "${TMP_PATH}/rbh_tmp" ${SEARCH_PAR} \
+    	|| fail "rbh search died"
 fi
 
 #get GO-IDs
 #read more whether we need GET module
 if notExists "${RESULTS}/go_ids"; then
-	# shellcheck disable=SC2086
-	"$HTTP" GET https://www.uniprot.org/uniprot/?query=....&sort=score&columns=id,entry name,reviewed,protein names,genese,organism,length&format=tab > "${RESULTS}/go_ids"
+	#shellcheck disable=SC2086
+	#"$HTTP" GET https://www.uniprot.org/uniprot/?query=....&sort=score &columns=id,entry name,reviewed,protein names,genese,organism,length&format=tab > "${RESULTS}/go_ids" \
+	# TODO get GOIds 
+	"$HTTP" GET url > "${RESULTS}/go_ids" \
 		|| fail "get GO-IDs died"
 fi
 
 #TO-DO we can make programmtic access to UniProt
 #create output in .tsv format
 if notExists "${RESULTS}*.tsv"; then
-	# shellcheck disable=SC2086
+	#shellcheck disable=SC2086
 	"$MMSEQS" createtsv "${}" "${}" "${RESULTS}results.tsv" ${CREATETSV_PAR} \
 		|| fail "createtsv died"
 fi
 
 #remove temporary files and directories
 if [ -n "${REMOVE_TMP}" ]; then
-	# shellcheck disable=SC2086
+	#shellcheck disable=SC2086
 	echo "Remove temporary files and directories"
 	rm -rf "${TMP_PATH}/annotate_tmp"  #current name of tmp pathway DO we really have annotate_tmp? or rbh_tmp? or smth else? -> we can create one tmp file for all steps and remove them at one go.
 	rm -f "${TMP_PATH}/annotate.sh"   #current name of this file	

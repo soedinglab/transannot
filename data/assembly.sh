@@ -9,7 +9,7 @@ notExists(){
 }
 
 #pre-processing
-[ -z "$PLASS"] && echo "Please set the environment variable \$PLASS to your current binary." && exit 1;
+[ -z "$PLASS" ] && echo "Please set the environment variable \$PLASS to your current binary." && exit 1;
 
 INPUT="$1"
 RESULTS="$2"

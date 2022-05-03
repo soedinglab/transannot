@@ -34,7 +34,7 @@ TMP_PATH="$(abspath "$3")"
 mkdir -p "${TMP_PATH}/download_db.tmp"
 if notExists "${OUTDB}/${SELECTION}/.dbtype"; then
     #shellcheck disable=SC2086
-    "$MMSEQS" databases "${SELECTION}" "${OUTDB}/${SELECTION}/" "${TMP_PATH}/download_db.tmp" ${DOWNLOADDB_PAR} \
+    "$MMSEQS" databases "${SELECTION}" "${OUTDB}/${SELECTION}DB" "${TMP_PATH}/download_db.tmp" ${DOWNLOADDB_PAR} \
         || fail "download database died"
 fi
 
