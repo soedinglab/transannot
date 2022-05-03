@@ -9,5 +9,7 @@ if ! command -v plass; then
     mkdir build && cd build
     cmake -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX=. ..
     make -j 4 && make install
-    export PATH="$(pwd)/bin/:$PATH"
+    #shellcheck disable=SC2086
+    PATH="$(pwd)/bin/:$PATH"
+    export PATH
 fi
