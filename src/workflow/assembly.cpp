@@ -25,6 +25,8 @@
     }
 
     CommandCaller cmd;
+    // TODO: find some smart way to include plass
+    cmd.addVariable("PLASS", "plass");
     cmd.addVariable("REMOVE_TMP", par.removeTmpFiles ? "TRUE" : NULL);
     cmd.addVariable("TMP_PATH", p);
     par.filenames.pop_back();
