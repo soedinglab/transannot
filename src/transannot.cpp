@@ -11,15 +11,15 @@ const char* tool_introduction =
 
 LocalParameters& localPar = LocalParameters::getLocalInstance();
 
-std::vector<Command> commands = {
+std::vector<struct Command> commands = {
       {"assembly",    assembly,   &localPar.assembly, COMMAND_MAIN,
             "Assembly of de novo transcriptomes on protein level with PLASS",
             "It is also possible to give already assembled (e.g. with Trinity) files as input",
             "Mariia Zelenskaia mariia.zelenskaia@mpinat.mpg.de & Yazhini A. yazhini@mpinat.mpg.de",
-            "<i:fast(a|q)File[.gz]> | <i:fastqFile1_1[.gz]> ... <i:fastqFileN_1[.gz]> <o:fastaFile> <tmpDir>",
-            NO_CITATION, {{"",DbType::ACCESS_MODE_INPUT, DbType::NEED_DATA, NULL}},
-
-    },
+            "<i:fast(a|q)File[.gz|bz]> | <i:fastqFile1_1[.gz]> ... <i:fastqFileN_1[.gz]> <o:fastaFile> <tmpDir>",
+            NO_CITATION, {{"fast[a|q]File[.gz|bz]", DbType::ACCESS_MODE_INPUT, DbType::NEED_DATA | DbType::VARIADIC,  &DbValidator::flatfile},
+                        {"fastaFile", DbType::ACCESS_MODE_OUTPUT, DbType::NEED_DATA, &DbValidator::sequenceDb},
+                        {"tmpDir", DbType::ACCESS_MODE_OUTPUT, DbType::NEED_DATA, &DbValidator::directory}}},
 
     {"downloaddb",  downloaddb,     &localPar.downloaddb, COMMAND_MAIN,
             "Download protein database to run reciprocal best hit (RBH) against",
