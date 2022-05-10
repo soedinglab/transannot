@@ -28,11 +28,13 @@ TMP_PATH="$4"
 #if we assemble with plass we get "${RESULTS}/plass_assembly.fas" in MMseqs db format as input
 #otherwise we have .fas file which must be translated into protein sequence and turned into MMseqs db
 #alignment DB is not a directory and may not be created
-if notExists "${RESULTS}*.dbtype"; then
-	#shellcheck disable=SC2086
-	"$MMSEQS" rbh "${INPUT}" "${TARGET}" "${TMP_PATH}/alignmentDB" "${TMP_PATH}/rbh_tmp" ${SEARCH_PAR} \
-    	|| fail "rbh search died"
-fi
+
+#NEW: in each case we have to run RBH so i decided not to check for anything and simply run it
+#if notExists "${RESULTS}*.dbtype"; then
+#shellcheck disable=SC2086
+"$MMSEQS" rbh "${INPUT}" "${TARGET}" "${TMP_PATH}/alignmentDB" "${TMP_PATH}/rbh_tmp" ${SEARCH_PAR} \
+	|| fail "rbh search died"
+#fi
 
 #get GO-IDs
 #read more whether we need GET module
