@@ -78,7 +78,7 @@ std::vector<TransAnnotAnnotationOptions> annotationOptions = {
 extern void appendPadded(std::string& dst, const std::string& values, size_t n);
 
 std::string listAnnotationOptions(const Command &command, bool detailed) {
-    size_t nameWidth = 4, infoWidht = 4;
+    size_t nameWidth = 4, infoWidth = 4;
 
     for (size_t i = 0; i < annotationOptions.size(); ++i) {
         nameWidth = std::max(nameWidth, strlen(annotationOptions[i].name));
@@ -96,14 +96,14 @@ std::string listAnnotationOptions(const Command &command, bool detailed) {
     description += "\n ";
     appendPadded(description, "Name", nameWidth);
     description.append(1, '\t');
-    appendPadded(description, "Information", infoWidht);
+    appendPadded(description, "Information", infoWidth);
     description.append(1, '\n');
 
     for (size_t i = 0; i < annotationOptions.size(); ++i) {
         description.append("- ");
         appendPadded(description, annotationOptions[i].name, nameWidth);
         description.append(1, '\t');
-        description.append(annotationOptions[i].type, infoWidht);
+        description.append(annotationOptions[i].type, infoWidth);
         description.append(1, '\n');
         if (detailed == false) {
             continue;
