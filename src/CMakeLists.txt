@@ -7,6 +7,7 @@ add_subdirectory(workflow)
 add_executable(transannot
         ${commons_source_files}
         ${workflow_source_files}
+        ${util_source_files}
         LocalCommandDeclarations.h
         transannot.cpp 
         )
