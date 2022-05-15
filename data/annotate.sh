@@ -31,22 +31,22 @@ TMP_PATH="$4"
 
 #NEW: in each case we have to run RBH so i decided not to check for anything and simply run it
 #if notExists "${RESULTS}*.dbtype"; then
+
 #shellcheck disable=SC2086
 "$MMSEQS" rbh "${INPUT}" "${TARGET}" "${TMP_PATH}/alignmentDB" "${TMP_PATH}/rbh_tmp" ${SEARCH_PAR} \
 	|| fail "rbh search died"
 #fi
 
 #get GO-IDs
-#read more whether we need GET module
-if notExists "${RESULTS}/go_ids"; then
+#TO-DO we can make programmatic access to UniProt
+#TO-DO think about condition to retrieve goids
+#getgoid function is written as cpp skript in src/util
+if notExists "${RESULTS}.**"; then
 	#shellcheck disable=SC2086
-	#"$HTTP" GET https://www.uniprot.org/uniprot/?query=....&sort=score &columns=id,entry name,reviewed,protein names,genese,organism,length&format=tab > "${RESULTS}/go_ids" \
-	# TODO get GOIds 
-	"$HTTP" GET url > "${RESULTS}/go_ids" \
-		|| fail "get GO-IDs died"
+	"$MMSEQS" getgoid   ${GETGOID_PAR} \
+		|| fail "get gene ontology ids died"
 fi
 
-#TO-DO we can make programmtic access to UniProt
 #create output in .tsv format
 if notExists "${RESULTS}*.tsv"; then
 	#shellcheck disable=SC2086
