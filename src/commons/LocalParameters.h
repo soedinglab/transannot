@@ -37,11 +37,25 @@ private:
 
 
     {
+        assembly.push_back(&PARAM_THREADS);
+        assembly.push_back(&PARAM_V);
+
         annotateworkflow.push_back(&PARAM_HELP);
         annotateworkflow.push_back(&PARAM_HELP_LONG);
         annotateworkflow.push_back(&PARAM_INFORMATION_SELECTION);
+        annotateworkflow.push_back(&PARAM_THREADS);
+        annotateworkflow.push_back(&PARAM_V);
 
+        downloaddb.push_back(&PARAM_THREADS);
+        downloaddb.push_back(&PARAM_V);
 
+        contaminationworkflow.push_back(&PARAM_THREADS);
+        contaminationworkflow.push_back(&PARAM_V);
+
+        createdb.push_back(&PARAM_THREADS);
+        createdb.push_back(&PARAM_V);
+
+        // default values
         infoSelect = 6;
     }
     LocalParameters(LocalParameters const&);
