@@ -38,7 +38,7 @@ if notExists "${OUT_DB}.dbtype"; then
         #shellcheck disable=SC2086
         "${MMSEQS}" createdb "${INPUT}" "${OUT_DB}/${INPUT}DB" ${CREATEDB_PAR} \
             || fail "createdb died"
-    else #if setdb is already created
+    else #if db is already created
         cp -f "$1" "${OUT_DB}"
         cp -f "$1.dbtype" "${OUT_DB}.dbtype"
         cp -f "$1.index" "${OUT_DB}.index"
