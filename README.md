@@ -12,10 +12,6 @@ Possible inputs are:
 
 ## Running
 
-### about tmp
-
-`tmp` is a folder to keep temporary files. By the default all the intermediate outputs will be kept in this folder after running each module. To clear tmp pass `--remove-tmp-files` parameter.
-
 ### Modules
 
 * `assembly`            Assemble ...
@@ -53,3 +49,7 @@ Contamination module checks for the contamination in a given data. It uses mmseq
     transannot contamination <Input.fasta> <targetDB> <outPath> <tmp> [options]
  
 You can find the taxonomy report in `outPath`.
+
+### tmp folder
+
+`tmp` is a folder to keep temporary files. By the default all the intermediate outputs will be kept in this folder after running each module. To clear tmp pass `--remove-tmp-files` parameter.
