@@ -27,13 +27,32 @@ TMP_PATH="$4"
 
 #only INPUT goes to this script, everything else will be automatically generated in easytaxonomy
 #only one variable should be given
+#--tax-lineage 2-> column with full lineage NCBI taxids
 
 mkdir -p "${TMP_PATH}/easy_taxonomy_tmp"
 #shellcheck disable=SC2086
-"$MMSEQS" easy-taxonomy "${INPUT}" "${TARGET}" "${OUT_PATH}/taxonomyReport" "${TMP_PATH}/easy_taxonomy_tmp" ${EASYTAXONOMY_PAR} \
+"$MMSEQS" easy-taxonomy "${INPUT}" "${TARGET}" "${OUT_PATH}" "${TMP_PATH}/easy_taxonomy_tmp" ${EASYTAXONOMY_PAR} \
         || fail "easytaxonomy died"
 
 #easy taxonomy returns output in .tsv format
+#"${OUT_PATH}_tophit_report" -> .tsv
+
+#NOTE: $2 is a second column of tophit_report6 $6 is an taxonomical information identifier
+#we compare values of each line's $2 with (I would suggest) 0.8 (out of 1)
+#NOTE I decided to use break after each condition so that there will be not so many output lines created, especially in case of contamination
+sort -k2 -rn "${OUT_PATH}_tophit_report" > "${OUT_PATH}_tophit_report_sorted"
+rm -f "${OUT_PATH}_tophit_report"
+awk '{
+    if($2 < 0.8) {
+        print "Input sequence may be contaminated, for more information see", "${OUT_PATH}_tophit_report_sorted", "\n"
+        break
+    }
+    else {
+        print "No contamination detected, possible taxonomical assignment is ", $6,"\n"
+        print "For more information see", "${OUT_PATH}_tophit_report_sorted", "\n"
+        break
+    }
+}' "${OUT_PATH}_tophit_report_sorted" 
 
 if [ -n "$REMOVE_TMP" ]; then
     #shellcheck disable=SC2086
