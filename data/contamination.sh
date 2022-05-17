@@ -42,7 +42,7 @@ mkdir -p "${TMP_PATH}/easy_taxonomy_tmp"
 #NOTE I decided to use break after each condition so that there will be not so many output lines created, especially in case of contamination
 sort -k2 -rn "${OUT_PATH}_tophit_report" > "${OUT_PATH}_tophit_report_sorted"
 rm -f "${OUT_PATH}_tophit_report"
-awk '{
+awk 'NR == 1 {
     if($2 < 0.8) {
         print "Input sequence may be contaminated, for more information see", "${OUT_PATH}_tophit_report_sorted", "\n"
     }
