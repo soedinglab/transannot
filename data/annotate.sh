@@ -40,7 +40,7 @@ TMP_PATH="$4"
 #get GO-IDs
 #TO-DO we can make programmatic access to UniProt
 #TO-DO think about condition to retrieve goids
-#getgoid function is written as cpp skript in src/util
+#getgoid function is written as cpp skript in src/util/GetGoIds.cpp
 if notExists "${RESULTS}.**"; then
 	#shellcheck disable=SC2086
 	"$MMSEQS" getgoid   ${GETGOID_PAR} \
@@ -54,6 +54,7 @@ if notExists "${RESULTS}*.tsv"; then
 		|| fail "createtsv died"
 fi
 
+#we use {INFOSELECT_PAR}
 #remove temporary files and directories
 if [ -n "${REMOVE_TMP}" ]; then
 	#shellcheck disable=SC2086
