@@ -1,6 +1,6 @@
 include_directories(commons)
 add_subdirectory(commons)
-#add_subdirectory(util)
+add_subdirectory(util)
 add_subdirectory(version)
 add_subdirectory(workflow)
 
