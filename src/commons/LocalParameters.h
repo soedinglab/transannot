@@ -20,7 +20,7 @@ public:
     std::vector<MMseqsParameter*> annotateworkflow;
     std::vector<MMseqsParameter*> downloaddb;
     std::vector<MMseqsParameter*> contaminationworkflow;
-    std::vector<MMseqsParameter*> createdb;
+    std::vector<MMseqsParameter*> createdbworkflow;
 
     PARAMETER(PARAM_INFORMATION_SELECTION)
 
@@ -37,23 +37,26 @@ private:
 
 
     {
+        assembly.push_back(&PARAM_COMPRESSED);
         assembly.push_back(&PARAM_THREADS);
         assembly.push_back(&PARAM_V);
 
         annotateworkflow.push_back(&PARAM_HELP);
         annotateworkflow.push_back(&PARAM_HELP_LONG);
         annotateworkflow.push_back(&PARAM_INFORMATION_SELECTION);
+        annotateworkflow.push_back(&PARAM_COMPRESSED);
         annotateworkflow.push_back(&PARAM_THREADS);
         annotateworkflow.push_back(&PARAM_V);
 
         downloaddb.push_back(&PARAM_THREADS);
         downloaddb.push_back(&PARAM_V);
 
+        contaminationworkflow.push_back(&PARAM_COMPRESSED);
         contaminationworkflow.push_back(&PARAM_THREADS);
         contaminationworkflow.push_back(&PARAM_V);
 
-        createdb.push_back(&PARAM_THREADS);
-        createdb.push_back(&PARAM_V);
+        createdbworkflow.push_back(&PARAM_THREADS);
+        createdbworkflow.push_back(&PARAM_V);
 
         // default values
         infoSelect = 6;
