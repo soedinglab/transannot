@@ -138,6 +138,10 @@ int annotate(int argc, const char **argv, const Command &command){
     LocalParameters &par = LocalParameters::getLocalInstance();
     par.parseParameters(argc, argv, command, false, Parameters::PARSE_ALLOW_EMPTY, 0);
 
+    par.PARAM_COMPRESSED.removeCategory(MMseqsParameter::COMMAND_EXPERT);
+    par.PARAM_THREADS.removeCategory(MMseqsParameter::COMMAND_EXPERT);
+    par.PARAM_V.removeCategory(MMseqsParameter::COMMAND_EXPERT);
+
     std::string description =listAnnotationOptions(command, par.help);
     if (par.filenames.size() == 0 || par.help) {
         par.printUsageMessage(command, par.help ? MMseqsParameter::COMMAND_EXPERT : 0, description.c_str());
@@ -158,26 +162,29 @@ int annotate(int argc, const char **argv, const Command &command){
         EXIT(EXIT_FAILURE);
     }
 
+    // check whether tmp exists and try to create it if not
     std::string tmpDir = par.filenames.back();
-
-    std::string hash = SSTR(par.hashParameter(command.databases, par.filenames, *command.params));
+    par.filenames.pop_back(); //removes the last element of the vector
+    std::string hash = SSTR(par.hashParameter(command.databases, par.filenames, par.annotateworkflow));
     if (par.reuseLatest) {
         hash = FileUtil::getHashFromSymLink(tmpDir + "/latest");
     }
-
     tmpDir = FileUtil::createTemporaryDirectory(tmpDir, hash);
+    par.filenames.pop_back();
 
-    char *p = realpath(tmpDir.c_str(), NULL);
-    if (p == NULL) {
-        Debug(Debug::ERROR) << "Could not get the real path of " << tmpDir << "!\n";
-    }
 
     CommandCaller cmd;
+    cmd.addVariable("TMP_PATH", tmpDir.c_str());
     cmd.addVariable("REMOVE_TMP", par.removeTmpFiles ? "TRUE" : NULL);
+    cmd.addVariable("SEARCH_PAR", par.createParameterString(par.searchworkflow, true).c_str());
+    cmd.addVariable("INFOSELECT_PAR", par.createParameterString(par.infoSelect).c_str());
+    cmd.addVariable("CREATETSV_PAR", par.createParameterString(par.createtsv).c_str());
+    // cmd.addVariable("THREADS_PAR", par.createParameterString(par.onlythreads).c_str());
+    cmd.addVariable("VERBOSITY_PAR", par.createParameterString(par.onlyverbosity).c_str());
 
-    cmd.addVariable("TMP_PATH", p);
-    par.filenames.pop_back();
-    free(p);
-
+    std::string program(tmpDir + "/annotate.sh");
+    FileUtil::writeFile(program.c_str(), annotate_sh, annotate_sh_len);
+    cmd.execProgram(program.c_str(). par.filenames);
+    
     return EXIT_SUCCESS;
 }
