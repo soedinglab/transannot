@@ -3,7 +3,7 @@
 #include "Util.h"
 #include "FileUtil.h"
 #include "CommandCaller.h"
-#include "annotate.sh" 
+#include "annotate.sh.h" 
 
 #include <cassert>
 
@@ -177,14 +177,14 @@ int annotate(int argc, const char **argv, const Command &command){
     cmd.addVariable("TMP_PATH", tmpDir.c_str());
     cmd.addVariable("REMOVE_TMP", par.removeTmpFiles ? "TRUE" : NULL);
     cmd.addVariable("SEARCH_PAR", par.createParameterString(par.searchworkflow, true).c_str());
-    cmd.addVariable("INFOSELECT_PAR", par.createParameterString(par.infoSelect).c_str());
+    cmd.addVariable("INFOSELECT_PAR", par.infoSelect == 1 ? "TRUE" : NULL);
     cmd.addVariable("CREATETSV_PAR", par.createParameterString(par.createtsv).c_str());
     // cmd.addVariable("THREADS_PAR", par.createParameterString(par.onlythreads).c_str());
     cmd.addVariable("VERBOSITY_PAR", par.createParameterString(par.onlyverbosity).c_str());
 
     std::string program(tmpDir + "/annotate.sh");
     FileUtil::writeFile(program.c_str(), annotate_sh, annotate_sh_len);
-    cmd.execProgram(program.c_str(). par.filenames);
+    cmd.execProgram(program.c_str(), par.filenames);
     
     return EXIT_SUCCESS;
 }
