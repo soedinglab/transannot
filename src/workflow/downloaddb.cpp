@@ -24,7 +24,7 @@ int downloaddb(int argc, const char **argv, const Command& command) {
     cmd.addVariable("TMP_PATH", tmpDir.c_str());
     cmd.addVariable("OUTDB", outDb.c_str());
     cmd.addVariable("REMOVE_TMP", par.removeTmpFiles ? "TRUE" : NULL);
-    cmd.addVariable("THREADS_PAR", par.createParameterString(par.onlythreads).c_str())
+    cmd.addVariable("THREADS_PAR", par.createParameterString(par.onlythreads).c_str());
 
     std::string program(tmpDir + "/downloaddb.sh");
     FileUtil::writeFile(program, downloaddb_sh, downloaddb_sh_len);
