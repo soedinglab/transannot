@@ -146,7 +146,7 @@ int annotate(int argc, const char **argv, const Command &command){
             break;
         }
     }
-    
+
     CommandCaller cmd;
     if (infoIdx == -1) {
         if (FileUtil::fileExists(par.db1.c_str()) == false) {
