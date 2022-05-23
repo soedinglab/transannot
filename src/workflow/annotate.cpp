@@ -123,16 +123,7 @@ std::string listAnnotationOptions(const Command &command, bool detailed) {
     return description;
 }
 
-// void setAnnotateDefault (Parameters *p){
-    // p ->;
-
-// }
-
-// void setAnnotateMode (Parameters *p){
-    // p ->;
-// }
-
-
+extern const char *binary_name;
 
 int annotate(int argc, const char **argv, const Command &command){
     LocalParameters &par = LocalParameters::getLocalInstance();
@@ -148,18 +139,24 @@ int annotate(int argc, const char **argv, const Command &command){
         EXIT(EXIT_SUCCESS);
     }
 
-    ssize_t infoIdx = -1;
+    size_t infoIdx = -1;
     for (size_t i = 0; i < annotationOptions.size(); ++i) {
         if (par.db1 == std::string(annotationOptions[i].name)) {
             infoIdx = i;
             break;
         }
     }
-
+    
+    CommandCaller cmd;
     if (infoIdx == -1) {
-        par.printUsageMessage(command, par.help ? MMseqsParameter::COMMAND_EXPERT : 0, description.c_str());
-        Debug(Debug::ERROR) << "Selected information " << par.db1 << " is not available\n";
-        EXIT(EXIT_FAILURE);
+        if (FileUtil::fileExists(par.db1.c_str()) == false) {
+            par.printUsageMessage(command, par.help ? MMseqsParameter::COMMAND_EXPERT : 0, description.c_str());
+            Debug(Debug::ERROR) << "Selected information " << par.db1 << " is not available\n";
+            EXIT(EXIT_FAILURE);
+        }
+        cmd.addVariable("SELECTED_INF", NULL);
+    } else {
+        cmd.addVariable("SELECTED_INF", annotationOptions[infoIdx].name);
     }
 
     // check whether tmp exists and try to create it if not
@@ -173,7 +170,6 @@ int annotate(int argc, const char **argv, const Command &command){
     par.filenames.pop_back();
 
 
-    CommandCaller cmd;
     cmd.addVariable("TMP_PATH", tmpDir.c_str());
     cmd.addVariable("REMOVE_TMP", par.removeTmpFiles ? "TRUE" : NULL);
     cmd.addVariable("SEARCH_PAR", par.createParameterString(par.searchworkflow, true).c_str());
