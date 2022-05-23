@@ -13,7 +13,9 @@ def get_url(url, **kwargs):
         sys.exit()
     
     return(response)
-  
-r = get_url(f"{website_api}/uniprotkb/search?query={input}")
+
+
+query_id = sys.stdin.read()
+r = get_url(f"{website_api}/uniprotkb/search?query={query_id}")
 data = r.json()
 go_id = data['results'][0]['uniProtKBCrossReferences']['database'=='GO']['id']
