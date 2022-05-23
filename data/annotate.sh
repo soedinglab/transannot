@@ -47,6 +47,17 @@ if notExists "${RESULTS}.**"; then
 		|| fail "get gene ontology ids died"
 fi
 
+case "${SELECTED_INF}" in
+	"KEGG")
+		url;
+		RESULTS=1;
+	;;
+	"ExPASy")
+		url;
+		RESULTS=;
+	;;
+esac
+
 #create output in .tsv format
 if notExists "${RESULTS}*.tsv"; then
 	#shellcheck disable=SC2086
@@ -54,7 +65,7 @@ if notExists "${RESULTS}*.tsv"; then
 		|| fail "createtsv died"
 fi
 
-#we use {INFOSELECT_PAR}
+#we use {INFOSELECT_PAR} - self made!
 #remove temporary files and directories
 if [ -n "${REMOVE_TMP}" ]; then
 	#shellcheck disable=SC2086
@@ -62,3 +73,5 @@ if [ -n "${REMOVE_TMP}" ]; then
 	rm -rf "${TMP_PATH}/annotate_tmp"  #current name of tmp pathway DO we really have annotate_tmp? or rbh_tmp? or smth else? -> we can create one tmp file for all steps and remove them at one go.
 	rm -f "${TMP_PATH}/annotate.sh"   #current name of this file	
 fi
+
+#NEW: SELECTED_INF -> which information user selected (/src/workflow/annotate.cpp)
