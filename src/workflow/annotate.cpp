@@ -75,7 +75,7 @@ std::vector<TransAnnotAnnotationOptions> annotationOptions = {
     },
 };
 
-extern void appendPadded(std::string& dst, const std::string& values, size_t n);
+extern void appendPadded(std::string& dst, const std::string& values, size_t n, int direction = 0, char padding = ' ');
 
 std::string listAnnotationOptions(const Command &command, bool detailed) {
     size_t nameWidth = 4, infoWidth = 4;
@@ -149,7 +149,7 @@ int annotate(int argc, const char **argv, const Command &command){
     }
 
     ssize_t infoIdx = -1;
-    for (ssize_t i = 0; i < annotationOptions.size(); ++i) {
+    for (size_t i = 0; i < annotationOptions.size(); ++i) {
         if (par.db1 == std::string(annotationOptions[i].name)) {
             infoIdx = i;
             break;
