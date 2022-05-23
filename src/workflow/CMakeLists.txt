@@ -4,5 +4,5 @@ set(workflow_source_files
         workflow/contamination.cpp
         workflow/assembly.cpp
         workflow/createdb.cpp
-        PARENT_SCORE
+        PARENT_SCOPE
         )

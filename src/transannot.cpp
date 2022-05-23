@@ -1,4 +1,4 @@
-#include "Command.h"
+#include "DownloadDatabase.h"
 #include "LocalCommandDeclarations.h"
 #include "LocalParameters.h"
 
@@ -7,7 +7,15 @@ const char* binary_name = "transannot";
 const char* tool_name = "TransAnnot";
 const char* tool_introduction =
 "TransAnnot: An annotation pipeline that predicts functions of de novo assembled transcripts based on homology search using MMSeqs2";
-// const char* main_author = 
+const char* main_author = "";
+const char* show_extended_help = "1";
+const char* show_bash_info = NULL;
+extern const char* MMSEQS_CURRENT_INDEX_VERSION;
+const char* index_version_compatible = MMSEQS_CURRENT_INDEX_VERSION;
+bool hide_base_commands = true;
+bool hide_base_downloads = false;
+void (*validatorUpdate)(void) = 0;
+std::vector<DatabaseDownload> externalDownloads = {};
 
 LocalParameters& localPar = LocalParameters::getLocalInstance();
 
