@@ -42,10 +42,8 @@ TMP_PATH="$4"
 #getgoid function is written as cpp skript in src/util/GetGoIds.cpp
 if notExists "${RESULTS}.**"; then
 	#shellcheck disable=SC2086
-	awk '{print $1}' "${TMP_PATH}/alignmentDB" > "${TMP_PATH}/accession_num"
-	./../util/access_uniprot.py "${TMP_PATH}/accession_num" > "${RESULTS}/go_id" 
-	#RESULTS = $((python3 LIB_transannot/util/access_uniprot.py input) 2>&1) because you should not call variables as a numbers, 
-	#RESULTS, INPUT etc is better
+	awk '{print $1}' "${TMP_PATH}/alignmentDB" > "${TMP_PATH}/accession_ids"
+	./../util/access_uniprot.py "${TMP_PATH}/accession_ids" > "${RESULTS}/go_id" 
 fi
 #alignmentDB without any extension contains the actual result
 #target ID is the first column (p. 51 of the User Guide)
