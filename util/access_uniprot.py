@@ -25,4 +25,4 @@ def map_retrieve(ids2map, source_fmt='ACC+ID',target_fmt='ACC', output_fmt='tab'
 
 uniprot_ids = sys.argv[1:] #command line arguments passed to script -> only one input in the script
 uniprot_acc = map_retrieve(uniprot_ids, source_fmt='ACC+ID')
-print(uniprot_acc)
+sys.stdout.write(str(uniprot_acc)+'\n')
