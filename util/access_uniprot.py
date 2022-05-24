@@ -1,21 +1,29 @@
 #!/usr/bin/env python
 
-import requests, sys, json
+import sys, requests
 
-website_api = "https://rest.uniprot.org/beta"
+BASE = 'http://www.uniprot.org'
+KB_ENDPOINT = '/uniprot/'
+TOOL_ENDPOINT = '/uploadlists/'
 
-def get_url(url, **kwargs):
-    response = requests.get(url, **kwargs);
-    
-    if not response.ok:
-        print(response.text)
+def map_retrieve(ids2map, source_fmt='ACC+ID',target_fmt='ACC', output_fmt='tab'):
+    if hasattr(ids2map, 'pop'):
+        ids2map = ' '.join(ids2map)
+        payload = { 'query': ids2map,
+                    'from': source_fmt,
+                    'to': target_fmt,
+                    'columns': 'id,go-id,database(interpro),database(PDB)',
+                    'format': output_fmt,
+                    }
+
+    response = requests.get(BASE + TOOL_ENDPOINT, params=payload)
+
+
+    if response.ok:
+        return response.text
+    else:
         response.raise_for_status()
-        sys.exit()
-    
-    return(response)
 
-
-query_id = sys.stdin.read()
-r = get_url(f"{website_api}/uniprotkb/search?query={query_id}")
-data = r.json()
-go_id = data['results'][0]['uniProtKBCrossReferences']['database'=='GO']['id']
+pdb_ids = sys.argv[1:]
+uniprot_acc = map_retrieve(pdb_ids, source_fmt='ACC+ID')
+print(uniprot_acc)
