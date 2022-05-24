@@ -27,5 +27,5 @@ if [ -n "$REMOVE_TMP" ]; then
     #shellcheck disable=SC2086
     echo "Remove temporary files and directories"
     rm -rf "${TMP_PATH}/plass_tmp"
-    rm -f "${TMP_PATH}/assembly.sh" 
+    rm -f "${TMP_PATH}/assemble.sh" 
 fi

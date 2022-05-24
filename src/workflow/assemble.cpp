@@ -3,11 +3,11 @@
 #include "Util.h"
 #include "FileUtil.h"
 #include "CommandCaller.h"
-#include "assembly.sh.h"
+#include "assemble.sh.h"
 #include "LocalParameters.h"
 
 
- int assembly(int argc, const char **argv, const Command& command) {
+ int assemble(int argc, const char **argv, const Command& command) {
     LocalParameters &par = LocalParameters::getLocalInstance();
     std::string outDb = par.filenames.back();
     std::string tmpDir = par.filenames.back();
@@ -32,8 +32,8 @@
     par.filenames.pop_back();
     free(p);
 
-    FileUtil::writeFile(tmpDir + "assembly.sh", assembly_sh, assembly_sh_len);
-    std::string program(tmpDir + "assembly.sh");
+    FileUtil::writeFile(tmpDir + "assemble.sh", assemble_sh, assemble_sh_len);
+    std::string program(tmpDir + "assemble.sh");
     cmd.execProgram(program.c_str(), par.filenames);
 
     return EXIT_SUCCESS;

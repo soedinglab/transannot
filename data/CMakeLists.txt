@@ -4,7 +4,7 @@ set(COMPILED_RESOURCES
     downloaddb.sh
     annotate.sh
     contamination.sh
-    assembly.sh
+    assemble.sh
     createdb.sh
     )
 

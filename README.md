@@ -14,7 +14,7 @@ Possible inputs are:
 
 ### Modules
 
-* `assembly`            It assembles raw sequencing reads to large genomic fragments (contigs)
+* `assemble`            It assembles raw sequencing reads to large genomic fragments (contigs)
 * `annotate`            It finds homologs for assembled contigs in the custom defined protein seqeunce database (default UniProtKB) using _reciprocal-best hits_ (rbh module) search from MMseqs2 suite
 * `contamination`       It checks contaminated contigs using _easy-taxonomy_ module from MMseqs2 suite. This approach uses taxonomy assignments of every contig to identify contamination
 * `createdb`            It creates a database from the sequence space (obtained from `downloaddb` module) in a required format for MMseqs2 rbh module

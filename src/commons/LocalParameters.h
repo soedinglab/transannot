@@ -16,7 +16,7 @@ public:
         return static_cast<LocalParameters&>(LocalParameters::getInstance());
     }
 
-    std::vector<MMseqsParameter*> assembly;
+    std::vector<MMseqsParameter*> assemble;
     std::vector<MMseqsParameter*> annotateworkflow;
     std::vector<MMseqsParameter*> downloaddb;
     std::vector<MMseqsParameter*> contaminationworkflow;
@@ -37,9 +37,9 @@ private:
 
 
     {
-        assembly.push_back(&PARAM_COMPRESSED);
-        assembly.push_back(&PARAM_THREADS);
-        assembly.push_back(&PARAM_V);
+        assemble.push_back(&PARAM_COMPRESSED);
+        assemble.push_back(&PARAM_THREADS);
+        assemble.push_back(&PARAM_V);
 
         annotateworkflow.push_back(&PARAM_HELP);
         annotateworkflow.push_back(&PARAM_HELP_LONG);

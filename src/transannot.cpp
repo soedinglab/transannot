@@ -20,7 +20,7 @@ std::vector<DatabaseDownload> externalDownloads = {};
 LocalParameters& localPar = LocalParameters::getLocalInstance();
 
 std::vector<struct Command> commands = {
-      {"assembly",    assembly,   &localPar.assembly, COMMAND_MAIN,
+      {"assemble",    assemble,   &localPar.assemble, COMMAND_MAIN,
             "Assembly of de novo transcriptomes on protein level with PLASS",
             "It is also possible to give already assembled (e.g. with Trinity) files as input",
             "Mariia Zelenskaia mariia.zelenskaia@mpinat.mpg.de & Yazhini A. yazhini@mpinat.mpg.de",
