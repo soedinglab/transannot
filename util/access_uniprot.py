@@ -24,6 +24,6 @@ def map_retrieve(ids2map, source_fmt='ACC+ID',target_fmt='ACC', output_fmt='tab'
     else:
         response.raise_for_status()
 
-uniprot_ids = sys.argv[1:]
+uniprot_ids = sys.argv
 uniprot_acc = map_retrieve(uniprot_ids, source_fmt='ACC+ID')
 print(uniprot_acc)
