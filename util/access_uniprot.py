@@ -12,18 +12,17 @@ def map_retrieve(ids2map, source_fmt='ACC+ID',target_fmt='ACC', output_fmt='tab'
         payload = { 'query': ids2map,
                     'from': source_fmt,
                     'to': target_fmt,
-                    'columns': 'id,go-id,database(interpro),database(PDB)', # we can add whichever database resources we want
+                    'columns': 'id,go-id,database(interpro),database(PDB)', #we can add whichever database ressource we want
                     'format': output_fmt,
                     }
 
     response = requests.get(BASE + TOOL_ENDPOINT, params=payload)
-
 
     if response.ok:
         return response.text
     else:
         response.raise_for_status()
 
-uniprot_ids = sys.argv[1:]
-uniprot_acc = map_retrieve(uniprot_ids, source_fmt='ID')
+uniprot_ids = sys.argv[1:] #command line arguments passed to script -> only one input in the script
+uniprot_acc = map_retrieve(uniprot_ids, source_fmt='ACC+ID')
 print(uniprot_acc)
