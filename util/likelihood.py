@@ -9,8 +9,6 @@ import numpy as np
 seq = input() #taking input sequence + think about N in the sequence 
 seq = seq.upper()
 
-
-
 #generating 64 codons for dict
 nucl = ['A','U','G','C'] #RNA nucleotides
 cod = [''.join(new_nucl) for new_nucl in product(nucl, repeat = 3)]				
