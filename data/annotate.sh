@@ -43,8 +43,9 @@ TMP_PATH="$4"
 #getgoid function is written as cpp skript in src/util/GetGoIds.cpp
 if notExists "${RESULTS}.**"; then
 	#shellcheck disable=SC2086
-	"$MMSEQS" getgoid   ${GETGOID_PAR} \
-		|| fail "get gene ontology ids died"
+	#"$MMSEQS" getgoid   ${GETGOID_PAR} \
+	#	|| fail "get gene ontology ids died"
+	RESULTS = $((python3 LIB_transannot/util/access_uniprot.py input) 2>&1)
 fi
 
 case "${SELECTED_INF}" in
