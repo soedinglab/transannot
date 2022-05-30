@@ -8,6 +8,7 @@
 
 int createdb(int argc, const char **argv, const Command& command) {
     LocalParameters &par = LocalParameters::getLocalInstance();
+    par.parseParameters(argc, argv, command, true, 0, 0);
 
     //check whether tmp exists and try to create it if not
     std::string tmpDir = par.filenames.back();
