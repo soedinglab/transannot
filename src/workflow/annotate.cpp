@@ -129,17 +129,32 @@ int annotate(int argc, const char **argv, const Command &command){
     LocalParameters &par = LocalParameters::getLocalInstance();
     par.parseParameters(argc, argv, command, false, Parameters::PARSE_ALLOW_EMPTY, 0);
 
-    par.PARAM_COMPRESSED.removeCategory(MMseqsParameter::COMMAND_EXPERT);
-    par.PARAM_THREADS.removeCategory(MMseqsParameter::COMMAND_EXPERT);
-    par.PARAM_V.removeCategory(MMseqsParameter::COMMAND_EXPERT);
-
-    std::string description =listAnnotationOptions(command, par.help);
+    std::string description = listAnnotationOptions(command, par.help);
     if (par.filenames.size() == 0 || par.help) {
+        if (par.help == false) {
+            description.append("Show a detailed information about annotation options by calling '");
+            description.append(binary_name);
+            description.append(1, ' ');
+            description.append(command.cmd);
+            description.append(" -h'\n\n");
+        }
         par.printUsageMessage(command, par.help ? MMseqsParameter::COMMAND_EXPERT : 0, description.c_str());
         EXIT(EXIT_SUCCESS);
     }
+    par.printParameters(command.cmd, argc, argv, *command.params);
 
-    size_t infoIdx = -1;
+    // check whether tmp exists and try to create it if not
+    std::string tmpDir = par.filenames.back();
+    par.filenames.pop_back(); //removes the last element of the vector
+    std::string hash = SSTR(par.hashParameter(command.databases, par.filenames, par.annotateworkflow));
+    if (par.reuseLatest) {
+        hash = FileUtil::getHashFromSymLink(tmpDir + "/latest");
+    }
+    tmpDir = FileUtil::createTemporaryDirectory(tmpDir, hash);
+    par.filenames.pop_back();
+
+
+    ssize_t infoIdx = -1;
     for (size_t i = 0; i < annotationOptions.size(); ++i) {
         if (par.db1 == std::string(annotationOptions[i].name)) {
             infoIdx = i;
@@ -159,21 +174,12 @@ int annotate(int argc, const char **argv, const Command &command){
         cmd.addVariable("SELECTED_INF", annotationOptions[infoIdx].name);
     }
 
-    // check whether tmp exists and try to create it if not
-    std::string tmpDir = par.filenames.back();
-    par.filenames.pop_back(); //removes the last element of the vector
-    std::string hash = SSTR(par.hashParameter(command.databases, par.filenames, par.annotateworkflow));
-    if (par.reuseLatest) {
-        hash = FileUtil::getHashFromSymLink(tmpDir + "/latest");
-    }
-    tmpDir = FileUtil::createTemporaryDirectory(tmpDir, hash);
-    par.filenames.pop_back();
-
-
     cmd.addVariable("TMP_PATH", tmpDir.c_str());
     cmd.addVariable("REMOVE_TMP", par.removeTmpFiles ? "TRUE" : NULL);
     cmd.addVariable("SEARCH_PAR", par.createParameterString(par.searchworkflow, true).c_str());
     cmd.addVariable("INFOSELECT_PAR", par.infoSelect == 1 ? "TRUE" : NULL);
+    cmd.addVariable("CLUSTER_PAR", par.createParameterString(par.linclustworkflow, true).c_str());
+    cmd.addVariable("RESULT2REPSEQ_PAR", par.createParameterString(par.result2repseq).c_str());
     cmd.addVariable("CREATETSV_PAR", par.createParameterString(par.createtsv).c_str());
     // cmd.addVariable("THREADS_PAR", par.createParameterString(par.onlythreads).c_str());
     cmd.addVariable("VERBOSITY_PAR", par.createParameterString(par.onlyverbosity).c_str());
@@ -182,5 +188,7 @@ int annotate(int argc, const char **argv, const Command &command){
     FileUtil::writeFile(program.c_str(), annotate_sh, annotate_sh_len);
     cmd.execProgram(program.c_str(), par.filenames);
     
-    return EXIT_SUCCESS;
+    // should not get here
+    assert(false);
+    EXIT(EXIT_FAILURE);
 }
