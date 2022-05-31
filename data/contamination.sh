@@ -39,7 +39,7 @@ mkdir -p "${TMP_PATH}/easy_taxonomy_tmp"
 
 #NOTE: $2 is a second column of tophit_report6 $6 is an taxonomical information identifier
 #we compare values of each line's $2 with (I would suggest) 0.8 (out of 1)
-#NOTE I decided to use break after each condition so that there will be not so many output lines created, especially in case of contamination
+#NOTE: I decided to use break after each condition so that there will be not so many output lines created, especially in case of contamination
 sort -k2 -rn "${OUT_PATH}_tophit_report" > "${OUT_PATH}_tophit_report_sorted"
 rm -f "${OUT_PATH}_tophit_report"
 awk 'NR == 1 {
