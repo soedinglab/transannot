@@ -31,10 +31,10 @@ SELECTION="$1"
 OUTDB="$(abspath "$2")"
 TMP_PATH="$(abspath "$3")"
 
-mkdir -p "${TMP_PATH}/download_db.tmp"
+mkdir -p "${TMP_PATH}/downloaddb_tmp"
 if notExists "${OUTDB}/${SELECTION}/.dbtype"; then
     #shellcheck disable=SC2086
-    "$MMSEQS" databases "${SELECTION}" "${OUTDB}/${SELECTION}DB" "${TMP_PATH}/download_db.tmp" ${THREADS_PAR} \
+    "$MMSEQS" databases "${SELECTION}" "${OUTDB}/${SELECTION}DB" "${TMP_PATH}/downloaddb_tmp" ${THREADS_PAR} \
         || fail "download database died"
 fi
 
@@ -43,6 +43,6 @@ fi
 if [ -n "$REMOVE_TMP" ]; then
     #shellcheck disable=SC2086
     echo "Remove temporary files and directories"
-    rm -rf "${TMP_PATH}/download_db.tmp"
+    rm -rf "${TMP_PATH}/downloaddb_tmp"
     rm -f "${TMP_PATH}/downloaddb.sh"
 fi
