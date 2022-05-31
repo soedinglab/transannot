@@ -3,6 +3,7 @@ include(MMseqsResourceCompiler) #not sure whether we need a full pathway
 set(COMPILED_RESOURCES
     downloaddb.sh
     annotate.sh
+    annotate_profiles.sh
     contamination.sh
     assemble.sh
     createdb.sh
