@@ -62,6 +62,7 @@ fi
 python3 access_uniprot.py "${TMP_PATH}/accession_num" > "${RESULTS}/go_id" \
 	|| fail "get gene ontology ids died"
 
+#NEW: SELECTED_INF -> which information user selected (/src/workflow/annotate.cpp)
 case "${SELECTED_INF}" in
 	"KEGG")
 		url;
@@ -80,7 +81,6 @@ if notExists "${RESULTS}*.tsv"; then
 		|| fail "createtsv died"
 fi
 
-#we use {INFOSELECT_PAR} - self made!
 #remove temporary files and directories
 if [ -n "${REMOVE_TMP}" ]; then
 	#shellcheck disable=SC2086
@@ -91,4 +91,4 @@ if [ -n "${REMOVE_TMP}" ]; then
 	"$MMSEQS" rmdb "${TMP_PATH}/clu" ${VERBOSITY_PAR}
 fi
 
-#NEW: SELECTED_INF -> which information user selected (/src/workflow/annotate.cpp)
+
