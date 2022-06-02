@@ -22,7 +22,7 @@ LocalParameters& localPar = LocalParameters::getLocalInstance();
 std::vector<struct Command> commands = {
       {"assemble",    assemble,   &localPar.assemble, COMMAND_MAIN,
             "Assembly of de novo transcriptomes on protein level with PLASS",
-            "It is also possible to give already assembled (e.g. with Trinity) files as input",
+            "It is also possible to give already assembled (e.g. obtained from Trinity) files as input",
             "Mariia Zelenskaia mariia.zelenskaia@mpinat.mpg.de & Yazhini A. yazhini@mpinat.mpg.de",
             "<i:fast(a|q)File[.gz|bz]> | <i:fastqFile1_1[.gz]> ... <i:fastqFileN_1[.gz]> <o:fastaFile> <tmpDir>",
             NO_CITATION, {{"fast[a|q]File[.gz|bz]", DbType::ACCESS_MODE_INPUT, DbType::NEED_DATA | DbType::VARIADIC,  &DbValidator::flatfile},
@@ -49,14 +49,14 @@ std::vector<struct Command> commands = {
 
     {"createdb",    createdb, &localPar.createdb, COMMAND_MAIN,
             "Create MMseqs database from assembled sequences (with transannot annotate or other tool)",
-            "MMseqs uses its own database format to avoid slowing down of the system, that is why if transcriptome is assembled not with PLASS, it is obligatory to create MMseqs DB",
+            "MMseqs uses its own database format to avoid slowing down of the system, that is why if transcriptome is assembled not with PLASS, it is obligatory to create using MMseqs DB",
             "Mariia Zelenskaia mariia.zelenskaia@mpinat.mpg.de & Yazhini A. yazhini@mpinat.mpg.de",
             "<i:fastaFile[.gz|.bz2]> <o:sequenceDB> <tmpDir>",
             NO_CITATION, {}
     },
 
     {"contamination",   contamination, &localPar.contaminationworkflow, COMMAND_EXPERT,
-            "Check for the contamination with MMseqs taxonomy",
+            "Check for the contamination using MMseqs taxonomy",
             "Assigns taxaIDs and then finds organisms with minor frequency",
             "Mariia Zelenskaia mariia.zelenskaia@mpinat.mpg.de & Yazhini A. yazhini@mpinat.mpg.de",
             "<>",
