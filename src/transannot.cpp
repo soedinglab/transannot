@@ -42,10 +42,20 @@ std::vector<struct Command> commands = {
             "Run RBH of MMseqs2 to find homology, depending on UniProtID get further information about transcriptome functions",
             "Information from KEGG, ExPASy, Pfam, EggNOG and other databases may be assigned. For details call annotate -h or --help",
             "Mariia Zelenskaia mariia.zelenskaia@mpinat.mpg.de & Yazhini A. yazhini@mpinat.mpg.de",
-            "<i:queryFastaFile[.gz]> <i:targetDB> <o:outputPath> <tmpDir>",
+            "<i:queryDB> <i:targetDB> <o:outPath> <tmpDir>",
             NO_CITATION, {}
 
     },
+
+    {"annotateprofiles", annotateprofiles, &localPar.annotateprofiles, COMMAND_MAIN,
+            "Build profiles and run profile-against-profile search",
+            "Profile-against-profile search may be more sensitive than profile-against-sequence or sequence-against-sequence",
+            "Mariia Zelenskaia mariia.zelenskaia@mpinat.mpg.de & Yazhini A. yazhini@mpinat.mpg.de",
+            "<i:queryDB> <i:targetDB> <o:outPath> <tmpDir>",
+            NO_CITATION, {}
+    
+    },
+
 
     {"createdb",    createdb, &localPar.createdb, COMMAND_MAIN,
             "Create MMseqs database from assembled sequences (with transannot annotate or other tool)",

@@ -1,6 +1,7 @@
 set(workflow_source_files
         workflow/downloaddb.cpp
         workflow/annotate.cpp
+        workflow/annotateprofiles.cpp
         workflow/contamination.cpp
         workflow/assemble.cpp
         workflow/createdb.cpp

@@ -42,5 +42,5 @@ if notExists "${RESULTS}.dbtype"; then
 fi
 
 if [ -n "${REMOVE_TMP}" ]; then
-    rm -f "${TMP_PATH}/annotate_profiles.sh"
+    rm -f "${TMP_PATH}/annotateprofiles.sh"
 fi

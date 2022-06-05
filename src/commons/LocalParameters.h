@@ -21,6 +21,7 @@ public:
     std::vector<MMseqsParameter*> downloaddb;
     std::vector<MMseqsParameter*> contaminationworkflow;
     std::vector<MMseqsParameter*> createdbworkflow;
+    std::vector<MMseqsParameter*> annotateprofiles;
 
     PARAMETER(PARAM_INFORMATION_SELECTION)
 
