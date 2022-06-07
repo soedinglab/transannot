@@ -34,10 +34,10 @@ if notExists "${TMP_PATH}/profileDB.dbtype"; then
         || fail "creating profile died"
 fi
 
-#profile/profile search
+#profile-profile reciprocal best hit search
 if notExists "${RESULTS}.dbtype"; then
     #shellcheck disable=SC2086
-    "$MMSEQS" search "${TMP_PATH}/profileDB" "$TARGET" "${RESULTS}" "${TMP_PATH}/search_tmp" ${SEARCH_PAR} \
+    "$MMSEQS" rbh "${TMP_PATH}/profileDB" "$TARGET" "${RESULTS}" "${TMP_PATH}/search_tmp" ${SEARCH_PAR} \
         || fail "profile-profile search died"
 fi
 
