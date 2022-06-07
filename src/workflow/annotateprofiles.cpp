@@ -23,6 +23,9 @@ int annotateprofiles(int argc, const char **argv, const Command& command) {
     CommandCaller cmd;
     cmd.addVariable("TMP_PATH", tmpDir.c_str());
     cmd.addVariable("SEARCH_PAR", par.createParameterString(par.searchworkflow, true).c_str());
+    cmd.addVariable("INFOSELECT_PAR", par.infoSelect == 1 ? "TRUE" : NULL);
+    cmd.addVariable("REMOVE_TMP", par.removeTmpFiles ? "TRUE" : NULL);
+    cmd.addVariable("VERBOSITY_PAR", par.createParameterString(par.onlyverbosity).c_str());
 
     std::string program(tmpDir + "/annotateprofiles.sh");
     FileUtil::writeFile(program.c_str(), annotateprofiles_sh, annotateprofiles_sh_len);
