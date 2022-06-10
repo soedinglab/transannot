@@ -49,7 +49,7 @@ private:
         annotateworkflow.push_back(&PARAM_THREADS);
         annotateworkflow.push_back(&PARAM_V);
 
-        annotateprofiles = combineList(annotateprofiles, annotateworkflow);
+        annotateprofiles = annotateprofiles; //same parameters so far, later combineList() may be used
 
         downloaddb.push_back(&PARAM_THREADS);
         downloaddb.push_back(&PARAM_V);
