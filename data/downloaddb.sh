@@ -31,14 +31,20 @@ SELECTION="$1"
 OUTDB="$(abspath "$2")"
 TMP_PATH="$(abspath "$3")"
 
-mkdir -p "${TMP_PATH}/downloaddb_tmp"
-if notExists "${OUTDB}/${SELECTION}/.dbtype"; then
+if notExists "${OUTDB}.dbtype"; then
     #shellcheck disable=SC2086
-    "$MMSEQS" databases "${SELECTION}" "${OUTDB}/${SELECTION}DB" "${TMP_PATH}/downloaddb_tmp" ${THREADS_PAR} \
+    "$MMSEQS" databases "${SELECTION}" "${OUTDB}" "${TMP_PATH}/downloaddb_tmp" ${THREADS_PAR} \
         || fail "download database died"
 fi
 
-# downloaddb creates db as well
+if [ -n "${TAXONOMY_ID}" ]; then
+    #shellcheck disable=SC2086
+    "$MMSEQS" createsubdb "${}" "${OUTDB}" "${OUTDB}_tax" ${CREATESUBDB_PAR} \
+        || fail "create subdb died"
+    echo "complete database will be removed"
+    #shellcheck disable=SC2086
+    "$MMSEQS" rmdb "${OUTDB}" ${VERBOSITY}
+fi
 
 if [ -n "$REMOVE_TMP" ]; then
     #shellcheck disable=SC2086

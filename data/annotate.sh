@@ -39,12 +39,23 @@ fi
 #if we assemble with plass we get "${RESULTS}/plass_assembly.fas" in MMseqs db format as input
 #otherwise we have .fas file which must be translated into protein sequence and turned into MMseqs db
 #alignment DB is not a directory and may not be created
-
+#TO-DO add TAXONOMY_ID to parameters (own created probably)
+if [ -n "${TAXONOMY_ID}" ]; then
 #Q: should we use /clu_rep instead of query?
-if notExists "${TMP_PATH}/alignmentDB.dbtype"; then
-	#shellcheck disable=SC2086
-	"$MMSEQS" rbh "${INPUT}" "${TARGET}" "${TMP_PATH}/alignmentDB" "${TMP_PATH}/rbh_tmp" ${SEARCH_PAR} \
-		|| fail "rbh search died"
+	echo "Taxonomy ID is provided. rbh will be run against known organism's proteins"
+	if notExists "${RESULTS}.dbtype"; then
+		#shellcheck disable=SC2086
+		"$MMSEQS" rbh "${INPUT}" "${TARGET}" "${TMP_PATH}/searchDB" "${TMP_PATH}/search_tmp" ${SEARCH_PAR} \
+			|| fail "rbh search died"
+	fi
+
+elif [ -z "${TAXONOMY_ID}" ]; then
+	if notExists "${RESULTS}.dbtype"; then
+		#shellcheck disable=SC2086
+		"$MMSEQS" search "${INPUT}" "${TARGET}" "${TMP_PATH}/searchDB" "${TMP_PATH}/search_tmp" ${SEARCH_PAR} \
+			|| fail "search died"
+	fi
+
 fi
 
 #get GO-IDs
@@ -52,10 +63,10 @@ fi
 #getgoid function is written as cpp skript in src/util/GetGoIds.cpp
 if notExists "${RESULTS}.**"; then
 	#shellcheck disable=SC2086
-	awk '{print $1}' "${TMP_PATH}/alignmentDB" > "${TMP_PATH}/accession_ids"
+	awk '{print $1}' "${TMP_PATH}/searchDB" > "${TMP_PATH}/accession_ids"
 	./../util/access_uniprot.py "${TMP_PATH}/accession_ids" > "${RESULTS}/go_id" 
 fi
-#alignmentDB without any extension contains the actual result
+#searchDB without any extension contains the actual result
 #target ID is the first column (p. 51 of the User Guide)
 
 #shellcheck disable=SC2086
