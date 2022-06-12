@@ -30,12 +30,13 @@ public:
                                             const std::vector<MMseqsParameter*> &par2);
 
     int infoSelect;
+    int taxId;
 
 private:
     LocalParameters() :
         Parameters(),
-        PARAM_INFORMATION_SELECTION(PARAM_INFORMATION_SELECTION_ID, "--information-selection", "Information about sequence", "What information about the input sequence should be provided, KEGG: 0, ExPASy: 1, Pfam: 2, eggNOG: 3, SCOP: 4, AlphaFold: 5, all: 6 ", typeid(int), (void *) &infoSelect, "^[0-6]{1}$")
-
+        PARAM_INFORMATION_SELECTION(PARAM_INFORMATION_SELECTION_ID, "--information-selection", "Information about sequence", "What information about the input sequence should be provided, KEGG: 0, ExPASy: 1, Pfam: 2, eggNOG: 3, SCOP: 4, AlphaFold: 5, all: 6 ", typeid(int), (void *) &infoSelect, "^[0-6]{1}$"),
+        PARAM_TAXONOMYID(PARAM_TAXONOMYID_ID, "--taxid", "Taxonomy ID", "Taxonomy ID to run search against proteins from particular organism. 10-digits unique number", typeid(int), (void *) &taxId, "^[0-9]{7}$"),
 
     {
         assemble.push_back(&PARAM_COMPRESSED);
@@ -45,6 +46,7 @@ private:
         annotateworkflow.push_back(&PARAM_HELP);
         annotateworkflow.push_back(&PARAM_HELP_LONG);
         annotateworkflow.push_back(&PARAM_INFORMATION_SELECTION);
+        annotateworkflow.push_back(&PARAM_TAXONOMYID);
         annotateworkflow.push_back(&PARAM_COMPRESSED);
         annotateworkflow.push_back(&PARAM_THREADS);
         annotateworkflow.push_back(&PARAM_V);

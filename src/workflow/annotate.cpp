@@ -178,6 +178,7 @@ int annotate(int argc, const char **argv, const Command &command){
     cmd.addVariable("REMOVE_TMP", par.removeTmpFiles ? "TRUE" : NULL);
     cmd.addVariable("SEARCH_PAR", par.createParameterString(par.searchworkflow, true).c_str());
     cmd.addVariable("INFOSELECT_PAR", par.infoSelect == 1 ? "TRUE" : NULL);
+    cmd.addVariable("TAXONOMY_ID", par.taxId == 1 ? "TRUE" : NULL);
     cmd.addVariable("CLUSTER_PAR", par.createParameterString(par.linclustworkflow, true).c_str());
     cmd.addVariable("RESULT2REPSEQ_PAR", par.createParameterString(par.result2repseq).c_str());
     cmd.addVariable("CREATETSV_PAR", par.createParameterString(par.createtsv).c_str());
