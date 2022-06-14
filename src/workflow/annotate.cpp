@@ -174,10 +174,33 @@ int annotate(int argc, const char **argv, const Command &command){
         cmd.addVariable("SELECTED_INF", annotationOptions[infoIdx].name);
     }
 
+    std::string infoSelection;
+    switch (par.infoSelect)
+    {
+        case 0:
+            infoSelection = "KEGG";
+            break;
+        case 1:
+            infoSelection = "ExPASy";
+            break;
+        case 2:
+            infoSelection = "Pfam";
+            break;
+        case 3:
+            infoSelection = "eggNOG";
+            break;
+        case 4:
+            infoSelection = "SCOP";
+            break;
+        case 5:
+            infoSelection = "AlphaFold";
+            break;
+    }
+
     cmd.addVariable("TMP_PATH", tmpDir.c_str());
     cmd.addVariable("REMOVE_TMP", par.removeTmpFiles ? "TRUE" : NULL);
     cmd.addVariable("SEARCH_PAR", par.createParameterString(par.searchworkflow, true).c_str());
-    cmd.addVariable("INFOSELECT_PAR", par.infoSelect == 1 ? "TRUE" : NULL);
+    cmd.addVariable("INFOSELECT_PAR", infoSelection.c_str());
     cmd.addVariable("TAXONOMY_ID", par.taxId == 1 ? "TRUE" : NULL);
     cmd.addVariable("CLUSTER_PAR", par.createParameterString(par.linclustworkflow, true).c_str());
     cmd.addVariable("RESULT2REPSEQ_PAR", par.createParameterString(par.result2repseq).c_str());
