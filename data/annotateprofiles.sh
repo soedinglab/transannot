@@ -23,8 +23,8 @@ TMP_PATH="$4"
 #run rbh -> alignment
 if notExists "${TMP_PATH}/alignmentDB.dbtype"; then
     #shellcheck disable=SC2086
-    "$MMSEQS" rbh "${INPUT}" "${TARGET}" "${TMP_PATH}/alignmentDB" ${SEARCH_PAR} \
-        || fail "rbh search died"
+    "$MMSEQS" search "${INPUT}" "${TARGET}" "${TMP_PATH}/alignmentDB" "${TMP_PATH}/search_tmp" ${SEARCH_PAR} \
+        || fail "search step died"
 fi
 
 #create profile
