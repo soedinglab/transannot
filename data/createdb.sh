@@ -27,7 +27,9 @@ abspath(){
 #pre-processing
 [ -z "$MMSEQS" ] && echo "Please set the environment variable \$MMSEQS to your current binary." && exit 1;
 [ "$#" -ne 3 ] && echo "Please provide <assembled transcriptome> <outDB> <tmp>" && exit 1;
-[ ! -d "$2" ] && echo "tmp directory $4 not found! tmp will be created." && mkdir -p "$4";
+[   -f "$1.dbtype" ] && echo "$1.dbtype exists already, you don't need this step if the sequence was assembled with transanot assemble!" && exit 1;
+[   -f "$2.dbtype" ] && echo "$2.dbtype exists already" && exit 1;
+[ ! -d "$3" ] && echo "tmp directory $4 not found! tmp will be created." && mkdir -p "$4";
 
 INPUT="$1" #assembled transcriptome
 OUT_DB="$(abspath "$2")"
