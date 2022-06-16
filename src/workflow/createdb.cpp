@@ -12,7 +12,6 @@ int createdb(int argc, const char **argv, const Command& command) {
 
     //check whether tmp exists and try to create it if not
     std::string tmpDir = par.filenames.back();
-    par.filenames.pop_back(); //removes the last element of the vector
     std::string hash = SSTR(par.hashParameter(command.databases, par.filenames, par.createdbworkflow));
     if (par.reuseLatest) {
         hash = FileUtil::getHashFromSymLink(tmpDir + "/latest");
@@ -20,11 +19,9 @@ int createdb(int argc, const char **argv, const Command& command) {
     tmpDir = FileUtil::createTemporaryDirectory(tmpDir, hash);
     par.filenames.pop_back();
 
-    std::string outDb = par.filenames.back();
-    par.filenames.pop_back();
-
     CommandCaller cmd;
-    cmd.addVariable("OUT_DB", outDb.c_str());
+    cmd.addVariable("OUT_DB", par.filenames.back().c_str());
+    par.filenames.pop_back();
     cmd.addVariable("TMP_PATH", tmpDir.c_str());
     cmd.addVariable("CREATEDB_PAR", par.createParameterString(par.createdb).c_str());
     cmd.addVariable("REMOVE_TMP", par.removeTmpFiles ? "TRUE" : NULL);

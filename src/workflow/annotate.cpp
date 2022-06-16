@@ -145,13 +145,12 @@ int annotate(int argc, const char **argv, const Command &command){
 
     // check whether tmp exists and try to create it if not
     std::string tmpDir = par.filenames.back();
-    par.filenames.pop_back(); //removes the last element of the vector
     std::string hash = SSTR(par.hashParameter(command.databases, par.filenames, par.annotateworkflow));
     if (par.reuseLatest) {
         hash = FileUtil::getHashFromSymLink(tmpDir + "/latest");
     }
     tmpDir = FileUtil::createTemporaryDirectory(tmpDir, hash);
-    par.filenames.pop_back();
+    par.filenames.pop_back(); //removes the last element of the vector
 
 
     ssize_t infoIdx = -1;
@@ -198,6 +197,11 @@ int annotate(int argc, const char **argv, const Command &command){
     }
 
     cmd.addVariable("TMP_PATH", tmpDir.c_str());
+    cmd.addVariable("RESULTS", par.filenames.back().c_str());
+    par.filenames.pop_back();
+    std::string target = par.filenames.back();
+    cmd.addVariable("TARGET", target.c_str());
+    par.filenames.pop_back();
     cmd.addVariable("REMOVE_TMP", par.removeTmpFiles ? "TRUE" : NULL);
     cmd.addVariable("SEARCH_PAR", par.createParameterString(par.searchworkflow, true).c_str());
     cmd.addVariable("INFOSELECT_PAR", infoSelection.c_str());

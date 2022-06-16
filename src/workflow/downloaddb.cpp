@@ -9,10 +9,7 @@
 int downloaddb(int argc, const char **argv, const Command& command) {
     LocalParameters &par = LocalParameters::getLocalInstance();
 
-    std::string outDb = par.filenames.back();
     std::string tmpDir = par.filenames.back();
-    
-    par.filenames.pop_back();
     std::string hash = SSTR(par.hashParameter(command.databases, par.filenames, par.downloaddb));
     if (par.reuseLatest) {
         hash = FileUtil::getHashFromSymLink(tmpDir + "/latest");
@@ -22,7 +19,8 @@ int downloaddb(int argc, const char **argv, const Command& command) {
 
     CommandCaller cmd;
     cmd.addVariable("TMP_PATH", tmpDir.c_str());
-    cmd.addVariable("OUTDB", outDb.c_str());
+    cmd.addVariable("OUTDB", par.filenames.back().c_str());
+    par.filenames.pop_back();
     cmd.addVariable("CREATESUBDB_PAR", par.createParameterString(par.createsubdb).c_str());
     cmd.addVariable("TAXONOMY_ID", par.taxId == 1 ? "TRUE" : NULL);
     cmd.addVariable("REMOVE_TMP", par.removeTmpFiles ? "TRUE" : NULL);

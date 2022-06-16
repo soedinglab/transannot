@@ -9,28 +9,22 @@
 
  int assemble(int argc, const char **argv, const Command& command) {
     LocalParameters &par = LocalParameters::getLocalInstance();
-    std::string outDb = par.filenames.back();
+    
     std::string tmpDir = par.filenames.back();
-
     std::string hash = SSTR(par.hashParameter(command.databases, par.filenames, *command.params));
     if (par.reuseLatest) {
         hash = FileUtil::getHashFromSymLink(tmpDir + "/latest");
     }
 
     tmpDir = FileUtil::createTemporaryDirectory(tmpDir, hash);
-
-    char *p = realpath(tmpDir.c_str(), NULL);
-    if (p == NULL) {
-        Debug(Debug::ERROR) << "Could not get the real path of " << tmpDir << "!\n";
-    }
+    par.filenames.pop_back();
+    std::string outDb = par.filenames.back();
 
     CommandCaller cmd;
-    // TODO: find some smart way to include plass
-    // cmd.addVariable("PLASS", "plass");
     cmd.addVariable("REMOVE_TMP", par.removeTmpFiles ? "TRUE" : NULL);
-    cmd.addVariable("TMP_PATH", p);
+    cmd.addVariable("TMP_PATH", tmpDir.c_str());
+    cmd.addVariable("RESULTS", par.filenames.back().c_str());
     par.filenames.pop_back();
-    free(p);
 
     FileUtil::writeFile(tmpDir + "assemble.sh", assemble_sh, assemble_sh_len);
     std::string program(tmpDir + "assemble.sh");

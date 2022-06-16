@@ -22,12 +22,12 @@ int contamination(int argc, const char **argv, const Command& command) {
     tmpDir = FileUtil::createTemporaryDirectory(tmpDir, hash);
     par.filenames.pop_back();
 
-    std::string outDb = par.filenames.back();
-    par.filenames.pop_back();
-
     CommandCaller cmd;
-    cmd.addVariable("OUT_PATH", outDb.c_str());
+    cmd.addVariable("OUT_PATH", par.filenames.back().c_str());
+    par.filenames.pop_back();
     cmd.addVariable("TMP_PATH", tmpDir.c_str());
+    cmd.addVariable("TARGET", par.filenames.back().c_str());
+    par.filenames.pop_back();
     cmd.addVariable("EASYTAXONOMY_PAR", par.createParameterString(par.easytaxonomy).c_str());
     // cmd.addVariable("THREADS_PAR", par.createParameterString(par.onlythreads).c_str());
     cmd.addVariable("VERBOSITY_PAR", par.createParameterString(par.onlyverbosity).c_str());
