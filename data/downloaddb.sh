@@ -25,7 +25,8 @@ abspath(){
 
 #pre-processing
 [ "$#" -ne 3 ] && echo "Please provide <selection> <outDBpath> <tmp>." && exit 1;
-[ -z "$MMSEQS" ] && echo "Please set the environment variable \$MMSEQS to your current binary." && exit 1;
+[   -f "$3.dbtype" ] && echo "$3.dbtype exists already!" && exit 1;
+[   -z "$MMSEQS" ] && echo "Please set the environment variable \$MMSEQS to your current binary." && exit 1;
 
 SELECTION="$1"
 OUTDB="$(abspath "$2")"
