@@ -19,6 +19,8 @@ Compiling from source helps to optimize TransAnnot for the specific system, whic
     CCX="$(brew --prefix)/bin/g++-10"
     cmake -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX=. ..
 
+Other dependencies for the compilation from source are `zlib` and `bzip`.
+ 
 ## Input
 Possible inputs are:
 
