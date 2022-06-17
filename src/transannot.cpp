@@ -1,6 +1,6 @@
-#include "DownloadDatabase.h"
 #include "LocalCommandDeclarations.h"
 #include "LocalParameters.h"
+#include "DownloadDatabase.h"
 
 const int NO_CITATION = 0;
 const char* binary_name = "transannot";
@@ -29,47 +29,57 @@ std::vector<struct Command> commands = {
                         {"fastaFile", DbType::ACCESS_MODE_OUTPUT, DbType::NEED_DATA, &DbValidator::sequenceDb},
                         {"tmpDir", DbType::ACCESS_MODE_OUTPUT, DbType::NEED_DATA, &DbValidator::directory}}},
 
+
     {"downloaddb",  downloaddb,     &localPar.downloaddb, COMMAND_MAIN,
-            "Download protein database to run reciprocal best hit (RBH) against",
-            "We recommend to download UniProtKB (it is a default database as well), but there are more possible protein databases (see mmseqs databases)",
+            "Download protein database to run search against",
+            "We recommend to download SwissProt (it is manually curated), but there are more possible protein databases (see mmseqs databases) \n"
+            "transannot downloaddb UniProtKB/Swiss-Prot outpath/swissprot tmp",
             "Mariia Zelenskaia mariia.zelenskaia@mpinat.mpg.de & Yazhini A. yazhini@mpinat.mpg.de",
-            "<name> <outPath> <tmpDir>",
-            NO_CITATION, {}
-        
-    },
+            "<i:selection> <o:outDB> <tmpDir>",
+            NO_CITATION, {{"selection", 0, DbType::ZERO_OR_ALL, &DbValidator::empty},
+                        {"outDB", DbType::ACCESS_MODE_OUTPUT, DbType::NEED_DATA, &DbValidator::sequenceDb},
+                        {"tmpDir", DbType::ACCESS_MODE_OUTPUT, DbType::NEED_DATA, &DbValidator::directory}}},
+
 
     {"annotate",    annotate, &localPar.annotateworkflow, COMMAND_MAIN,
             "Run RBH of MMseqs2 to find homology, depending on UniProtID get further information about transcriptome functions",
             "Information from KEGG, ExPASy, Pfam, EggNOG and other databases may be assigned. For details call annotate -h or --help",
             "Mariia Zelenskaia mariia.zelenskaia@mpinat.mpg.de & Yazhini A. yazhini@mpinat.mpg.de",
-            "<i:queryDB> <i:targetDB> <o:outPath> <tmpDir>",
-            NO_CITATION, {}
+            "<i:queryDB> <i:targetDB> <o:outFile> <tmpDir>",
+            NO_CITATION, {{"queryDB", DbType::ACCESS_MODE_INPUT, DbType::NEED_DATA, &DbValidator::sequenceDb},
+                        {"targetDB", DbType::ACCESS_MODE_INPUT, DbType::NEED_DATA, &DbValidator::sequenceDb},
+                        {"outFile", DbType::ACCESS_MODE_OUTPUT, DbType::NEED_DATA, &DbValidator::flatfile},
+                        {"tmpDir", DbType::ACCESS_MODE_OUTPUT, DbType::NEED_DATA, &DbValidator::directory}}},
 
-    },
 
-    {"annotateprofiles", annotateprofiles, &localPar.annotateprofiles, COMMAND_MAIN,
+    {"annotateprofiles", annotateprofiles, &localPar.annotateprofiles, COMMAND_EXPERT,
             "Build profiles and run profile-against-profile search",
             "Profile-against-profile search may be more sensitive than profile-against-sequence or sequence-against-sequence",
             "Mariia Zelenskaia mariia.zelenskaia@mpinat.mpg.de & Yazhini A. yazhini@mpinat.mpg.de",
-            "<i:queryDB> <i:targetDB> <o:outPath> <tmpDir>",
-            NO_CITATION, {}
-    
-    },
+            "<i:queryDB> <i:targetDB> <o:outFile> <tmpDir>",
+            NO_CITATION, {{"queryDB", DbType::ACCESS_MODE_INPUT, DbType::NEED_DATA, &DbValidator::sequenceDb},
+                        {"targetDB", DbType::ACCESS_MODE_INPUT, DbType::NEED_DATA, &DbValidator::sequenceDb},
+                        {"outFile", DbType::ACCESS_MODE_OUTPUT, DbType::NEED_DATA, &DbValidator::flatfile},
+                        {"tmpDir", DbType::ACCESS_MODE_OUTPUT, DbType::NEED_DATA, &DbValidator::directory}}},
 
 
     {"createdb",    createdb, &localPar.createdb, COMMAND_MAIN,
             "Create MMseqs database from assembled sequences (with transannot annotate or other tool)",
             "MMseqs uses its own database format to avoid slowing down of the system, that is why if transcriptome is assembled not with PLASS, it is obligatory to create using MMseqs DB",
             "Mariia Zelenskaia mariia.zelenskaia@mpinat.mpg.de & Yazhini A. yazhini@mpinat.mpg.de",
-            "<i:fastaFile[.gz|.bz2]> <o:sequenceDB> <tmpDir>",
-            NO_CITATION, {}
-    },
+            "<i:fast[a|q]File> <o:sequenceDB> <tmpDir>",
+            NO_CITATION, {{"fast[a|q]File", DbType::ACCESS_MODE_INPUT, DbType::NEED_DATA, &DbValidator::flatfile},
+                        {"sequenceDB", DbType::ACCESS_MODE_OUTPUT, DbType::NEED_DATA, &DbValidator::sequenceDb},
+                        {"tmpDir", DbType::ACCESS_MODE_OUTPUT, DbType::NEED_DATA, &DbValidator::directory}}},
+
 
     {"contamination",   contamination, &localPar.contaminationworkflow, COMMAND_EXPERT,
             "Check for the contamination using MMseqs taxonomy",
             "Assigns taxaIDs and then finds organisms with minor frequency",
             "Mariia Zelenskaia mariia.zelenskaia@mpinat.mpg.de & Yazhini A. yazhini@mpinat.mpg.de",
-            "<>",
-            NO_CITATION, {}  
-    },
+            "<i:queryDB>",
+            NO_CITATION, {{"queryDB", DbType::ACCESS_MODE_INPUT, DbType::NEED_DATA, &DbValidator::sequenceDb},
+                        {"targetDB", DbType::ACCESS_MODE_INPUT, DbType::NEED_DATA|DbType::NEED_HEADER|DbType::NEED_TAXONOMY, &DbValidator::sequenceDb},
+                        {"taxReports", DbType::ACCESS_MODE_OUTPUT, DbType::NEED_DATA, &DbValidator::flatfile},
+                        {"tmpDir", DbType::ACCESS_MODE_OUTPUT, DbType::NEED_DATA, &DbValidator::directory}}}
 };
