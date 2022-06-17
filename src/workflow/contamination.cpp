@@ -8,12 +8,12 @@
 
 int contamination(int argc, const char **argv, const Command& command) {
     LocalParameters &par = LocalParameters::getLocalInstance();
+    par.parseParameters(argc, argv, command, true, 0, 0);
 
     par.PARAM_COMPRESSED.removeCategory(MMseqsParameter::COMMAND_EXPERT);
     par.PARAM_THREADS.removeCategory(MMseqsParameter::COMMAND_EXPERT);
     par.PARAM_V.removeCategory(MMseqsParameter::COMMAND_EXPERT);
 
-    //check whether tmp directory exists and try to create it if not
     std::string tmpDir = par.filenames.back();
     std::string hash = SSTR(par.hashParameter(command.databases, par.filenames, par.contaminationworkflow));
     if (par.reuseLatest) {

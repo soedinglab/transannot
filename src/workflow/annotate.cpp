@@ -127,20 +127,20 @@ extern const char *binary_name;
 
 int annotate(int argc, const char **argv, const Command &command){
     LocalParameters &par = LocalParameters::getLocalInstance();
-    par.parseParameters(argc, argv, command, false, Parameters::PARSE_ALLOW_EMPTY, 0);
+    par.parseParameters(argc, argv, command, true, 0, 0);
 
-    std::string description = listAnnotationOptions(command, par.help);
-    if (par.filenames.size() == 0 || par.help) {
-        if (par.help == false) {
-            description.append("Show a detailed information about annotation options by calling '");
-            description.append(binary_name);
-            description.append(1, ' ');
-            description.append(command.cmd);
-            description.append(" -h'\n\n");
-        }
-        par.printUsageMessage(command, par.help ? MMseqsParameter::COMMAND_EXPERT : 0, description.c_str());
-        EXIT(EXIT_SUCCESS);
-    }
+    // std::string description = listAnnotationOptions(command, par.help);
+    // if (par.filenames.size() == 0 || par.help) {
+    //     if (par.help == false) {
+    //         description.append("Show a detailed information about annotation options by calling '");
+    //         description.append(binary_name);
+    //         description.append(1, ' ');
+    //         description.append(command.cmd);
+    //         description.append(" -h'\n\n");
+    //     }
+    //     par.printUsageMessage(command, par.help ? MMseqsParameter::COMMAND_EXPERT : 0, description.c_str());
+    //     EXIT(EXIT_SUCCESS);
+    // }
     par.printParameters(command.cmd, argc, argv, *command.params);
 
     // check whether tmp exists and try to create it if not
@@ -164,7 +164,7 @@ int annotate(int argc, const char **argv, const Command &command){
     CommandCaller cmd;
     if (infoIdx == -1) {
         if (FileUtil::fileExists(par.db1.c_str()) == false) {
-            par.printUsageMessage(command, par.help ? MMseqsParameter::COMMAND_EXPERT : 0, description.c_str());
+            //par.printUsageMessage(command, par.help ? MMseqsParameter::COMMAND_EXPERT : 0, description.c_str());
             Debug(Debug::ERROR) << "Selected information " << par.db1 << " is not available\n";
             EXIT(EXIT_FAILURE);
         }
