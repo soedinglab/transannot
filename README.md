@@ -3,6 +3,22 @@ TransAnnot predicts protein functions, orthologous relationships and biological 
 It uses MMseqs2 reciprocal best hit to obtain closest homologs from UniProtKB database (or user defined database) and infer protein function, structure and orthologous groups based on the identified homologs.
 Prior to functional annotation, it can perform transcriptome sequence assembly using PLASS (Protein-Level ASSembler) to assemble raw sequence reads on protein level upon user request.
 
+## Compile from source
+Compiling from source helps to optimize TransAnnot for the specific system, which improve its performance. For the compilation `cmake`, `g++` and `git` are required. After the compilation the TransAnnot will be located in `build/bin` directory (or just run `which transannot` in the command line to get the pathway to TransAnnot)
+
+    git clone https://github.com/mariia-zelenskaia/transannot.git
+    cd transannot && mkdir build && cd build
+    cmake -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX=. ..
+    make -j 4
+    sudo make install
+    export PATH=$(pwd)/transannot/bin/:$PATH
+
+❗️ If you compile from source under macOS we recommend to install and use `gcc` instead as a compiler. gcc can be installed with Homebrew. Force cmake to use gcc as a compiler by running:
+
+    CC="$(brew --prefix)/bin/gcc-10"
+    CCX="$(brew --prefix)/bin/g++-10"
+    cmake -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX=. ..
+
 ## Input
 Possible inputs are:
 
