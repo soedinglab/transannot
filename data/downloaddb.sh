@@ -24,8 +24,9 @@ abspath(){
 }
 
 #pre-processing
-[ "$#" -ne 3 ] && echo "Please provide <selection> <outDBpath> <tmp>." && exit 1;
-[   -f "$3.dbtype" ] && echo "$3.dbtype exists already!" && exit 1;
+#[ ! -d "$3" ] && echo "tmp directory $3 not found! tmp will be created." && mkdir -p "$3";
+#[ "$#" -ne 3 ] && echo "Please provide <selection> <outDBpath> <tmp>." && exit 1;
+[   -f "$2.dbtype" ] && echo "$2.dbtype exists already!" && exit 1;
 [   -z "$MMSEQS" ] && echo "Please set the environment variable \$MMSEQS to your current binary." && exit 1;
 
 SELECTION="$1"
@@ -34,7 +35,7 @@ TMP_PATH="$(abspath "$3")"
 
 if notExists "${OUTDB}.dbtype"; then
     #shellcheck disable=SC2086
-    "$MMSEQS" databases "${SELECTION}" "${OUTDB}" "${TMP_PATH}/downloaddb_tmp" ${THREADS_PAR} \
+    "$MMSEQS" databases "${SELECTION}" "${OUTDB}" "${TMP_PATH}" ${THREADS_PAR} \
         || fail "download database died"
 fi
 
@@ -50,6 +51,6 @@ fi
 if [ -n "$REMOVE_TMP" ]; then
     #shellcheck disable=SC2086
     echo "Remove temporary files and directories"
-    rm -rf "${TMP_PATH}/downloaddb_tmp"
+    #rm -rf "${TMP_PATH}/downloaddb_tmp"
     rm -f "${TMP_PATH}/downloaddb.sh"
 fi
