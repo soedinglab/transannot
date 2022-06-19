@@ -13,14 +13,14 @@ Compiling from source helps to optimize TransAnnot for the specific system, whic
     sudo make install
     export PATH=$(pwd)/transannot/bin/:$PATH
 
-❗️ If you compile from source under macOS we recommend to install and use `gcc` instead as a compiler. gcc can be installed with Homebrew. Force cmake to use gcc as a compiler by running:
+❗️ If you compile from source under macOS we recommend to install and use `gcc` instead of `clang` as a compiler. gcc can be installed with Homebrew. Force cmake to use gcc as a compiler by running:
 
     CC="$(brew --prefix)/bin/gcc-10"
     CCX="$(brew --prefix)/bin/g++-10"
     cmake -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX=. ..
 
 Other dependencies for the compilation from source are `zlib` and `bzip`.
- 
+
 ## Input
 Possible inputs are:
 
@@ -33,7 +33,8 @@ Possible inputs are:
 ### Modules
 
 * `assemble`            It assembles raw sequencing reads to large genomic fragments (contigs)
-* `annotate`            It finds homologs for assembled contigs in the custom defined protein seqeunce database (default UniProtKB) using _reciprocal-best hits_ (rbh module) search from MMseqs2 suite
+* `annotate`            It finds homologs for assembled contigs in the custom defined protein seqeunce database (default UniProtKB) using reciprocal-best hits (rbh module) search from MMseqs2 suite if taxonomy ID `--taxid` is provided, or MMseqs2 search if no taxonomy ID is supplied. After runing the search Gene Ontology ID will be obtained from UniProt. 
+* `annotateprofiles`    It ...
 * `contamination`       It checks contaminated contigs using _easy-taxonomy_ module from MMseqs2 suite. This approach uses taxonomy assignments of every contig to identify contamination
 * `createdb`            It creates a database from the sequence space (obtained from `downloaddb` module) in a required format for MMseqs2 rbh module
 * `downloaddb`          It downloads the user defined database that serves as a search space for homology detection
