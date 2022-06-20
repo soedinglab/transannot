@@ -16,12 +16,8 @@ int downloaddb(int argc, const char **argv, const Command& command) {
         hash = FileUtil::getHashFromSymLink(tmpDir + "/latest");
     }
     tmpDir = FileUtil::createTemporaryDirectory(tmpDir, hash);
-    par.filenames.pop_back();
 
     CommandCaller cmd;
-    cmd.addVariable("TMP_PATH", tmpDir.c_str());
-    cmd.addVariable("OUTDB", par.filenames.back().c_str());
-    par.filenames.pop_back();
     cmd.addVariable("CREATESUBDB_PAR", par.createParameterString(par.createsubdb).c_str());
     cmd.addVariable("TAXONOMY_ID", par.taxId == 1 ? "TRUE" : NULL);
     cmd.addVariable("REMOVE_TMP", par.removeTmpFiles ? "TRUE" : NULL);
