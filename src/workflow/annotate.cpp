@@ -128,19 +128,6 @@ extern const char *binary_name;
 int annotate(int argc, const char **argv, const Command &command){
     LocalParameters &par = LocalParameters::getLocalInstance();
     par.parseParameters(argc, argv, command, true, 0, 0);
-
-    // std::string description = listAnnotationOptions(command, par.help);
-    // if (par.filenames.size() == 0 || par.help) {
-    //     if (par.help == false) {
-    //         description.append("Show a detailed information about annotation options by calling '");
-    //         description.append(binary_name);
-    //         description.append(1, ' ');
-    //         description.append(command.cmd);
-    //         description.append(" -h'\n\n");
-    //     }
-    //     par.printUsageMessage(command, par.help ? MMseqsParameter::COMMAND_EXPERT : 0, description.c_str());
-    //     EXIT(EXIT_SUCCESS);
-    // }
     par.printParameters(command.cmd, argc, argv, *command.params);
 
     // check whether tmp exists and try to create it if not
@@ -196,12 +183,6 @@ int annotate(int argc, const char **argv, const Command &command){
             break;
     }
 
-    cmd.addVariable("TMP_PATH", tmpDir.c_str());
-    cmd.addVariable("RESULTS", par.filenames.back().c_str());
-    par.filenames.pop_back();
-    std::string target = par.filenames.back();
-    cmd.addVariable("TARGET", target.c_str());
-    par.filenames.pop_back();
     cmd.addVariable("REMOVE_TMP", par.removeTmpFiles ? "TRUE" : NULL);
     cmd.addVariable("SEARCH_PAR", par.createParameterString(par.searchworkflow, true).c_str());
     cmd.addVariable("INFOSELECT_PAR", infoSelection.c_str());
