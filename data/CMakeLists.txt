@@ -6,7 +6,7 @@ set(COMPILED_RESOURCES
     annotateprofiles.sh
     contamination.sh
     assemble.sh
-    createdb.sh
+    createquerydb.sh
     )
 
 set(GENERATED_OUTPUT_HEADERS "")

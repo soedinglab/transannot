@@ -63,7 +63,7 @@ std::vector<struct Command> commands = {
                         {"tmpDir", DbType::ACCESS_MODE_OUTPUT, DbType::NEED_DATA, &DbValidator::directory}}},
 
 
-    {"createdb",    createdb, &localPar.createdb, COMMAND_MAIN,
+    {"createquerydb",    createquerydb, &localPar.createquerydb, COMMAND_MAIN,
             "Create MMseqs database from assembled sequences (with transannot annotate or other tool)",
             "MMseqs uses its own database format to avoid slowing down of the system, that is why if transcriptome is assembled not with PLASS, it is obligatory to create using MMseqs DB",
             "Mariia Zelenskaia mariia.zelenskaia@mpinat.mpg.de & Yazhini A. yazhini@mpinat.mpg.de",

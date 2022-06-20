@@ -20,7 +20,7 @@ public:
     std::vector<MMseqsParameter*> annotateworkflow;
     std::vector<MMseqsParameter*> downloaddb;
     std::vector<MMseqsParameter*> contaminationworkflow;
-    std::vector<MMseqsParameter*> createdbworkflow;
+    std::vector<MMseqsParameter*> createquerydb;
     std::vector<MMseqsParameter*> annotateprofiles;
 
     PARAMETER(PARAM_INFORMATION_SELECTION)
@@ -40,6 +40,7 @@ private:
         PARAM_TAXONOMYID(PARAM_TAXONOMYID_ID, "--taxid", "Taxonomy ID", "Taxonomy ID to run search against proteins from particular organism. 10-digits unique number", typeid(int), (void *) &taxId, "^[0-9]{7}$")
 
     {
+        assemble.push_back(&PARAM_CREATEDB_MODE);
         assemble.push_back(&PARAM_COMPRESSED);
         assemble.push_back(&PARAM_THREADS);
         assemble.push_back(&PARAM_V);
@@ -56,16 +57,18 @@ private:
 
         downloaddb.push_back(&PARAM_THREADS);
         downloaddb.push_back(&PARAM_V);
+        downloaddb.push_back(&PARAM_TAXONOMYID);
 
         contaminationworkflow.push_back(&PARAM_COMPRESSED);
         contaminationworkflow.push_back(&PARAM_THREADS);
         contaminationworkflow.push_back(&PARAM_V);
 
-        createdbworkflow.push_back(&PARAM_THREADS);
-        createdbworkflow.push_back(&PARAM_V);
+        createquerydb.push_back(&PARAM_THREADS);
+        createquerydb.push_back(&PARAM_V);
 
         // default values
         // infoSelect = 6;
+        createdbMode = 1;
     }
     LocalParameters(LocalParameters const&);
     ~LocalParameters() {};

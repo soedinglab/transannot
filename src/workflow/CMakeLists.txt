@@ -4,6 +4,6 @@ set(workflow_source_files
         workflow/annotateprofiles.cpp
         workflow/contamination.cpp
         workflow/assemble.cpp
-        workflow/createdb.cpp
+        workflow/createquerydb.cpp
         PARENT_SCOPE
         )
