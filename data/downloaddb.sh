@@ -24,14 +24,14 @@ abspath(){
 }
 
 #pre-processing
-#[ ! -d "$3" ] && echo "tmp directory $3 not found! tmp will be created." && mkdir -p "$3";
-#[ "$#" -ne 3 ] && echo "Please provide <selection> <outDBpath> <tmp>." && exit 1;
+[ "$#" -ne 3 ] && echo "Please provide <selection> <outDB> <tmp>" && exit 1;
+[ ! -d "$3" ] && echo "tmp directory $3 not found! tmp will be created." && mkdir -p "$3";
 [   -f "$2.dbtype" ] && echo "$2.dbtype exists already!" && exit 1;
 [   -z "$MMSEQS" ] && echo "Please set the environment variable \$MMSEQS to your current binary." && exit 1;
 
 SELECTION="$1"
 OUTDB="$(abspath "$2")"
-TMP_PATH="$(abspath "$3")"
+TMP_PATH="$3"
 
 if notExists "${OUTDB}.dbtype"; then
     #shellcheck disable=SC2086
