@@ -32,8 +32,8 @@ std::vector<struct Command> commands = {
 
     {"downloaddb",  downloaddb,     &localPar.downloaddb, COMMAND_MAIN,
             "Download protein database to run search against",
-            "We recommend to download SwissProt (it is manually curated), but there are more possible protein databases (see mmseqs databases) \n"
-            "transannot downloaddb UniProtKB/Swiss-Prot outpath/swissprot tmp",
+            "We recommend to download eggNOG (profiles database), but there are more possible protein databases (see mmseqs databases) \n"
+            "transannot downloaddb eggNOG outpath/eggNOGDB tmp",
             "Mariia Zelenskaia mariia.zelenskaia@mpinat.mpg.de & Yazhini A. yazhini@mpinat.mpg.de",
             "<i:selection> <o:outDB> <tmpDir>",
             NO_CITATION, {{"selection", 0, DbType::ZERO_OR_ALL, &DbValidator::empty},
