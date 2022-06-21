@@ -20,7 +20,7 @@ notExists() {
 [ ! -d "$4" ] && echo "tmp directory $4 not found! tmp will be created." && mkdir -p "$4"; 
 
 INPUT="$1" #assembled sequence
-TARGET="$2"  #already downloaded datbase
+TARGET="$2"  #already downloaded database
 RESULTS="$3"
 TMP_PATH="$4" 
 
@@ -35,27 +35,32 @@ if notExists "${TMP_PATH}/clu.dbtype"; then
 		|| fail "extract representative sequences died"
 fi
 
-#MMSEQS2 RBH
-#if we assemble with plass we get "${RESULTS}/plass_assembly.fas" in MMseqs db format as input
-#otherwise we have .fas file which must be translated into protein sequence and turned into MMseqs db
-#alignment DB is not a directory and may not be created
-#TO-DO add TAXONOMY_ID to parameters (own created probably)
-if [ -n "${TAXONOMY_ID}" ]; then
-#Q: should we use /clu_rep instead of query? -> clu_rep is an input for every search
-	echo "Taxonomy ID is provided. rbh will be run against known organism's proteins"
-	if notExists "${RESULTS}.dbtype"; then
-		#shellcheck disable=SC2086
-		"$MMSEQS" rbh "${INPUT}" "${TARGET}" "${TMP_PATH}/searchDB" "${TMP_PATH}/search_tmp" ${SEARCH_PAR} \
-			|| fail "rbh search died"
+if [ "$("${MMSEQS}" dbtype "${TARGET}")" = "Profile" ]; then
+
+	#MMSEQS2 RBH
+	#if we assemble with plass we get "${RESULTS}/plass_assembly.fas" in MMseqs db format as input
+	#otherwise we have .fas file which must be translated into protein sequence and turned into MMseqs db
+	#alignment DB is not a directory and may not be created
+	if [ -n "${TAXONOMY_ID}" ]; then
+	#Q: should we use /clu_rep instead of query? -> clu_rep is an input for every search
+		echo "Taxonomy ID is provided. rbh will be run against known organism's proteins"
+		if notExists "${RESULTS}.dbtype"; then
+			#shellcheck disable=SC2086
+			"$MMSEQS" rbh "${INPUT}" "${TARGET}" "${TMP_PATH}/searchDB" "${TMP_PATH}/search_tmp" ${SEARCH_PAR} \
+				|| fail "rbh search died"
+		fi
+
+	elif [ -z "${TAXONOMY_ID}" ]; then
+		if notExists "${RESULTS}.dbtype"; then
+		echo "No taxonomy ID is provided. Sequence-profile search will be run"
+			#shellcheck disable=SC2086
+			"$MMSEQS" search "${TMP_PATH}/clu_rep" "${TARGET}" "${TMP_PATH}/searchDB" "${TMP_PATH}/search_tmp" ${SEARCH_PAR} \
+				|| fail "search died"
+		fi
+
 	fi
 
-elif [ -z "${TAXONOMY_ID}" ]; then
-	if notExists "${RESULTS}.dbtype"; then
-		#shellcheck disable=SC2086
-		"$MMSEQS" search "${TMP_PATH}/clu_rep" "${TARGET}" "${TMP_PATH}/searchDB" "${TMP_PATH}/search_tmp" ${SEARCH_PAR} \
-			|| fail "search died"
-	fi
-
+else echo "The given target database is not profile! Please download profileDB or create from existing sequenceDB!"
 fi
 
 #get GO-IDs
@@ -96,8 +101,8 @@ fi
 if [ -n "${REMOVE_TMP}" ]; then
 	#shellcheck disable=SC2086
 	echo "Remove temporary files and directories"
-	rm -rf "${TMP_PATH}/annotate_tmp"  #current name of tmp pathway DO we really have annotate_tmp? or rbh_tmp? or smth else? -> we can create one tmp file for all steps and remove them at one go.
-	rm -f "${TMP_PATH}/annotate.sh"   #current name of this file	
+	rm -rf "${TMP_PATH}/annotate_tmp"
+	rm -f "${TMP_PATH}/annotate.sh"
 	#shellcheck disable=SC2086
 	"$MMSEQS" rmdb "${TMP_PATH}/clu" ${VERBOSITY_PAR}
 fi
