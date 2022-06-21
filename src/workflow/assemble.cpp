@@ -18,14 +18,14 @@
     }
 
     tmpDir = FileUtil::createTemporaryDirectory(tmpDir, hash);
-    par.filenames.pop_back();
-    std::string outDb = par.filenames.back();
-    par.filenames.pop_back();
+    //par.filenames.pop_back();
+    //std::string outDb = par.filenames.back();
+    //par.filenames.pop_back();
 
     CommandCaller cmd;
     cmd.addVariable("REMOVE_TMP", par.removeTmpFiles ? "TRUE" : NULL);
-    cmd.addVariable("TMP_PATH", tmpDir.c_str());
-    cmd.addVariable("RESULTS", outDb.c_str());
+    //cmd.addVariable("TMP_PATH", tmpDir.c_str());
+    //cmd.addVariable("RESULTS", outDb.c_str());
 
     FileUtil::writeFile(tmpDir + "assemble.sh", assemble_sh, assemble_sh_len);
     std::string program(tmpDir + "assemble.sh");
