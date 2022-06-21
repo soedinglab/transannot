@@ -39,6 +39,14 @@ Possible inputs are:
 * `createquerydb`            It creates a database from the sequence space (obtained from `downloaddb` module) in a required format for MMseqs2 rbh module
 * `downloaddb`          It downloads the user defined database that serves as a search space for homology detection
 
+### PLASS assembly
+
+In this step, reads will be assembled with Protein-Level ASSembler PLASS and afterwards MMseqs2 database will be created, you may skip this step if the transcriptome is already assembled. Usage:
+
+    transannot assemble <inputReads.fastq> <seqDB> <tmp> [options]
+
+Assembled transcriptome will be located in `tmp/plass_assembly`
+
 ### Dowloading databases
 
 In this step, sequence database for homology search will be downloaded.
