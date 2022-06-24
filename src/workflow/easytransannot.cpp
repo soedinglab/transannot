@@ -8,5 +8,6 @@
 
 int easytransannot(int argc, const char *argv, const Command& command) {
 
+    // TODO check for the DBtype Parameters::DBTYPE_HMM_PROFILE,
     return EXIT_SUCCESS;
 }
