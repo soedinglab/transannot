@@ -3,7 +3,7 @@
 #include "Util.h"
 #include "FileUtil.h"
 #include "CommandCaller.h"
-#include "assemble.sh.h"
+#include "assemblereads.sh.h"
 #include "LocalParameters.h"
 
 
@@ -27,8 +27,8 @@
     //cmd.addVariable("TMP_PATH", tmpDir.c_str());
     //cmd.addVariable("RESULTS", outDb.c_str());
 
-    FileUtil::writeFile(tmpDir + "assemble.sh", assemble_sh, assemble_sh_len);
-    std::string program(tmpDir + "assemble.sh");
+    FileUtil::writeFile(tmpDir + "assemblereads.sh", assemblereads_sh, assemblereads_sh_len);
+    std::string program(tmpDir + "assemblereads.sh");
     cmd.execProgram(program.c_str(), par.filenames);
 
     return EXIT_SUCCESS;
