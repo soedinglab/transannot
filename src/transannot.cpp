@@ -20,7 +20,7 @@ std::vector<DatabaseDownload> externalDownloads = {};
 LocalParameters& localPar = LocalParameters::getLocalInstance();
 
 std::vector<struct Command> commands = {
-      {"assemble",    assemble,   &localPar.assemble, COMMAND_MAIN,
+      {"assemblereads",    assemblereads,   &localPar.assemblereads, COMMAND_MAIN,
             "Assembly of de novo transcriptomes on protein level with PLASS",
             "It is also possible to give already assembled (e.g. obtained from Trinity) files as input",
             "Mariia Zelenskaia mariia.zelenskaia@mpinat.mpg.de & Yazhini A. yazhini@mpinat.mpg.de",
@@ -82,4 +82,7 @@ std::vector<struct Command> commands = {
                         {"targetDB", DbType::ACCESS_MODE_INPUT, DbType::NEED_DATA|DbType::NEED_HEADER|DbType::NEED_TAXONOMY, &DbValidator::sequenceDb},
                         {"taxReports", DbType::ACCESS_MODE_OUTPUT, DbType::NEED_DATA, &DbValidator::flatfile},
                         {"tmpDir", DbType::ACCESS_MODE_OUTPUT, DbType::NEED_DATA, &DbValidator::directory}}}
+
+   //{"easytransannot", easytransannot, &localPar.easytransannot, COMMAND_EASY,
+    //    NO_CITATION}
 };

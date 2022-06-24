@@ -3,7 +3,8 @@ set(workflow_source_files
         workflow/annotate.cpp
         workflow/annotateprofiles.cpp
         workflow/contamination.cpp
-        workflow/assemble.cpp
+        workflow/assemblereads.cpp
         workflow/createquerydb.cpp
+        workflow/easytransannot.cpp
         PARENT_SCOPE
         )

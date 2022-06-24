@@ -16,12 +16,13 @@ public:
         return static_cast<LocalParameters&>(LocalParameters::getInstance());
     }
 
-    std::vector<MMseqsParameter*> assemble;
+    std::vector<MMseqsParameter*> assemblereads;
     std::vector<MMseqsParameter*> annotateworkflow;
     std::vector<MMseqsParameter*> downloaddb;
     std::vector<MMseqsParameter*> contaminationworkflow;
     std::vector<MMseqsParameter*> createquerydb;
     std::vector<MMseqsParameter*> annotateprofiles;
+    std::vector<MMseqsParameter*> easytransannot;
 
     PARAMETER(PARAM_INFORMATION_SELECTION)
     PARAMETER(PARAM_TAXONOMYID)
@@ -40,10 +41,10 @@ private:
         PARAM_TAXONOMYID(PARAM_TAXONOMYID_ID, "--taxid", "Taxonomy ID", "Taxonomy ID to run search against proteins from particular organism. 10-digits unique number", typeid(int), (void *) &taxId, "^[0-9]{7}$")
 
     {
-        assemble.push_back(&PARAM_CREATEDB_MODE);
-        assemble.push_back(&PARAM_COMPRESSED);
-        assemble.push_back(&PARAM_THREADS);
-        assemble.push_back(&PARAM_V);
+        assemblereads.push_back(&PARAM_CREATEDB_MODE);
+        assemblereads.push_back(&PARAM_COMPRESSED);
+        assemblereads.push_back(&PARAM_THREADS);
+        assemblereads.push_back(&PARAM_V);
 
         annotateworkflow.push_back(&PARAM_HELP);
         annotateworkflow.push_back(&PARAM_HELP_LONG);

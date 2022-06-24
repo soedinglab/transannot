@@ -7,7 +7,7 @@
 #include "LocalParameters.h"
 
 
- int assemble(int argc, const char **argv, const Command& command) {
+ int assemblereads(int argc, const char **argv, const Command& command) {
     LocalParameters &par = LocalParameters::getLocalInstance();
     par.parseParameters(argc, argv, command, true, 0, 0);
     

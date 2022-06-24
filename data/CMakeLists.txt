@@ -5,8 +5,9 @@ set(COMPILED_RESOURCES
     annotate.sh
     annotateprofiles.sh
     contamination.sh
-    assemble.sh
+    assemblereads.sh
     createquerydb.sh
+    easytransannot.sh
     )
 
 set(GENERATED_OUTPUT_HEADERS "")
