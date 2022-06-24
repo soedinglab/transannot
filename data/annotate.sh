@@ -13,6 +13,7 @@ notExists() {
 
 #checking how many input variables are provided
 [ "$#" -ne 4 ] && echo "Please provide <assembled transciptome> <targetDB> <outDB> <tmp>" && exit 1;
+[ "$("${MMSEQS}" dbtype "$2")" != "Profile" ] && echo "The given target database is not profile! Please download profileDB or create from existing sequenceDB!" && exit 1;
 #checking whether files already exist
 [ ! -f "$1.dbtype" ] && echo "$1.dbtype not found! please make sure that MMseqs db is already created." && exit 1;
 [ ! -f "$2.dbtype" ] && echo "$2.dbtype not found!" && exit 1;
@@ -34,8 +35,6 @@ if notExists "${TMP_PATH}/clu.dbtype"; then
 	"$MMSEQS" result2repseq "${INPUT}" "${TMP_PATH}/clu" "${TMP_PATH}/clu_rep" ${RESULT2REPSEQ_PAR} \
 		|| fail "extract representative sequences died"
 fi
-
-if [ "$("${MMSEQS}" dbtype "${TARGET}")" = "Profile" ]; then
 
 	#MMSEQS2 RBH
 	#if we assemble with plass we get "${RESULTS}/plass_assembly.fas" in MMseqs db format as input
@@ -60,8 +59,6 @@ if [ "$("${MMSEQS}" dbtype "${TARGET}")" = "Profile" ]; then
 
 	fi
 
-else echo "The given target database is not profile! Please download profileDB or create from existing sequenceDB!"
-fi
 
 #get GO-IDs
 #TO-DO think about condition to retrieve goids
@@ -71,7 +68,6 @@ if notExists "${RESULTS}.**"; then
 	awk '{print $1}' "${TMP_PATH}/searchDB" > "${TMP_PATH}/accession_ids"
 	./../util/access_uniprot.py "${TMP_PATH}/accession_ids" > "${RESULTS}/go_id" 
 fi
-#searchDB without any extension contains the actual result
 #target ID is the first column (p. 51 of the User Guide)
 
 #shellcheck disable=SC2086
