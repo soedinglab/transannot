@@ -137,7 +137,7 @@ int annotate(int argc, const char **argv, const Command &command){
         hash = FileUtil::getHashFromSymLink(tmpDir + "/latest");
     }
     tmpDir = FileUtil::createTemporaryDirectory(tmpDir, hash);
-    par.filenames.pop_back(); //removes the last element of the vector
+    // par.filenames.pop_back(); //removes the last element of the vector
 
 
     ssize_t infoIdx = -1;

@@ -63,33 +63,33 @@ fi
 #get GO-IDs
 #TO-DO think about condition to retrieve goids
 #getgoid function is written as cpp skript in src/util/GetGoIds.cpp
-if notExists "${RESULTS}.**"; then
-	#shellcheck disable=SC2086
-	awk '{print $1}' "${TMP_PATH}/searchDB" > "${TMP_PATH}/accession_ids"
-	./../util/access_uniprot.py "${TMP_PATH}/accession_ids" > "${RESULTS}/go_id" 
-fi
+# if notExists "${RESULTS}.**"; then
+# 	#shellcheck disable=SC2086
+# 	awk '{print $1}' "${TMP_PATH}/searchDB" > "${TMP_PATH}/accession_ids"
+# 	./../util/access_uniprot.py "${TMP_PATH}/accession_ids" > "${RESULTS}/go_id" 
+# fi
 #target ID is the first column (p. 51 of the User Guide)
 
 #shellcheck disable=SC2086
-python3 access_uniprot.py "${TMP_PATH}/accession_num" > "${RESULTS}/go_id" \
+python3 access_uniprot.py "${TMP_PATH}/accession_num" > "${RESULTS}" \
 	|| fail "get gene ontology ids died"
 
 #NEW: SELECTED_INF -> which information user selected (/src/workflow/annotate.cpp)
-case "${SELECTED_INF}" in
-	"KEGG")
-		url;
-		RESULTS=1;
-	;;
-	"ExPASy")
-		url;
-		RESULTS=;
-	;;
-esac
+# case "${SELECTED_INF}" in
+# 	"KEGG")
+# 		url;
+# 		RESULTS=1;
+# 	;;
+# 	"ExPASy")
+# 		url;
+# 		RESULTS=;
+# 	;;
+# esac
 
 #create output in .tsv format
-if notExists "${RESULTS}*.tsv"; then
+if notExists "${RESULTS}.tsv"; then
 	#shellcheck disable=SC2086
-	"$MMSEQS" createtsv "${INPUT}" "${RESULTS}/go_id" "${RESULTS}/tsv_output.tsv" ${CREATETSV_PAR} \
+	"$MMSEQS" createtsv "${INPUT}" "${RESULTS}" "${RESULTS}.tsv" ${CREATETSV_PAR} \
 		|| fail "createtsv died"
 fi
 
