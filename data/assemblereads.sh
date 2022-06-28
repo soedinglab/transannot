@@ -29,7 +29,7 @@ fi
 if notExists "${RESULTS}.dbtype"; then
     echo "creating mmseqs db from assembled transcriptome"
     #shellcheck disable=SC2086
-    "$MMSEQS" createdb "${TMP_PATH}/plass_assembly" "${RESULTS}" --createdb-mode 1 ${CREATEDB_PAR} \
+    "$MMSEQS" createdb "${TMP_PATH}/assembly.fasta" "${RESULTS}" --createdb-mode 1 ${CREATEDB_PAR} \
         || fail "createdb died"
 fi
 
