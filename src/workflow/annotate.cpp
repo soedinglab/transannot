@@ -128,7 +128,7 @@ extern const char *binary_name;
 int annotate(int argc, const char **argv, const Command &command){
     LocalParameters &par = LocalParameters::getLocalInstance();
     par.parseParameters(argc, argv, command, true, 0, 0);
-    par.printParameters(command.cmd, argc, argv, *command.params);
+    // par.printParameters(command.cmd, argc, argv, *command.params);
 
     // check whether tmp exists and try to create it if not
     std::string tmpDir = par.filenames.back();
