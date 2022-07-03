@@ -7,7 +7,7 @@
 #include "LocalParameters.h"
 
 int downloaddb(int argc, const char **argv, const Command& command) {
-    LocalParameters &par = LocalParameters::getLocalInstance();
+    LocalParameters& par = LocalParameters::getLocalInstance();
     par.parseParameters(argc, argv, command, true, 0, 0);
 
     std::string tmpDir = par.filenames.back();
