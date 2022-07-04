@@ -15,7 +15,7 @@ const char* index_version_compatible = MMSEQS_CURRENT_INDEX_VERSION;
 bool hide_base_commands = true;
 bool hide_base_downloads = false;
 void (*validatorUpdate)(void) = 0;
-//std::vector<DatabaseDownload> externalDownloads = {};
+std::vector<DatabaseDownload> externalDownloads = {};
 
 LocalParameters& localPar = LocalParameters::getLocalInstance();
 
