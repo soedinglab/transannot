@@ -50,6 +50,7 @@ private:
         annotateworkflow.push_back(&PARAM_HELP_LONG);
         annotateworkflow.push_back(&PARAM_INFORMATION_SELECTION);
         annotateworkflow.push_back(&PARAM_TAXONOMYID);
+        annotateworkflow.push_back(&PARAM_REMOVE_TMP_FILES);
         annotateworkflow.push_back(&PARAM_COMPRESSED);
         annotateworkflow.push_back(&PARAM_THREADS);
         annotateworkflow.push_back(&PARAM_V);
