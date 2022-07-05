@@ -149,16 +149,16 @@ int annotate(int argc, const char **argv, const Command &command){
     }
 
     CommandCaller cmd;
-    if (infoIdx == -1) {
-        if (FileUtil::fileExists(par.db1.c_str()) == false) {
-            //par.printUsageMessage(command, par.help ? MMseqsParameter::COMMAND_EXPERT : 0, description.c_str());
-            Debug(Debug::ERROR) << "Selected information " << par.db1 << " is not available\n";
-            EXIT(EXIT_FAILURE);
-        }
-        cmd.addVariable("SELECTED_INF", NULL);
-    } else {
-        cmd.addVariable("SELECTED_INF", annotationOptions[infoIdx].name);
-    }
+    // if (infoIdx == -1) {
+    //     if (FileUtil::fileExists(par.db1.c_str()) == false) {
+    //         //par.printUsageMessage(command, par.help ? MMseqsParameter::COMMAND_EXPERT : 0, description.c_str());
+    //         Debug(Debug::ERROR) << "Selected information " << par.db1 << " is not available\n";
+    //         EXIT(EXIT_FAILURE);
+    //     }
+    //     cmd.addVariable("SELECTED_INF", NULL);
+    // } else {
+    //     cmd.addVariable("SELECTED_INF", annotationOptions[infoIdx].name);
+    // }
 
     std::string infoSelection;
     switch (par.infoSelect)
