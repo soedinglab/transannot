@@ -55,12 +55,17 @@ fi
 			#shellcheck disable=SC2086
 			"$MMSEQS" search "${TMP_PATH}/clu_rep" "${TARGET}" "${TMP_PATH}/searchDB" "${TMP_PATH}/search_tmp" ${SEARCH_PAR} \
 				|| fail "search died"
+			#add mergedbs here!!
+			# shellchec disab
+			# "$MMSEQS" mergedbs "${TMP_PATH}/searchDB*" ${MERGEDB_PAR} \
+            #     || fail "mergedb died"
+
 		fi
 
 	fi
 
 #shellcheck disable=SC2086
-python3 access_uniprot.py "${TMP_PATH}/accession_num" > "${RESULTS}" \
+python3 ../util/access_uniprot.py "${TMP_PATH}/accession_num" > "${RESULTS}" \
 	|| fail "get gene ontology ids died"
 
 
