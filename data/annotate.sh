@@ -64,6 +64,7 @@ fi
 
 			if [ "${NUM_ITER}" -ne 1 ]; then
 				STEP=0
+				cp -f "${TMP_PATH}/searchDB.$STEP" "${TMP_PATH}/searchDB.merged_$STEP"
 				while [ "$STEP" -lt "$NUM_ITER" ]; do
 					STEPONE=$((STEP+1))
 					#shellcheck disable=SC2086
