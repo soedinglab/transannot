@@ -49,23 +49,36 @@ fi
 				|| fail "rbh search died"
 		fi
 
+		
+
 	elif [ -z "${TAXONOMY_ID}" ]; then
 		if notExists "${RESULTS}.dbtype"; then
 		echo "No taxonomy ID is provided. Sequence-profile search will be run"
 			#shellcheck disable=SC2086
 			"$MMSEQS" search "${TMP_PATH}/clu_rep" "${TARGET}" "${TMP_PATH}/searchDB" "${TMP_PATH}/search_tmp" ${SEARCH_PAR} \
 				|| fail "search died"
-			#add mergedbs here!!
-			# shellchec disab
-			# "$MMSEQS" mergedbs "${TMP_PATH}/searchDB*" ${MERGEDB_PAR} \
-            #     || fail "mergedb died"
 
+			if notExists "${TMP_PATH}/searchDB.merged"; then
+			NUM_ITER=$(find "${TMP_PATH}" -name "searchDB.*" | wc -l)
+			NUM_ITER=$((NUM_ITER-2)) #we don't count .dbtype & .index files
+
+			if [ "${NUM_ITER}" -ne 1 ]; then
+				STEP=0
+				while [ "$STEP" -lt "$NUM_ITER" ]; do
+					STEPONE=$((STEP+1))
+					#shellcheck disable=SC2086
+					"$MMSEQS" mergedbs "${TMP_PATH}/searchdb."$STEP "${TMP_PATH}/searchDB."$STEPONE ${MERGEDB_PAR} \
+						|| fail "merge DBs died"
+					STEP=$((STEP+1))
+				done
+			fi
+			
 		fi
-
+		fi
 	fi
 
 #shellcheck disable=SC2086
-python3 ../util/access_uniprot.py "${TMP_PATH}/accession_num" > "${RESULTS}" \
+python3 access_uniprot.py "${TMP_PATH}/accession_num" >> "${RESULTS}" \
 	|| fail "get gene ontology ids died"
 
 
