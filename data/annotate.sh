@@ -57,26 +57,28 @@ fi
 			#shellcheck disable=SC2086
 			"$MMSEQS" search "${TMP_PATH}/clu_rep" "${TARGET}" "${TMP_PATH}/searchDB" "${TMP_PATH}/search_tmp" ${SEARCH_PAR} \
 				|| fail "search died"
+			
+			#there may be multiple DBs created
+			cat "${TMP_PATH}/searchDB."'[0-9]*' > "${TMP_PATH}/searchDB"
 
-			if notExists "${TMP_PATH}/searchDB.merged"; then
-			NUM_ITER=$(find "${TMP_PATH}" -name "searchDB.*" | wc -l)
-			NUM_ITER=$((NUM_ITER-2)) #we don't count .dbtype & .index files
+			# if notExists "${TMP_PATH}/searchDB.merged"; then
+			# NUM_ITER=$(find "${TMP_PATH}" -name "searchDB.*" | wc -l)
+			# NUM_ITER=$((NUM_ITER-2)) #we don't count .dbtype & .index files
 
-			if [ "${NUM_ITER}" -ne 1 ]; then
+			# if [ "${NUM_ITER}" -ne 1 ]; then
 				#STEP=0
 				#cp -f "${TMP_PATH}/searchDB.$STEP" "${TMP_PATH}/searchDB.merged_$STEP"
 				#while [ "$STEP" -lt "$NUM_ITER" ]; do
 					#STEPONE=$((STEP+1))
 					#shellcheck disable=SC2086
-				"$MMSEQS" mergedbs "${TMP_PATH}/searchDB" "${TMP_PATH}/searchDB.merged" "${TMP_PATH}/searchDB.0" "${TMP_PATH}/searchDB.1" ${MERGEDB_PAR} \
+				"$MMSEQS" mergedbs "${TMP_PATH}/searchDB.index" "${TMP_PATH}/searchDB.merged" "${TMP_PATH}/searchDB.0" "${TMP_PATH}/searchDB.1" ${MERGEDB_PAR} \
 					|| fail "merge DBs died"
 					#STEP=$((STEP+1))
 				#done
 				# cp -f "${TMP_PATH}/searchDB.merged_$STEP" "${TMP_PATH}/searchDB.merged"
 				# rm -f "${TMP_PATH}/searchDB.merged_$STEP"
-			fi
-
-		fi
+			# fi
+			# fi
 		fi
 	fi
 
