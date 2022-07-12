@@ -59,7 +59,7 @@ fi
 				|| fail "search died"
 			
 			#there may be multiple DBs created
-			cat "${TMP_PATH}/searchDB."'[0-9]*' > "${TMP_PATH}/searchDB"
+			cat "${TMP_PATH}/searchDB."[0-9]* > "${TMP_PATH}/searchDB"
 
 			# if notExists "${TMP_PATH}/searchDB.merged"; then
 			# NUM_ITER=$(find "${TMP_PATH}" -name "searchDB.*" | wc -l)
