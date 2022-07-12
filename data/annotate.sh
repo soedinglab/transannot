@@ -68,7 +68,7 @@ fi
 				#while [ "$STEP" -lt "$NUM_ITER" ]; do
 					#STEPONE=$((STEP+1))
 					#shellcheck disable=SC2086
-				"$MMSEQS" mergedbs "${TMP_PATH}/searchDB.index" "${TMP_PATH}/searchDB.merged" "${TMP_PATH}/searchDB.*" ${MERGEDB_PAR} \
+				"$MMSEQS" mergedbs "${TMP_PATH}/searchDB.index" "${TMP_PATH}/searchDB.merged" "${TMP_PATH}/searchDB."^[0-9]+$ ${MERGEDB_PAR} \
 					|| fail "merge DBs died"
 					#STEP=$((STEP+1))
 				#done
