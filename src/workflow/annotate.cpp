@@ -140,13 +140,13 @@ int annotate(int argc, const char **argv, const Command &command){
     // par.filenames.pop_back(); //removes the last element of the vector
 
 
-    ssize_t infoIdx = -1;
-    for (size_t i = 0; i < annotationOptions.size(); ++i) {
-        if (par.db1 == std::string(annotationOptions[i].name)) {
-            infoIdx = i;
-            break;
-        }
-    }
+    // ssize_t infoIdx = -1;
+    // for (size_t i = 0; i < annotationOptions.size(); ++i) {
+    //     if (par.db1 == std::string(annotationOptions[i].name)) {
+    //         infoIdx = i;
+    //         break;
+    //     }
+    // }
 
     CommandCaller cmd;
     // if (infoIdx == -1) {
