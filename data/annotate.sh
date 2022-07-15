@@ -65,7 +65,7 @@ fi
 	fi
 
 #shellcheck disable=SC2086
-python3 ./access_uniprot.py "${TMP_PATH}/accession_num" >> "${RESULTS}" \
+access_uniprot.py "${TMP_PATH}/searchDB" >> "${RESULTS}" \
 	|| fail "get gene ontology ids died"
 
 
