@@ -55,7 +55,7 @@ fi
 		if notExists "${RESULTS}.dbtype"; then
 		echo "No taxonomy ID is provided. Sequence-profile search will be run"
 			#shellcheck disable=SC2086
-			"$MMSEQS" search "${TMP_PATH}/clu_rep" "${TARGET}" "${TMP_PATH}/searchDB" "${TMP_PATH}/search_tmp" --format-output "query, target, evalue, qaln, taln" ${SEARCH_PAR} \
+			"$MMSEQS" search "${TMP_PATH}/clu_rep" "${TARGET}" "${TMP_PATH}/searchDB" "${TMP_PATH}/search_tmp" ${SEARCH_PAR} \
 				|| fail "search died"
 			
 			#there may be multiple DBs created
