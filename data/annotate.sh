@@ -65,7 +65,12 @@ fi
 			#there may be multiple DBs created - depends on the amount of threads
 			if notExists "${TMP_PATH}/searchDB"; then
 				cat "${TMP_PATH}/searchDB."[0-9]* > "${TMP_PATH}/searchDB"
-				rm -f "${TMP_PATH}/searchDB."[0-9]*
+				rm -f "${TMP_PATH}/searchDB."[0-9]*		
+			fi
+
+			if notExists "${TMP_PATH}/searchDB.tab"; then
+				#shellcheck disable=SC2086
+				"$MMSEQS" convertalis "${TMP_PATH}/clu_rep" "${TARGET}" "${TMP_PATH}/searchDB" "${TMP_PATH}/searchDB.tab"
 			fi
 		fi
 	fi
