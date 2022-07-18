@@ -8,8 +8,13 @@ notExists() {
 		[ ! -f "$1" ]
 }
 
+hasCommand () {
+    command -v "$1" >/dev/null 2>&1 || { echo "Please make sure that $1 is in \$PATH."; exit 1; }
+}
+
 #pre-processing
 [ -z "$MMSEQS" ] && echo "Please set the environment variable \$MMSEQS to your current binary." && exit 1;
+hasCommand wget
 
 #checking how many input variables are provided
 #[ "$#" -ne 4 ] && echo "Please provide <assembled transciptome> <targetDB> <outDB> <tmp>" && exit 1;
@@ -41,14 +46,13 @@ fi
 	#otherwise we have .fas file which must be translated into protein sequence and turned into MMseqs db
 	#alignment DB is not a directory and may not be created
 	if [ -n "${TAXONOMY_ID}" ]; then
-	#Q: should we use /clu_rep instead of query? -> clu_rep is an input for every search
+	
 		echo "Taxonomy ID is provided. rbh will be run against known organism's proteins"
 		if notExists "${RESULTS}.dbtype"; then
 			#shellcheck disable=SC2086
 			"$MMSEQS" rbh "${INPUT}" "${TARGET}" "${TMP_PATH}/searchDB" "${TMP_PATH}/search_tmp" ${SEARCH_PAR} \
 				|| fail "rbh search died"
 		fi
-
 		
 
 	elif [ -z "${TAXONOMY_ID}" ]; then
@@ -59,11 +63,16 @@ fi
 				|| fail "search died"
 			
 			#there may be multiple DBs created - depends on the amount of threads
-			cat "${TMP_PATH}/searchDB."[0-9]* > "${TMP_PATH}/searchDB"
-			rm -f "${TMP_PATH}/searchDB."[0-9]*
+			if notExists "${TMP_PATH}/searchDB"; then
+				cat "${TMP_PATH}/searchDB."[0-9]* > "${TMP_PATH}/searchDB"
+				rm -f "${TMP_PATH}/searchDB."[0-9]*
+			fi
 		fi
 	fi
 
+#TODO extract column with IDs & pre-process it for UniProt mapping from searchDB
+cd "${TMP_PATH}"
+wget https://github.com/mariia-zelenskaia/transannot/blob/main/data/access_uniprot.py
 #shellcheck disable=SC2086
 access_uniprot.py "${TMP_PATH}/searchDB" >> "${RESULTS}" \
 	|| fail "get gene ontology ids died"
