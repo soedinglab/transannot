@@ -74,7 +74,7 @@ fi
 cd "${TMP_PATH}"
 wget https://github.com/mariia-zelenskaia/transannot/blob/main/data/access_uniprot.py
 #shellcheck disable=SC2086
-access_uniprot.py "${TMP_PATH}/searchDB" >> "${RESULTS}" \
+../access_uniprot.py "${TMP_PATH}/searchDB" >> "${RESULTS}" \
 	|| fail "get gene ontology ids died"
 
 
