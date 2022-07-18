@@ -9,7 +9,7 @@ notExists() {
 }
 
 hasCommand () {
-    command -v "$1" >/dev/null 2>&1 || { echo "Please make sure that $1 is in \$PATH."; exit 1; }
+    command -v "$1" >/dev/null 2>&1
 }
 
 #pre-processing
