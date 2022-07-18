@@ -71,6 +71,10 @@ fi
 	fi
 
 #TODO extract column with IDs & pre-process it for UniProt mapping from searchDB
+if notExists "${TMP_PATH}/profDB_id"; then
+	awk '{print $1}' "${TMP_PATH}/searchDB" >> "${TMP_PATH}/profDB_id"
+fi
+
 cd "${TMP_PATH}"
 wget https://github.com/mariia-zelenskaia/transannot/blob/main/data/access_uniprot.py
 #shellcheck disable=SC2086
