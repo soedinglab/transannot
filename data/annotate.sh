@@ -95,7 +95,7 @@ if notExists "${TMP_PATH}/profDB_id"; then
 	awk '{print $2}' "${TMP_PATH}/searchDB.tab" >> "${TMP_PATH}/profDB_id"
 fi
 
-TRANSANNOT="$(abspath "$(command -v "${TRANSANNOT}")")"
+MMSEQS="$(abspath "$(command -v "${MMSEQS}")")"
 echo "${TRANSANNOT}"
 #wget https://github.com/mariia-zelenskaia/transannot/blob/main/data/access_uniprot.py
 chmod +x "${TRANSANNOT}transannot/data/access_uniprot.py"
