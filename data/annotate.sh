@@ -97,9 +97,9 @@ fi
 
 TRANSANNOT="$(abspath "$(command -v "${TRANSANNOT}")")"
 #wget https://github.com/mariia-zelenskaia/transannot/blob/main/data/access_uniprot.py
-chmod +x "${TRANSANNOT}/transannot/data/access_uniprot.py"
+chmod +x "${TRANSANNOT}transannot/data/access_uniprot.py"
 #shellcheck disable=SC2086
-python3 "${TRANSANNOT}/transannot/data/access_uniprot.py" "${TMP_PATH}/profDB_id" >> "${RESULTS}" \
+python3 "${TRANSANNOT}transannot/data/access_uniprot.py" "${TMP_PATH}/profDB_id" >> "${RESULTS}" \
 	|| fail "get gene ontology ids died"
 
 
