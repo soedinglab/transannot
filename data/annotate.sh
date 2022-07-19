@@ -12,6 +12,20 @@ hasCommand () {
     command -v "$1" >/dev/null 2>&1
 }
 
+abspath() {
+    if [ -d "$1" ]; then
+        (cd "$1"; pwd)
+    elif [ -f "$1" ]; then
+        if [ -z "${1##*/*}" ]; then
+            echo "$(cd "${1%/*}"; pwd)/${1##*/}"
+        else
+            echo "$(pwd)/$1"
+        fi
+    elif [ -d "$(dirname "$1")" ]; then
+        echo "$(cd "$(dirname "$1")"; pwd)/$(basename "$1")"
+    fi
+}
+
 #pre-processing
 [ -z "$MMSEQS" ] && echo "Please set the environment variable \$MMSEQS to your current binary." && exit 1;
 hasCommand wget
@@ -81,11 +95,11 @@ if notExists "${TMP_PATH}/profDB_id"; then
 	awk '{print $2}' "${TMP_PATH}/searchDB.tab" >> "${TMP_PATH}/profDB_id"
 fi
 
-cd "${TMP_PATH}"
-wget https://github.com/mariia-zelenskaia/transannot/blob/main/data/access_uniprot.py
-chmod +x "access_uniprot.py"
+TRANSANNOT="$(abspath "$(command -v "${TRANSANNOT}")")"
+#wget https://github.com/mariia-zelenskaia/transannot/blob/main/data/access_uniprot.py
+chmod +x "${TRANSANNOT}/../../access_uniprot.py"
 #shellcheck disable=SC2086
-python3 "access_uniprot.py" "${TMP_PATH}/profDB_id" >> "${RESULTS}" \
+python3 "${TRANSANNOT}/../../access_uniprot.py" "${TMP_PATH}/profDB_id" >> "${RESULTS}" \
 	|| fail "get gene ontology ids died"
 
 
