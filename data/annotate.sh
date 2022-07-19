@@ -96,12 +96,12 @@ if notExists "${TMP_PATH}/profDB_id"; then
 fi
 
 MMSEQS="$(abspath "$(command -v "${MMSEQS}")")"
-echo "${TRANSANNOT}"
+echo "${MMSEQS}"
 #wget https://github.com/mariia-zelenskaia/transannot/blob/main/data/access_uniprot.py
-chmod +x "${TRANSANNOT}transannot/data/access_uniprot.py"
-#shellcheck disable=SC2086
-python3 "${TRANSANNOT}transannot/data/access_uniprot.py" "${TMP_PATH}/profDB_id" >> "${RESULTS}" \
-	|| fail "get gene ontology ids died"
+# chmod +x "${TRANSANNOT}transannot/data/access_uniprot.py"
+# #shellcheck disable=SC2086
+# python3 "${TRANSANNOT}transannot/data/access_uniprot.py" "${TMP_PATH}/profDB_id" >> "${RESULTS}" \
+# 	|| fail "get gene ontology ids died"
 
 
 #create output in .tsv format
