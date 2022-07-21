@@ -36,7 +36,7 @@ hasCommand wget
 #checking whether files already exist
 [ ! -f "$1.dbtype" ] && echo "$1.dbtype not found! please make sure that MMseqs db is already created." && exit 1;
 [ ! -f "$2.dbtype" ] && echo "$2.dbtype not found!" && exit 1;
-[   -f "$3.dbtype" ] && echo "$3.dbtype exists already!" && exit 1; ##results - not defined yet
+[   -f "$3.dbtype" ] && echo "$3.dbtype exists already!" && exit 1; 
 [ ! -d "$4" ] && echo "tmp directory $4 not found! tmp will be created." && mkdir -p "$4"; 
 
 INPUT="$1" #assembled sequence
@@ -75,12 +75,6 @@ fi
 			#shellcheck disable=SC2086
 			"$MMSEQS" search "${TMP_PATH}/clu_rep" "${TARGET}" "${TMP_PATH}/searchDB" "${TMP_PATH}/search_tmp" ${SEARCH_PAR} \
 				|| fail "search died"
-			
-			#there may be multiple DBs created - depends on the amount of threads
-			# if notExists "${TMP_PATH}/searchDB"; then
-			# 	cat "${TMP_PATH}/searchDB."[0-9]* > "${TMP_PATH}/searchDB"
-			# 	rm -f "${TMP_PATH}/searchDB."[0-9]*		
-			# fi
 
 			if notExists "${TMP_PATH}/searchDB.tab"; then
 				#shellcheck disable=SC2086
