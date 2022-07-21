@@ -96,10 +96,9 @@ if notExists "${TMP_PATH}/profDB_id"; then
 fi
 
 MMSEQS="$(abspath "$(command -v "${MMSEQS}")")"
-echo "${MMSEQS}"
 SCRIPT="${MMSEQS%/build*}"
-#wget https://github.com/mariia-zelenskaia/transannot/blob/main/data/access_uniprot.py
 chmod +x "${SCRIPT}/data/access_uniprot.py"
+echo "${SCRIPT}/data/access_uniprot.py"
 #shellcheck disable=SC2086
 python3 "${SCRIPT}/data/access_uniprot.py" "${TMP_PATH}/profDB_id" >> "${RESULTS}" \
  	|| fail "get gene ontology ids died"
