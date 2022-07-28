@@ -76,11 +76,12 @@ fi
 			"$MMSEQS" search "${TMP_PATH}/clu_rep" "${TARGET}" "${TMP_PATH}/searchDB" "${TMP_PATH}/search_tmp" ${SEARCH_PAR} \
 				|| fail "search died"
 
-			if notExists "${TMP_PATH}/searchDB.tab"; then
+			if notExists "${TMP_PATH}/searchDB.csv"; then
 				#shellcheck disable=SC2086
 				"$MMSEQS" convertalis "${TMP_PATH}/clu_rep" "${TARGET}" "${TMP_PATH}/searchDB" "${TMP_PATH}/searchDB.csv" \
 				|| fail "converatalis died"
 			fi
+			rm -f "${TMP_PATH}/searchDB."[0-9]*
 		fi
 	fi
 
