@@ -86,14 +86,14 @@ fi
 
 #TODO extract column with IDs & pre-process it for UniProt mapping from searchDB
 if notExists "${TMP_PATH}/profDB_id"; then
-	awk '{print $2}' "${TMP_PATH}/searchDB.csv" >> "${TMP_PATH}/profDB_id"
+	awk '{print $2}' "${TMP_PATH}/searchDB" >> "${TMP_PATH}/profDB_id.csv"
 fi
 
 MMSEQS="$(abspath "$(command -v "${MMSEQS}")")"
 SCRIPT="${MMSEQS%/build*}"
 chmod +x "${SCRIPT}/data/access_uniprot.py"
 #shellcheck disable=SC2086
-python3 "${SCRIPT}/data/access_uniprot.py" "${TMP_PATH}/profDB_id" >> "${RESULTS}" \
+python3 "${SCRIPT}/data/access_uniprot.py" "${TMP_PATH}/profDB_id.csv" >> "${RESULTS}" \
  	|| fail "get gene ontology ids died"
 
 
