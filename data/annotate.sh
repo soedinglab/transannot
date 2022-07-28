@@ -78,7 +78,7 @@ fi
 
 			if notExists "${TMP_PATH}/searchDB.tab"; then
 				#shellcheck disable=SC2086
-				"$MMSEQS" convertalis "${TMP_PATH}/clu_rep" "${TARGET}" "${TMP_PATH}/searchDB" "${TMP_PATH}/searchDB.tab" \
+				"$MMSEQS" convertalis "${TMP_PATH}/clu_rep" "${TARGET}" "${TMP_PATH}/searchDB" "${TMP_PATH}/searchDB.csv" \
 				|| fail "converatalis died"
 			fi
 		fi
@@ -86,7 +86,7 @@ fi
 
 #TODO extract column with IDs & pre-process it for UniProt mapping from searchDB
 if notExists "${TMP_PATH}/profDB_id"; then
-	awk '{print $2}' "${TMP_PATH}/searchDB.tab" >> "${TMP_PATH}/profDB_id"
+	awk '{print $2}' "${TMP_PATH}/searchDB.csv" >> "${TMP_PATH}/profDB_id"
 fi
 
 MMSEQS="$(abspath "$(command -v "${MMSEQS}")")"

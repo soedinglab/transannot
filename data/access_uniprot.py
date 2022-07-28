@@ -1,5 +1,6 @@
 #!/usr/bin/env python
-
+import numpy as np
+from numpy import genfromtxt
 import sys, requests
 
 BASE = 'http://www.uniprot.org'
@@ -24,5 +25,8 @@ def map_retrieve(ids2map, source_fmt='ACC+ID',target_fmt='ACC', output_fmt='tab'
         response.raise_for_status()
 
 uniprot_ids = sys.argv[1:] #command line arguments passed to script -> only one input in the script
-uniprot_acc = map_retrieve(uniprot_ids, source_fmt='ACC+ID')
-sys.stdout.write(str(uniprot_acc)+'\n')
+uniprot_ids = genfromtxt(uniprot_ids, delimiter=',')
+for i in range(np.size(uniprot_ids)):
+    print(uniprot_ids[i])
+#uniprot_acc = map_retrieve(uniprot_ids, source_fmt='ACC+ID')
+#sys.stdout.write(str(uniprot_acc)+'\n')
