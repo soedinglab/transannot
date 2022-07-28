@@ -13,7 +13,7 @@ def map_retrieve(ids2map, source_fmt='ACC+ID',target_fmt='ACC', output_fmt='tab'
         payload = { 'query': ids2map,
                     'from': source_fmt,
                     'to': target_fmt,
-                    'columns': 'id,go-id,database(interpro),database(PDB),database(pfam)', # we can add whichever database ressources we want
+                    'columns': 'id,go-id,database(interpro),database(PDB),database(pfam)', # we can add whichever database resources we want
                     'format': output_fmt,
                     }
 
