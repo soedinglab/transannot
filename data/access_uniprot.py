@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import numpy as np
 from numpy import genfromtxt
+import pandas as pd
 import sys, requests
 
 BASE = 'http://www.uniprot.org'
@@ -24,9 +25,7 @@ def map_retrieve(ids2map, source_fmt='ACC+ID',target_fmt='ACC', output_fmt='tab'
     else:
         response.raise_for_status()
 
-uniprot_ids = genfromtxt(sys.argv[-1], delimiter=',') #command line arguments passed to script -> only one input in the script
+uniprot_ids = pd.read_csv(sys.argv[-1], index_col=False).to_numpy() #command line arguments passed to script -> only one input in the script
 print(uniprot_ids)
-#for i in range(np.size(uniprot_ids)):
-#    print(uniprot_ids[i])
-#uniprot_acc = map_retrieve(uniprot_ids, source_fmt='ACC+ID')
-#sys.stdout.write(str(uniprot_acc)+'\n')
+uniprot_acc = map_retrieve(uniprot_ids, source_fmt='ACC+ID')
+sys.stdout.write(str(uniprot_acc)+'\n')
