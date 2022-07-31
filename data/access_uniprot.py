@@ -24,8 +24,7 @@ def map_retrieve(ids2map, source_fmt='ACC+ID',target_fmt='ACC', output_fmt='tab'
     else:
         response.raise_for_status()
 
-#uniprot_ids = sys.argv[1:] #command line arguments passed to script -> only one input in the script
-uniprot_ids = input()
+uniprot_ids = genfromtxt(sys.argv[-1], delimiter=',') #command line arguments passed to script -> only one input in the script
 print(uniprot_ids)
 #for i in range(np.size(uniprot_ids)):
 #    print(uniprot_ids[i])
