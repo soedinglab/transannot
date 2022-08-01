@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 import numpy as np
-from numpy import genfromtxt
 import pandas as pd
 import sys, requests
 
