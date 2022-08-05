@@ -33,7 +33,8 @@ Possible inputs are:
 ### Modules
 
 * `assemble`            It assembles raw sequencing reads to large genomic fragments (contigs)
-* `annotate`            It finds homologs for assembled contigs in the custom defined protein seqeunce database (default UniProtKB) using reciprocal-best hits (rbh module) search from MMseqs2 suite if taxonomy ID `--taxid` is provided, or MMseqs2 search if no taxonomy ID is supplied. After runing the search Gene Ontology ID will be obtained from UniProt. 
+* `annotate`            It clusters given input for the reduction of redundancy and runs sequnce-profile search against profile database (e.g. PDB70)to obtain the closest homologs with annotated function. After running thhe search UniProt IDs will be retrieved to get more detailed information about the provided transcriptome. 
+(It finds homologs for assembled contigs in the custom defined protein seqeunce database (default UniProtKB) using reciprocal-best hits (rbh module) search from MMseqs2 suite if taxonomy ID `--taxid` is provided, or MMseqs2 search if no taxonomy ID is supplied. After runing the search Gene Ontology ID will be obtained from UniProt.)
 * `annotateprofiles`    It ...
 * `contamination`       It checks contaminated contigs using _easy-taxonomy_ module from MMseqs2 suite. This approach uses taxonomy assignments of every contig to identify contamination
 * `createquerydb`            It creates a database from the sequence space (obtained from `downloaddb` module) in a required format for MMseqs2 rbh module
@@ -50,9 +51,9 @@ Assembled transcriptome will be located in `tmp/plass_assembly`
 ### Dowloading databases
 
 In this step, sequence database for homology search will be downloaded.
-Default database is UniProtKB and can be obtained using a below command:
+Default database is PDB70 and can be obtained using a below command:
 
-    transannot downloaddb UniProtKB <outDB> <tmp> [options]
+    transannot downloaddb PDB70 <outDB> <tmp> [options]
     
 To see other options for your choice, please use the below command:
 
