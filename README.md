@@ -1,6 +1,6 @@
 # TransAnnot - a transcriptome annotation pipeline
 TransAnnot predicts protein functions, orthologous relationships and biological pathways for the whole newly sequenced transcriptome.
-It uses MMseqs2 reciprocal best hit to obtain closest homologs from UniProtKB database (or user defined database) and infer protein function, structure and orthologous groups based on the identified homologs.
+It uses MMseqs2 sequence-profile search to obtain closest homologs from profile database and infer protein function, structure and orthologous groups based on the identified homologs.
 Prior to functional annotation, it can perform transcriptome sequence assembly using PLASS (Protein-Level ASSembler) to assemble raw sequence reads on protein level upon user request.
 
 ## Compile from source
@@ -66,6 +66,10 @@ and use the below command to download the preferred database (ensure the same ke
 ### Annotate workflow
 
 `annotate -h` provides details on sequence type and databases acceptable for the `annotate` module. 
+
+### Profile databases
+
+Sequence profiles contain linear probabilities for each aminoacid at every position of the set. There is an internal MMseqs2 profile format.
 
 ### Contamination
 
