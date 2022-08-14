@@ -29,6 +29,7 @@ abspath() {
 #pre-processing
 [ -z "$MMSEQS" ] && echo "Please set the environment variable \$MMSEQS to your current binary." && exit 1;
 hasCommand wget
+hasCommand foldseek
 
 #checking how many input variables are provided
 #[ "$#" -ne 4 ] && echo "Please provide <assembled transciptome> <targetDB> <outDB> <tmp>" && exit 1;
@@ -88,6 +89,17 @@ fi
 #TODO extract column with IDs & pre-process it for UniProt mapping from searchDB
 if notExists "${TMP_PATH}/profDB_id"; then
 	awk '{print $2}' "${TMP_PATH}/searchDB.csv" >> "${TMP_PATH}/profDB_id.csv"
+fi
+
+#NEW implement foldseek
+#TODO think about database that can be used
+#TODO think about memory consumption
+if notExists "${TMP_PATH}/fssearch.dbtype"; then
+	#shellcheck disable=SC2086
+	foldseek databases "Alphafold/UniProt" "${TMP_PATH}/alphafoldup" "${TMP_PATH}/fs_databases"
+
+	#shellcheck disable=SC2086
+	foldseek search "${TMP_PATH}/clu_rep" "${TMP_PATH}/alphafoldup" "${TMP_PATH}/fssearch" "${TMP_PATH}/fs_tmp"
 fi
 
 MMSEQS="$(abspath "$(command -v "${MMSEQS}")")"
