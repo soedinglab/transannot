@@ -20,7 +20,11 @@ Compiling from source helps to optimize TransAnnot for the specific system, whic
     cmake -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX=. ..
 
 Other dependencies for the compilation from source are `zlib` and `bzip`.
+## Quick start
 
+There is a possibility to run TransAnnot using easy module
+
+    transannot easytransannot <inputReads.fastq> <name of targetDB> <resDB> <tmp> [options]
 ## Input
 Possible inputs are:
 
@@ -32,7 +36,7 @@ Possible inputs are:
 
 ### Modules
 
-* `assemble`            It assembles raw sequencing reads to large genomic fragments (contigs)
+* `assemblereads`            It assembles raw sequencing reads to large genomic fragments (contigs)
 * `annotate`            It clusters given input for the reduction of redundancy and runs sequnce-profile search against profile database (e.g. PDB70)to obtain the closest homologs with annotated function. After running thhe search UniProt IDs will be retrieved to get more detailed information about the provided transcriptome. 
 (It finds homologs for assembled contigs in the custom defined protein seqeunce database (default UniProtKB) using reciprocal-best hits (rbh module) search from MMseqs2 suite if taxonomy ID `--taxid` is provided, or MMseqs2 search if no taxonomy ID is supplied. After runing the search Gene Ontology ID will be obtained from UniProt.)
 * `annotateprofiles`    It ...
@@ -44,7 +48,7 @@ Possible inputs are:
 
 In this step, reads will be assembled with Protein-Level ASSembler PLASS and afterwards MMseqs2 database will be created, you may skip this step if the transcriptome is already assembled. Usage:
 
-    transannot assemble <inputReads.fastq> <seqDB> <tmp> [options]
+    transannot assemblereads <inputReads.fastq> <seqDB> <tmp> [options]
 
 Assembled transcriptome will be located in `tmp/plass_assembly`
 
