@@ -44,10 +44,13 @@ statistics(2, 'seq_ident')
 statistics(10, 'E-value')
 statistics(11, 'bit score')
 
-query_ids=set(search_res.iloc[:,0])
-for i in query_ids:
-    print(i)
-    print(search_res[search_res.iloc[:,0]==i])
+search_res=search_res.sort_values(by=[search_res.iloc[:,11]], ascending=False).groupby(search_res.iloc[:,0])
+print(search_res)
+# query_ids=set(search_res.iloc[:,0])
+# for i in query_ids:
+#     print(i)
+#     print(search_res[search_res.iloc[:,0]==i])
+#     new_rows = search_res[search_res.iloc[:,0]==i].sort_values(by=[search_res.iloc[:,11]], ascending=False).groupby(search_res.iloc[:,0])
 
 # uniprot_acc = map_retrieve(uniprot_ids, source_fmt='ACC+ID')
 # print(uniprot_acc)
