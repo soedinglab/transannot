@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from re import search
 import numpy as np
 import sys, requests
 import pandas as pd
@@ -44,10 +45,9 @@ def statistics(c, ident, df=search_res):
 # statistics(10, 'E-value')
 # statistics(11, 'bit score')
 
-search_res = search_res.sort_values([search_res.iloc[:,11],search_res.iloc[:,0]], ascending=False)
+# search_res = search_res.sort_values([search_res.iloc[:,11],search_res.iloc[:,0]], ascending=False)
+search_res = search_res[search_res.groupby(search_res.iloc[:,0])(search_res.iloc[:,11]).max()]
 # search_res = search_res.groupby(search_res.iloc[:,0])[search_res.iloc[:,11]].max()
-print(search_res)
-search_res = search_res.drop_duplicates(subset=search_res.iloc[:,0])
 print(search_res)
 # query_ids=set(search_res.iloc[:,0])
 # for i in query_ids:
