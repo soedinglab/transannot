@@ -44,7 +44,8 @@ def statistics(c, ident, df=search_res):
 # statistics(10, 'E-value')
 # statistics(11, 'bit score')
 
-search_res=search_res.sort_values([search_res.iloc[:,11],search_res.iloc[:,0]], ascending=False)
+# search_res = search_res.sort_values([search_res.iloc[:,11],search_res.iloc[:,0]], ascending=False)
+search_res = search_res.groupby(search_res.iloc[:,0])[search_res.iloc[:,11]].max()
 print(search_res)
 # query_ids=set(search_res.iloc[:,0])
 # for i in query_ids:
