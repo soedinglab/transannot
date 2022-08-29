@@ -40,11 +40,11 @@ def statistics(c, ident, df=search_res):
     print(np.min(df.iloc[:,c]))
     print(np.max(df.iloc[:,c]))
 
-statistics(2, 'seq_ident')
-statistics(10, 'E-value')
-statistics(11, 'bit score')
+# statistics(2, 'seq_ident')
+# statistics(10, 'E-value')
+# statistics(11, 'bit score')
 
-search_res=search_res.sort_values(by=[search_res.iloc[:,11]], ascending=False).groupby(search_res.iloc[:,0])
+search_res=search_res.sort_values([search_res.iloc[:,11],search_res.iloc[:,0]], ascending=False)
 print(search_res)
 # query_ids=set(search_res.iloc[:,0])
 # for i in query_ids:
