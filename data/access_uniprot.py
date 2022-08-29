@@ -32,12 +32,18 @@ print(type(uniprot_ids))
 # uniprot_ids = open(sys.argv[-1], "r").read().splitlines() #command line arguments passed to script -> only one input in the script
 # print(uniprot_ids)
 
-seq_ident = uniprot_ids.iloc[:,2]
-print("seq_ident:")
-print(seq_ident)
-print(np.median(seq_ident))
-print(np.min(seq_ident))
-print(np.max(seq_ident))
+def statistics(c, ident, df=uniprot_ids):
+    print(ident)
+    print(df.iloc[:,c])
+    print(np.median(df.iloc[:,c]))
+    print(np.min(df.iloc[:,c]))
+    print(np.max(df.iloc[:,c]))
+
+statistics(2, 'seq_ident')
+statistics(10, 'E-value')
+statistics(11, 'bit score')
+
+
 
 # uniprot_acc = map_retrieve(uniprot_ids, source_fmt='ACC+ID')
 # print(uniprot_acc)
