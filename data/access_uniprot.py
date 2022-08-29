@@ -27,6 +27,7 @@ import pandas as pd
 
 # uniprot_ids = open(sys.argv[-1], "r").read()
 uniprot_ids = pd.read_csv(sys.argv[-1], header=None, sep='\t')
+uniprot_ids = uniprot_ids(uniprot_ids.iloc[:,11]>50)
 print(uniprot_ids)
 print(type(uniprot_ids))
 # uniprot_ids = open(sys.argv[-1], "r").read().splitlines() #command line arguments passed to script -> only one input in the script
