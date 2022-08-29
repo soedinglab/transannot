@@ -26,14 +26,14 @@ import pandas as pd
 #         response.raise_for_status()
 
 # uniprot_ids = open(sys.argv[-1], "r").read()
-uniprot_ids = pd.read_csv(sys.argv[-1], header=None, sep='\t')
-uniprot_ids = uniprot_ids[uniprot_ids.iloc[:,11]>50]
-print(uniprot_ids)
-print(type(uniprot_ids))
+search_res = pd.read_csv(sys.argv[-1], header=None, sep='\t')
+search_res = search_res[search_res.iloc[:,11]>50]
+print(search_res)
+print(type(search_res))
 # uniprot_ids = open(sys.argv[-1], "r").read().splitlines() #command line arguments passed to script -> only one input in the script
 # print(uniprot_ids)
 
-def statistics(c, ident, df=uniprot_ids):
+def statistics(c, ident, df=search_res):
     print(ident)
     print(df.iloc[:,c])
     print(np.median(df.iloc[:,c]))
@@ -44,7 +44,10 @@ statistics(2, 'seq_ident')
 statistics(10, 'E-value')
 statistics(11, 'bit score')
 
-
+query_ids=set(search_res.iloc[:,0])
+for i in query_ids:
+    print(i)
+    print(search_res[search_res.iloc[:,0]==i])
 
 # uniprot_acc = map_retrieve(uniprot_ids, source_fmt='ACC+ID')
 # print(uniprot_acc)
