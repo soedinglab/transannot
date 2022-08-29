@@ -24,7 +24,8 @@ import sys, requests
 #     else:
 #         response.raise_for_status()
 
-uniprot_ids = open(sys.argv[-1], "r").read().splitlines() #command line arguments passed to script -> only one input in the script
+uniprot_ids = open(sys.argv[-1], "r").read()
+# uniprot_ids = open(sys.argv[-1], "r").read().splitlines() #command line arguments passed to script -> only one input in the script
 # print(uniprot_ids)
 seq_ident = uniprot_ids[:,2]
 print("seq_ident:")
