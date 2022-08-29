@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import numpy as np
 import sys, requests
+import pandas as pd
 
 # BASE = 'http://www.uniprot.org'
 # KB_ENDPOINT = '/uniprot/'
@@ -24,7 +25,8 @@ import sys, requests
 #     else:
 #         response.raise_for_status()
 
-uniprot_ids = np.loadtxt(sys.argv[-1])
+# uniprot_ids = open(sys.argv[-1], "r").read()
+uniprot_ids = pd.read_csv(sys.argv[-1], sep='\t')
 print(uniprot_ids)
 print(type(uniprot_ids))
 # uniprot_ids = open(sys.argv[-1], "r").read().splitlines() #command line arguments passed to script -> only one input in the script
