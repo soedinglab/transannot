@@ -4,7 +4,7 @@ import sys, requests
 
 # BASE = 'http://www.uniprot.org'
 # KB_ENDPOINT = '/uniprot/'
-# TOOL_ENDPOINT = '/uploadlists/'
+# TOOL_ENDPOINT = '/uploadlists/'hDB
 
 # def map_retrieve(ids2map, source_fmt='ACC+ID',target_fmt='ACC', output_fmt='tab'):
 #     ids2map = ','.join(ids2map)
@@ -24,7 +24,7 @@ import sys, requests
 #     else:
 #         response.raise_for_status()
 
-uniprot_ids = open(sys.argv[-1], "r").read()
+uniprot_ids = np.loadtxt(sys.argv[-1])
 print(uniprot_ids)
 print(type(uniprot_ids))
 # uniprot_ids = open(sys.argv[-1], "r").read().splitlines() #command line arguments passed to script -> only one input in the script
