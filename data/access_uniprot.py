@@ -25,7 +25,7 @@ import sys, requests
 #         response.raise_for_status()
 
 uniprot_ids = open(sys.argv[-1], "r").read().splitlines() #command line arguments passed to script -> only one input in the script
-# print(uniprot_ids)
+print(uniprot_ids)
 seq_ident = uniprot_ids[:][2]
 print(np.median(seq_ident))
 # uniprot_acc = map_retrieve(uniprot_ids, source_fmt='ACC+ID')
