@@ -25,13 +25,15 @@ import sys, requests
 #         response.raise_for_status()
 
 uniprot_ids = open(sys.argv[-1], "r").read()
-print(uniprot_ids).head(5)
+print(type(uniprot_ids))
 # uniprot_ids = open(sys.argv[-1], "r").read().splitlines() #command line arguments passed to script -> only one input in the script
 # print(uniprot_ids)
-seq_ident = uniprot_ids[:,2]
-print("seq_ident:")
-print(seq_ident)
-print(np.median(seq_ident))
+
+# seq_ident = uniprot_ids[:,2]
+# print("seq_ident:")
+# print(seq_ident)
+# print(np.median(seq_ident))
+
 # uniprot_acc = map_retrieve(uniprot_ids, source_fmt='ACC+ID')
 # print(uniprot_acc)
 # sys.stdout.write(str(uniprot_acc)+'\n')
