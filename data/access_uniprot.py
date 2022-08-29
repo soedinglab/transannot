@@ -26,7 +26,7 @@ import pandas as pd
 #         response.raise_for_status()
 
 # uniprot_ids = open(sys.argv[-1], "r").read()
-uniprot_ids = pd.read_csv(sys.argv[-1], sep='\t')
+uniprot_ids = pd.read_csv(sys.argv[-1], header=None, sep='\t')
 print(uniprot_ids)
 print(type(uniprot_ids))
 # uniprot_ids = open(sys.argv[-1], "r").read().splitlines() #command line arguments passed to script -> only one input in the script
