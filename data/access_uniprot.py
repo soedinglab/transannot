@@ -36,6 +36,8 @@ seq_ident = uniprot_ids.iloc[:,2]
 print("seq_ident:")
 print(seq_ident)
 print(np.median(seq_ident))
+print(np.min(seq_ident))
+print(np.max(seq_ident))
 
 # uniprot_acc = map_retrieve(uniprot_ids, source_fmt='ACC+ID')
 # print(uniprot_acc)
