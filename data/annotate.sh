@@ -29,7 +29,7 @@ abspath() {
 #pre-processing
 [ -z "$MMSEQS" ] && echo "Please set the environment variable \$MMSEQS to your current binary." && exit 1;
 hasCommand wget
-hasCommand foldseek
+#hasCommand foldseek
 
 #checking how many input variables are provided
 #[ "$#" -ne 4 ] && echo "Please provide <assembled transciptome> <targetDB> <outDB> <tmp>" && exit 1;
