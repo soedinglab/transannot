@@ -87,13 +87,15 @@ fi
 	fi
 
 #TODO extract column with IDs & pre-process it for UniProt mapping from searchDB
-if notExists "${TMP_PATH}/searchDB_filt.csv"; then
-	awk '{if (($12>=50) && ($3>=0.6)) print $1, $2, $3, $11, $12}' "${TMP_PATH}/searchDB.csv" |	sort -n -k5 | awk '!seen[$1]++' >> "${TMP_PATH}/searchDB_filt.csv"
+#pre-processing of alignment with bit score and sequence identity cutoff
+if notExists "${TMP_PATH}/searchDB_filt.tsv"; then
+	#shellcheck disable=SC2086
+	awk '{if (($12>=50) && ($3>=0.6)) print $1, $2, $3, $11, $12}' "${TMP_PATH}/searchDB.csv" |	sort -n -k5 -parallel= ${THREADS_PAR} | awk '!seen[$1]++' >> "${TMP_PATH}/searchDB_filt.tsv"
 fi
 
-if notExists "${TMP_PATH}/profDB_id"; then
-	awk '{print $2}' "${TMP_PATH}/searchDB.csv" >> "${TMP_PATH}/profDB_id.csv"
-fi
+# if notExists "${TMP_PATH}/profDB_id"; then
+# 	awk '{print $2}' "${TMP_PATH}/searchDB.csv" >> "${TMP_PATH}/profDB_id.csv"
+# fi
 
 #NEW implement foldseek
 #TODO think about database that can be used
@@ -132,4 +134,6 @@ if [ -n "${REMOVE_TMP}" ]; then
 	rm -f "${TMP_PATH}/annotate.sh"
 	#shellcheck disable=SC2086
 	"$MMSEQS" rmdb "${TMP_PATH}/clu" ${VERBOSITY_PAR}
+	#shellcheck disable=SC2086
+	rm -f "${TMP_PATH}/searchDB.csv" ${VERBOSITY_PAR}
 fi
