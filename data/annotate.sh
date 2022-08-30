@@ -38,12 +38,13 @@ hasCommand wget
 [ ! -f "$1.dbtype" ] && echo "$1.dbtype not found! please make sure that MMseqs db is already created." && exit 1;
 [ ! -f "$2.dbtype" ] && echo "$2.dbtype not found!" && exit 1;
 [   -f "$3.dbtype" ] && echo "$3.dbtype exists already!" && exit 1; 
-[ ! -d "$4" ] && echo "tmp directory $4 not found! tmp will be created." && mkdir -p "$4"; 
+[ ! -d "$5" ] && echo "tmp directory $4 not found! tmp will be created." && mkdir -p "$4"; 
 
 INPUT="$1" #assembled sequence
 TARGET="$2"  #already downloaded database
 RESULTS="$3"
-TMP_PATH="$4" 
+MAPPING_DB="$4"
+TMP_PATH="$5" 
 
 #MMSEQS2 LINCLUST for the redundancy reduction
 if notExists "${TMP_PATH}/clu.dbtype"; then
@@ -113,13 +114,13 @@ MMSEQS="$(abspath "$(command -v "${MMSEQS}")")"
 SCRIPT="${MMSEQS%/build*}"
 chmod +x "${SCRIPT}/data/access_uniprot.py"
 #shellcheck disable=SC2086
-python3 "${SCRIPT}/data/access_uniprot.py" "${TMP_PATH}/searchDB_filt.tsv" >> "${RESULTS}" \
+python3 "${SCRIPT}/data/access_uniprot.py" "${TMP_PATH}/searchDB_filt.tsv" "${MAPPING_DB}" >> "${RESULTS}" \
  	|| fail "get gene ontology ids died"
 
 # chmod +x "${SCRIPT}/util/download_mapping_db.sh"
 # ."${SCRIPT}/util/download_mapping_db.sh"
-wget https://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/idmapping/idmapping.dat.gz
-tar xvzf idmapping.dat.gz >> "${MAPPING_DB}"
+# wget https://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/idmapping/idmapping.dat.gz
+# tar xvzf idmapping.dat.gz >> "${MAPPING_DB}"
 
 # python3 "${SCRIPT}/data/access_uniprot.py" "${TMP_PATH}/profDB_id.csv" >> "${RESULTS}" \
 #  	|| fail "get gene ontology ids died"
