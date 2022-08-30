@@ -88,9 +88,10 @@ fi
 
 #TODO extract column with IDs & pre-process it for UniProt mapping from searchDB
 #pre-processing of alignment with bit score and sequence identity cutoff
+#TODO --parallel=${THREADS_PAR} for sort parallelization 
 if notExists "${TMP_PATH}/searchDB_filt.tsv"; then
 	#shellcheck disable=SC2086
-	awk '{if (($12>=50) && ($3>=0.6)) print $1, $2, $3, $11, $12}' "${TMP_PATH}/searchDB.csv" |	sort -n -k5 --parallel=${THREADS_PAR} | awk '!seen[$1]++' >> "${TMP_PATH}/searchDB_filt.tsv"
+	awk '{if (($12>=50) && ($3>=0.6)) print $1, $2, $3, $11, $12}' "${TMP_PATH}/searchDB.csv" |	sort -n -k5 | awk '!seen[$1]++' >> "${TMP_PATH}/searchDB_filt.tsv"
 fi
 
 # if notExists "${TMP_PATH}/profDB_id"; then
@@ -112,7 +113,7 @@ MMSEQS="$(abspath "$(command -v "${MMSEQS}")")"
 SCRIPT="${MMSEQS%/build*}"
 chmod +x "${SCRIPT}/data/access_uniprot.py"
 #shellcheck disable=SC2086
-python3 "${SCRIPT}/data/access_uniprot.py" "${TMP_PATH}/searchDB_filt.csv" >> "${RESULTS}" \
+python3 "${SCRIPT}/data/access_uniprot.py" "${TMP_PATH}/searchDB_filt.tsv" >> "${RESULTS}" \
  	|| fail "get gene ontology ids died"
 
 # python3 "${SCRIPT}/data/access_uniprot.py" "${TMP_PATH}/profDB_id.csv" >> "${RESULTS}" \
