@@ -90,7 +90,7 @@ fi
 #pre-processing of alignment with bit score and sequence identity cutoff
 if notExists "${TMP_PATH}/searchDB_filt.tsv"; then
 	#shellcheck disable=SC2086
-	awk '{if (($12>=50) && ($3>=0.6)) print $1, $2, $3, $11, $12}' "${TMP_PATH}/searchDB.csv" |	sort -n -k5 -parallel= ${THREADS_PAR} | awk '!seen[$1]++' >> "${TMP_PATH}/searchDB_filt.tsv"
+	awk '{if (($12>=50) && ($3>=0.6)) print $1, $2, $3, $11, $12}' "${TMP_PATH}/searchDB.csv" |	sort -n -k5 --parallel= ${THREADS_PAR} | awk '!seen[$1]++' >> "${TMP_PATH}/searchDB_filt.tsv"
 fi
 
 # if notExists "${TMP_PATH}/profDB_id"; then
