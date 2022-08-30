@@ -29,7 +29,7 @@ abspath() {
 #pre-processing
 [ -z "$MMSEQS" ] && echo "Please set the environment variable \$MMSEQS to your current binary." && exit 1;
 hasCommand wget
-#hasCommand foldseek
+hasCommand foldseek
 
 #checking how many input variables are provided
 #[ "$#" -ne 4 ] && echo "Please provide <assembled transciptome> <targetDB> <outDB> <tmp>" && exit 1;
@@ -115,6 +115,9 @@ chmod +x "${SCRIPT}/data/access_uniprot.py"
 #shellcheck disable=SC2086
 python3 "${SCRIPT}/data/access_uniprot.py" "${TMP_PATH}/searchDB_filt.tsv" >> "${RESULTS}" \
  	|| fail "get gene ontology ids died"
+
+chmod +x "${SCRIPT}/util/download_mapping_db.sh"
+./"${SCRIPT}/util/download_mapping_db.sh"
 
 # python3 "${SCRIPT}/data/access_uniprot.py" "${TMP_PATH}/profDB_id.csv" >> "${RESULTS}" \
 #  	|| fail "get gene ontology ids died"
