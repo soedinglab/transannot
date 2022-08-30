@@ -116,8 +116,10 @@ chmod +x "${SCRIPT}/data/access_uniprot.py"
 python3 "${SCRIPT}/data/access_uniprot.py" "${TMP_PATH}/searchDB_filt.tsv" >> "${RESULTS}" \
  	|| fail "get gene ontology ids died"
 
-chmod +x "${SCRIPT}/util/download_mapping_db.sh"
-."${SCRIPT}/util/download_mapping_db.sh"
+# chmod +x "${SCRIPT}/util/download_mapping_db.sh"
+# ."${SCRIPT}/util/download_mapping_db.sh"
+wget https://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/idmapping/idmapping.dat.gz
+tar xvzf idmapping.dat.gz >> "${MAPPING_DB}"
 
 # python3 "${SCRIPT}/data/access_uniprot.py" "${TMP_PATH}/profDB_id.csv" >> "${RESULTS}" \
 #  	|| fail "get gene ontology ids died"
