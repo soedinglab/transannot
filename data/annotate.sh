@@ -117,7 +117,7 @@ python3 "${SCRIPT}/data/access_uniprot.py" "${TMP_PATH}/searchDB_filt.tsv" >> "$
  	|| fail "get gene ontology ids died"
 
 chmod +x "${SCRIPT}/util/download_mapping_db.sh"
-./"${SCRIPT}/util/download_mapping_db.sh"
+."${SCRIPT}/util/download_mapping_db.sh"
 
 # python3 "${SCRIPT}/data/access_uniprot.py" "${TMP_PATH}/profDB_id.csv" >> "${RESULTS}" \
 #  	|| fail "get gene ontology ids died"
