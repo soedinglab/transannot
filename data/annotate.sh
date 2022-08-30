@@ -87,6 +87,9 @@ fi
 	fi
 
 #TODO extract column with IDs & pre-process it for UniProt mapping from searchDB
+if notExists "${TMP_PATH}/searchDB_filt.csv"; then
+	awk '{print ($12>50)}' "${TMP_PATH}/searchDB.csv" >> "${TMP_PATH}/searchDB_filt.csv"
+fi
 if notExists "${TMP_PATH}/profDB_id"; then
 	awk '{print $2}' "${TMP_PATH}/searchDB.csv" >> "${TMP_PATH}/profDB_id.csv"
 fi
