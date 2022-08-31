@@ -27,9 +27,11 @@ import pandas as pd
 #         response.raise_for_status()
 
 # uniprot_ids = open(sys.argv[-1], "r").read()
-search_res = pd.read_csv(sys.argv[-1], header=None, sep='\t')
+map_db = pd.read_csv(sys.argv[-1], index_col=1, header=None, sep='\t')
+search_res = pd.read_csv(sys.argv[-2], header=None, sep='\t')
 # search_res = search_res[search_res.iloc[:,11]>50]
 print(search_res)
+map_db.to_dict()
 # uniprot_ids = open(sys.argv[-1], "r").read().splitlines() #command line arguments passed to script -> only one input in the script
 # print(uniprot_ids)
 
