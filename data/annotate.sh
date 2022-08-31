@@ -37,13 +37,13 @@ hasCommand wget
 #checking whether files already exist
 [ ! -f "$1.dbtype" ] && echo "$1.dbtype not found! please make sure that MMseqs db is already created." && exit 1;
 [ ! -f "$2.dbtype" ] && echo "$2.dbtype not found!" && exit 1;
-[   -f "$3.dbtype" ] && echo "$3.dbtype exists already!" && exit 1; 
+[   -f "$4.dbtype" ] && echo "$3.dbtype exists already!" && exit 1; 
 [ ! -d "$5" ] && echo "tmp directory $5 not found! tmp will be created." && mkdir -p "$4"; 
 
 INPUT="$1" #assembled sequence
 TARGET="$2"  #already downloaded database
-RESULTS="$3"
-MAPPING_DB="$4"
+MAPPING_DB="$3"
+RESULTS="$4"
 TMP_PATH="$5" 
 
 #MMSEQS2 LINCLUST for the redundancy reduction
