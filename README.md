@@ -46,6 +46,8 @@ Possible inputs are:
 
 ### PLASS assembly
 
+Before running this step PLASS must be installed, detailed information about installation can be found [here](https://github.com/soedinglab/plass#install-plass)
+
 In this step, reads will be assembled with Protein-Level ASSembler PLASS and afterwards MMseqs2 database will be created, you may skip this step if the transcriptome is already assembled. Usage:
 
     transannot assemblereads <inputReads.fastq> <seqDB> <tmp> [options]
@@ -66,6 +68,15 @@ To see other options for your choice, please use the below command:
 and use the below command to download the preferred database (ensure the same keyword as given in `mmseqs database -h`):
 
     transannot downloaddb <selection> <outDB> <tmp> [options]
+
+One should also download ID Mapping database of the [UniProt knowledgebase](https://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/idmapping/)
+
+To download ID Mapping database simply execute following script:
+
+    chmod +x util/download_mapping_db.sh
+    ./util/download_mapping_db.sh
+
+Script is located in transannot/util directory, so please make sure you run mentioned above commands from the main directory. 
 
 ### Annotate workflow
 
