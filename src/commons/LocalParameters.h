@@ -68,9 +68,9 @@ private:
         createquerydb.push_back(&PARAM_THREADS);
         createquerydb.push_back(&PARAM_V);
 
-        //easytransannot = combineList(assemblereads, annotateworkflow);
-        //easytransannot = combineList(easytransannot, downloaddb);
-        //easytransannot = combineList(easytransannot, createquerydb);
+        easytransannot = combineList(assemblereads, annotateworkflow);
+        easytransannot = combineList(easytransannot, downloaddb);
+        easytransannot = combineList(easytransannot, createquerydb);
 
         // default values
         // infoSelect = 6;
