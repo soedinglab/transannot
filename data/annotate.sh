@@ -38,7 +38,7 @@ hasCommand wget
 [ ! -f "$1.dbtype" ] && echo "$1.dbtype not found! please make sure that MMseqs db is already created." && exit 1;
 [ ! -f "$2.dbtype" ] && echo "$2.dbtype not found!" && exit 1;
 [   -f "$4.dbtype" ] && echo "$3.dbtype exists already!" && exit 1; 
-[ ! -d "$5" ] && echo "tmp directory $5 not found! tmp will be created." && mkdir -p "$4"; 
+[ ! -d "$5" ] && echo "tmp directory $5 not found! tmp will be created." && mkdir -p "$5"; 
 
 INPUT="$1" #assembled sequence
 TARGET="$2"  #already downloaded database
@@ -92,12 +92,8 @@ fi
 #TODO --parallel=${THREADS_PAR} for sort parallelization 
 if notExists "${TMP_PATH}/searchDB_filt.tsv"; then
 	#shellcheck disable=SC2086
-	awk '{if (($12>=50) && ($3>=0.6)) print $1, $2, $3, $11, $12}' "${TMP_PATH}/searchDB.csv" |	sort -n -k5 | awk '!seen[$1]++' >> "${TMP_PATH}/searchDB_filt.tsv"
+	awk '{if (($12>=50) && ($3>=0.6)) print $1, $2}' "${TMP_PATH}/searchDB.csv" |	sort -n -k5 | awk '!seen[$1]++' >> "${TMP_PATH}/searchDB_filt_IDs.tsv"
 fi
-
-# if notExists "${TMP_PATH}/profDB_id"; then
-# 	awk '{print $2}' "${TMP_PATH}/searchDB.csv" >> "${TMP_PATH}/profDB_id.csv"
-# fi
 
 #NEW implement foldseek
 #TODO think about database that can be used
@@ -114,7 +110,7 @@ MMSEQS="$(abspath "$(command -v "${MMSEQS}")")"
 SCRIPT="${MMSEQS%/build*}"
 chmod +x "${SCRIPT}/data/access_uniprot.py"
 #shellcheck disable=SC2086
-python3 "${SCRIPT}/data/access_uniprot.py" "${TMP_PATH}/searchDB_filt.tsv" "${MAPPING_DB}" >> "${RESULTS}" \
+python3 "${SCRIPT}/data/access_uniprot.py" "${TMP_PATH}/searchDB_filt_IDs.tsv" "${MAPPING_DB}" >> "${RESULTS}" \
  	|| fail "get gene ontology ids died"
 
 
