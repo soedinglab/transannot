@@ -27,7 +27,7 @@ import pandas as pd
 #         response.raise_for_status()
 
 # uniprot_ids = open(sys.argv[-1], "r").read()
-map_db = pd.read_csv(sys.argv[-1], index_col=1, header=None, sep=r'\s{2,}')
+map_db = pd.read_csv(sys.argv[-1], header=None, sep=r'\s{2,}')
 print(map_db)
 search_res = pd.read_csv(sys.argv[-2], header=None, sep='\t')
 # search_res = search_res[search_res.iloc[:,11]>50]
