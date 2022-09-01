@@ -1,9 +1,11 @@
 # TransAnnot - a transcriptome annotation pipeline
+
 TransAnnot predicts protein functions, orthologous relationships and biological pathways for the whole newly sequenced transcriptome.
 It uses MMseqs2 sequence-profile search to obtain closest homologs from profile database and infer protein function, structure and orthologous groups based on the identified homologs.
 Prior to functional annotation, it can perform transcriptome sequence assembly using PLASS (Protein-Level ASSembler) to assemble raw sequence reads on protein level upon user request.
 
 ## Compile from source
+
 Compiling from source helps to optimize TransAnnot for the specific system, which improve its performance. For the compilation `cmake`, `g++` and `git` are required. After the compilation the TransAnnot will be located in `build/bin` directory (or just run `which transannot` in the command line to get the pathway to TransAnnot)
 
     git clone https://github.com/mariia-zelenskaia/transannot.git
@@ -20,12 +22,24 @@ Compiling from source helps to optimize TransAnnot for the specific system, whic
     cmake -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX=. ..
 
 Other dependencies for the compilation from source are `zlib` and `bzip`.
+
+## Before starting
+
+One should download ID Mapping database of the [UniProt knowledgebase](https://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/idmapping/).
+
+To download and extract ID Mapping database simply execute following script:
+
+    chmod +x util/download_mapping_db.sh
+    ./util/download_mapping_db.sh
+
+Script is located in transannot/util directory, so please make sure you run mentioned above commands from the main directory of TransAnnot. 
 ## Quick start
 
 There is a possibility to run TransAnnot using easy module
 
-    transannot easytransannot <inputReads.fastq> <name of targetDB> <resDB> <tmp> [options]
+    transannot easytransannot <inputReads.fastq> <name of targetDB> <IDmappingDB> <resDB> <tmp> [options]
 ## Input
+
 Possible inputs are:
 
 * assembled transcriptomes (obtained e.g. using Trinity) or raw transcriptome reads, which will be assembled at protein level using `plass`
@@ -69,18 +83,12 @@ and use the below command to download the preferred database (ensure the same ke
 
     transannot downloaddb <selection> <outDB> <tmp> [options]
 
-One should also download ID Mapping database of the [UniProt knowledgebase](https://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/idmapping/).
-
-To download and extract ID Mapping database simply execute following script:
-
-    chmod +x util/download_mapping_db.sh
-    ./util/download_mapping_db.sh
-
-Script is located in transannot/util directory, so please make sure you run mentioned above commands from the main directory of TransAnnot. 
-
 ### Annotate workflow
 
 `annotate -h` provides details on sequence type and databases acceptable for the `annotate` module. 
+To run annotate module of transannot execute the following command:
+
+    transannot annotate <assembledQueryDB> <profileTargetDB> <IDmappingDB> <outDB> <tmp> [options]
 
 ### Profile databases
 
