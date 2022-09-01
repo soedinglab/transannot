@@ -25,6 +25,8 @@ Other dependencies for the compilation from source are `zlib` and `bzip`.
 
 ## Before starting
 
+### ID mapping DB
+
 One should download ID Mapping database of the [UniProt knowledgebase](https://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/idmapping/).
 
 To download and extract ID Mapping database simply execute following script:
@@ -32,7 +34,13 @@ To download and extract ID Mapping database simply execute following script:
     chmod +x util/download_mapping_db.sh
     ./util/download_mapping_db.sh
 
-Script is located in transannot/util directory, so please make sure you run mentioned above commands from the main directory of TransAnnot. 
+Script is located in transannot/util directory, so please make sure you run mentioned above commands from the main directory of TransAnnot.
+
+### tmp folder
+
+`tmp` folder keeps temporary files. By default, all the intermediate output files from different modules will be kept in this folder. To clear `tmp` pass `--remove-tmp-files` parameter.
+
+
 ## Quick start
 
 There is a possibility to run TransAnnot using easy module
@@ -101,7 +109,3 @@ Contamination module checks for the contamination in the transcriptomic data. It
     transannot contamination <Input.fasta> <targetDB> <outPath> <tmp> [options]
  
 You can find the report of taxonomy assignments in `outPath` folder.
-
-### tmp folder
-
-`tmp` folder keeps temporary files. By default, all the intermediate output files from different modules will be kept in this folder. To clear `tmp` pass `--remove-tmp-files` parameter.
