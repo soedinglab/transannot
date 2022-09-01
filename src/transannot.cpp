@@ -52,6 +52,17 @@ std::vector<struct Command> commands = {
                         {"outFile", DbType::ACCESS_MODE_OUTPUT, DbType::NEED_DATA, &DbValidator::flatfile},
                         {"tmpDir", DbType::ACCESS_MODE_OUTPUT, DbType::NEED_DATA, &DbValidator::directory}}},
 
+    {"easytransannot",    easytransannot, &localPar.easytransannot, COMMAND_EASY,
+            "Run RBH of MMseqs2 to find homology, depending on UniProtID get further information about transcriptome functions",
+            "Information from KEGG, ExPASy, Pfam, EggNOG and other databases may be assigned. For details call annotate -h or --help",
+            "Mariia Zelenskaia mariia.zelenskaia@mpinat.mpg.de & Yazhini A. yazhini@mpinat.mpg.de",
+            "<i:queryDB> <i:targetDB> <i:idMappingDB> <o:outFile> <tmpDir>",
+            NO_CITATION, {{"queryDB", DbType::ACCESS_MODE_INPUT, DbType::NEED_DATA, &DbValidator::sequenceDb},
+                        {"targetDB", DbType::ACCESS_MODE_INPUT, DbType::NEED_DATA, &DbValidator::sequenceDb},
+                        {"idMappingDB", DbType::ACCESS_MODE_INPUT, DbType::NEED_DATA, &DbValidator::flatfile},
+                        {"outFile", DbType::ACCESS_MODE_OUTPUT, DbType::NEED_DATA, &DbValidator::flatfile},
+                        {"tmpDir", DbType::ACCESS_MODE_OUTPUT, DbType::NEED_DATA, &DbValidator::directory}}},
+
 
     {"annotateprofiles", annotateprofiles, &localPar.annotateprofiles, COMMAND_EXPERT,
             "Build profiles and run profile-against-profile search",
