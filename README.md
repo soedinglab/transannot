@@ -23,6 +23,11 @@ Compiling from source helps to optimize TransAnnot for the specific system, whic
 
 Other dependencies for the compilation from source are `zlib` and `bzip`.
 
+## Dependencies
+
+PLASS
+MMseqs2
+
 ## Before starting
 
 ### ID mapping DB
@@ -39,7 +44,6 @@ Script is located in transannot/util directory, so please make sure you run ment
 ### tmp folder
 
 `tmp` folder keeps temporary files. By default, all the intermediate output files from different modules will be kept in this folder. To clear `tmp` pass `--remove-tmp-files` parameter.
-
 
 ## Quick start
 
