@@ -14,15 +14,15 @@ if ! command -v plass; then
     exit
 fi
 
-# [ -z "$MMSEQS" ] && echo "Please set the environment variable \$MMSEQS to your current binary." && exit 1;
-# [ -f "$4.dbtype" ] && echo "$4.dbtype exists already!" && exit 1;
-# [ ! -d "$5" ] && echo "tmp directory $5 not found! tmp will be created." && mkdir -p "$5";
+[ -z "$MMSEQS" ] && echo "Please set the environment variable \$MMSEQS to your current binary." && exit 1;
+[ -f "$4.dbtype" ] && echo "$4.dbtype exists already!" && exit 1;
+[ ! -d "$5" ] && echo "tmp directory $5 not found! tmp will be created." && mkdir -p "$5";
 
-# INPUT="$1"
-# TARGET="$2" #selection to downloaddb, may also be already downloaded mmseqs DB
-# MAPPING_DB="$3"
-# RESULTS="$4"
-# TMP_PATH="$5"
+INPUT="$1"
+TARGET="$2" #selection to downloaddb, may also be already downloaded mmseqs DB
+MAPPING_DB="$3"
+RESULTS="$4"
+TMP_PATH="$5"
 
 if notExists "${INPUT}.dbtype"; then
     #shellcheck disable=SC2086
