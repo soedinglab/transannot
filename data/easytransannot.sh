@@ -20,7 +20,7 @@ fi
 
 #TODO: assign INPUT, TARGET and so on in cpp code
 INPUT="$1"
-TARGET="$2" #selection to downloaddb
+TARGET="$2" #selection to downloaddb, may also be already downloaded mmseqs DB
 MAPPING_DB="$3"
 RESULTS="$4"
 TMP_PATH="$5"
@@ -32,6 +32,7 @@ if notExists "${INPUT}.dbtype"; then
 fi
 
 if notExists "${TARGET}.dbtype"; then
+    echo "Selected DB $2 not found and will be downloaded."
     #shellcheck disable=SC2086
     "${MMSEQS}" downloaddb "${TARGET}" "${TARGET}DB" "${TMP_PATH}/downloaddb_tmp" ${DOWNLOADDB_PAR} \
         || fail "download targetDB died"
