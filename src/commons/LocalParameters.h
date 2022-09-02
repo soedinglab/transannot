@@ -28,8 +28,8 @@ public:
     PARAMETER(PARAM_TAXONOMYID)
 
 
-    std::vector<MMseqsParameter*> combineList(const std::vector<MMseqsParameter*> &par1,
-                                            const std::vector<MMseqsParameter*> &par2);
+    // std::vector<MMseqsParameter*> combineList(const std::vector<MMseqsParameter*> &par1,
+    //                                         const std::vector<MMseqsParameter*> &par2);
 
     int infoSelect;
     int taxId;
