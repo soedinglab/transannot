@@ -8,11 +8,11 @@ notExists() {
         [ ! -f "$1" ]
 }
 
-#pre-processing
-if ! command -v plass; then
-    echo "Please make sure that PLASS is installed"
-    exit
-fi
+# pre-processing
+# if ! command -v plass; then
+#     echo "Please make sure that PLASS is installed"
+#     exit 1;
+# fi
 
 [ -z "$MMSEQS" ] && echo "Please set the environment variable \$MMSEQS to your current binary." && exit 1;
 [ -f "$4.dbtype" ] && echo "$4.dbtype exists already!" && exit 1;
