@@ -18,7 +18,6 @@ fi
 [ -f "$4.dbtype" ] && echo "$4.dbtype exists already!" && exit 1;
 [ ! -d "$5" ] && echo "tmp directory $5 not found! tmp will be created." && mkdir -p "$5";
 
-#TODO: assign INPUT, TARGET and so on in cpp code
 INPUT="$1"
 TARGET="$2" #selection to downloaddb, may also be already downloaded mmseqs DB
 MAPPING_DB="$3"
