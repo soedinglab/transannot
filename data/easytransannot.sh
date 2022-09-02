@@ -19,10 +19,10 @@ notExists() {
 [ ! -d "$5" ] && echo "tmp directory $5 not found! tmp will be created." && mkdir -p "$5";
 
 # INPUT="$@"
-TARGET="$2" #selection to downloaddb, may also be already downloaded mmseqs DB
-MAPPING_DB="$3"
-RESULTS="$4"
-TMP_PATH="$5"
+# TARGET="$2" #selection to downloaddb, may also be already downloaded mmseqs DB
+# MAPPING_DB="$3"
+# RESULTS="$4"
+# TMP_PATH="$5"
 
 if notExists "${INPUT}.dbtype"; then
     #shellcheck disable=SC2086
