@@ -15,8 +15,8 @@ notExists() {
 # fi
 
 [ -z "$MMSEQS" ] && echo "Please set the environment variable \$MMSEQS to your current binary." && exit 1;
-[ -f "$4.dbtype" ] && echo "$4.dbtype exists already!" && exit 1;
-[ ! -d "$5" ] && echo "tmp directory $5 not found! tmp will be created." && mkdir -p "$5";
+[ -f "${RESULTS}.dbtype" ] && echo "${RESULTS}.dbtype exists already!" && exit 1;
+[ ! -d "${TMP_PATH}" ] && echo "tmp directory ${TMP_PATH} not found! tmp will be created." && mkdir -p "${TMP_PATH}";
 
 # INPUT="$@"
 # TARGET="$2" #selection to downloaddb, may also be already downloaded mmseqs DB
