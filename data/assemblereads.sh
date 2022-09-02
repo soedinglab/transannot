@@ -22,7 +22,7 @@ TMP_PATH="$3"
 #mkdir -p "${TMP_PATH}/plass_tmp"
 if notExists "${RESULTS}/assembly.fasta"; then
     #shellcheck disable=SC2086
-    plass assemble "${INPUT}" "${TMP_PATH}/assembly.fasta" "${TMP_PATH}/plass_tmp" ${ASSEMBLY_PAR} \
+    "$(pwd)"/plass/bin/plass assemble "${INPUT}" "${TMP_PATH}/assembly.fasta" "${TMP_PATH}/plass_tmp" ${ASSEMBLY_PAR} \
         || fail "plass assembly died"
 fi
 
