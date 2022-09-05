@@ -85,6 +85,12 @@ fi
 			fi
 			rm -f "${TMP_PATH}/searchDB."[0-9]*
 		fi
+
+		# if "$("${MMSEQS}" dbtype "${TARGET}")" != "Profile"; then
+		# #shellcheck disable=SC2086
+		# "${MMSEQS}" sequence2profile "${TARGET}" "${TARGET}profile" ${CREATE_PROF_PAR} \
+		# 	|| fail "create profile db died"
+		# fi
 	fi
 
 #TODO extract column with IDs & pre-process it for UniProt mapping from searchDB
