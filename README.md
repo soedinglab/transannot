@@ -50,6 +50,7 @@ Script is located in transannot/util directory, so please make sure you run ment
 There is a possibility to run TransAnnot using easy module
 
     transannot easytransannot <inputReads.fastq> <name of targetDB> <IDmappingDB> <resDB> <tmp> [options]
+
 ## Input
 
 Possible inputs are:
@@ -95,6 +96,8 @@ and use the below command to download the preferred database (ensure the same ke
 
     transannot downloaddb <selection> <outDB> <tmp> [options]
 
+Hence transannot runs sequence-profile search in `annotate` module, profile database must be downloaded, for example Pfam-A or eggNOG.
+
 ### Annotate workflow
 
 `annotate -h` provides details on sequence type and databases acceptable for the `annotate` module. 
@@ -104,7 +107,7 @@ To run annotate module of transannot execute the following command:
 
 ### Profile databases
 
-Sequence profiles contain linear probabilities for each aminoacid at every position of the set. There is an internal MMseqs2 profile format.
+Sequence profiles contain linear probabilities for each aminoacid at every position of the set. There is an internal MMseqs2 profile DB format. `annotate` module of transannot implements sequence-profile search, that is why profile database must be provided as a input target database.
 
 ### Contamination
 
