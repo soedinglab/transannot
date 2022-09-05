@@ -184,6 +184,7 @@ int annotate(int argc, const char **argv, const Command &command){
     }
 
     cmd.addVariable("REMOVE_TMP", par.removeTmpFiles ? "TRUE" : NULL);
+    // cmd.addVariable("CREATE_PROF_PAR", par.createParameterString(par.sequence2profile).c_str());
     cmd.addVariable("SEARCH_PAR", par.createParameterString(par.searchworkflow, true).c_str());
     cmd.addVariable("INFOSELECT_PAR", infoSelection.c_str());
     cmd.addVariable("TAXONOMY_ID", par.taxId == 1 ? "TRUE" : NULL);
