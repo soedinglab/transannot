@@ -15,14 +15,14 @@ notExists(){
 # fi
 [ -z "$MMSEQS" ] && echo "Please set the environment variable \$MMSEQS to your current binary." && exit 1;
 
-INPUT="$1"
-RESULTS="$2"
-TMP_PATH="$3"
+# INPUT="$1"
+# RESULTS="$2"
+# TMP_PATH="$3"
 
 #mkdir -p "${TMP_PATH}/plass_tmp"
 if notExists "${RESULTS}/assembly.fasta"; then
     #shellcheck disable=SC2086
-    "$(pwd)"/plass/bin/plass assemble "${INPUT}" "${TMP_PATH}/assembly.fasta" "${TMP_PATH}/plass_tmp" ${ASSEMBLY_PAR} \
+    "$(pwd)"/plass/bin/plass assemble "$@" "${TMP_PATH}/assembly.fasta" "${TMP_PATH}/plass_tmp" ${ASSEMBLY_PAR} \
         || fail "plass assembly died"
 fi
 
