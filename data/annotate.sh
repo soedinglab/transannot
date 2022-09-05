@@ -28,8 +28,8 @@ abspath() {
 
 #pre-processing
 [ -z "$MMSEQS" ] && echo "Please set the environment variable \$MMSEQS to your current binary." && exit 1;
-hasCommand wget
-#hasCommand foldseek
+# hasCommand wget
+# hasCommand foldseek
 
 #checking how many input variables are provided
 #[ "$#" -ne 4 ] && echo "Please provide <assembled transciptome> <targetDB> <outDB> <tmp>" && exit 1;
@@ -37,7 +37,7 @@ hasCommand wget
 #checking whether files already exist
 [ ! -f "$1.dbtype" ] && echo "$1.dbtype not found! please make sure that MMseqs db is already created." && exit 1;
 [ ! -f "$2.dbtype" ] && echo "$2.dbtype not found!" && exit 1;
-[   -f "$4.dbtype" ] && echo "$3.dbtype exists already!" && exit 1; 
+[   -f "$4.dbtype" ] && echo "$4.dbtype exists already!" && exit 1; 
 [ ! -d "$5" ] && echo "tmp directory $5 not found! tmp will be created." && mkdir -p "$5"; 
 
 INPUT="$1" #assembled sequence
