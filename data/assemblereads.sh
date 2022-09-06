@@ -20,22 +20,21 @@ notExists(){
 # TMP_PATH="$3"
 
 #mkdir -p "${TMP_PATH}/plass_tmp"
-if notExists "${RESULTS}/assembly.fasta"; then
+if notExists "${RESULTS}.fasta"; then
     #shellcheck disable=SC2086
-    "$(pwd)"/plass/bin/plass assemble "$@" "${TMP_PATH}/assembly.fasta" "${TMP_PATH}/plass_tmp" ${ASSEMBLY_PAR} \
+    "$(pwd)"/plass/bin/plass assemble "$@" "${RESULTS}.fasta" "${TMP_PATH}" ${ASSEMBLY_PAR} \
         || fail "plass assembly died"
 fi
 
 if notExists "${RESULTS}.dbtype"; then
     echo "creating mmseqs db from assembled transcriptome"
     #shellcheck disable=SC2086
-    "$MMSEQS" createdb "${TMP_PATH}/assembly.fasta" "${RESULTS}" --createdb-mode 1 ${CREATEDB_PAR} \
+    "$MMSEQS" createdb "${RESULTS}.fasta" "${RESULTS}DB" --createdb-mode 1 ${CREATEDB_PAR} \
         || fail "createdb died"
 fi
 
 #remove temporary files
 if [ -n "$REMOVE_TMP" ]; then
     echo "Remove temporary files and directories"
-    rm -rf "${TMP_PATH}/plass_tmp"
-    rm -f "${TMP_PATH}/assemblereads.sh" 
+    rm -rf "${TMP_PATH}" 
 fi
