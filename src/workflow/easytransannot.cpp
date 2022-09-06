@@ -37,9 +37,9 @@ int easytransannot(int argc, const char **argv, const Command& command) {
     cmd.addVariable("VERBOSITY_PAR", par.createParameterString(par.onlyverbosity).c_str());
     cmd.addVariable("THREADS_PAR", par.createParameterString(par.onlythreads).c_str());
 
-    std::string program(tmpDir + "/easytransannot.sh");
-    FileUtil::writeFile(program.c_str(), easytransannot_sh, easytransannot_sh_len);
+    std::string program = tmpDir + "/easytransannot.sh";
+    FileUtil::writeFile(program, easytransannot_sh, easytransannot_sh_len);
     cmd.execProgram(program.c_str(), par.filenames);
     
     return EXIT_SUCCESS;
-}
+} 

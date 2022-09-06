@@ -27,8 +27,8 @@
     cmd.addVariable("TMP_PATH", tmpDir.c_str());
     cmd.addVariable("RESULTS", outDb.c_str());
 
-    FileUtil::writeFile(tmpDir + "assemblereads.sh", assemblereads_sh, assemblereads_sh_len);
-    std::string program(tmpDir + "assemblereads.sh");
+    std::string program = tmpDir + "/assemblereads.sh";
+    FileUtil::writeFile(program, assemblereads_sh, assemblereads_sh_len);
     cmd.execProgram(program.c_str(), par.filenames);
 
     return EXIT_SUCCESS;
