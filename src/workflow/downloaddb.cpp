@@ -24,7 +24,7 @@ int downloaddb(int argc, const char **argv, const Command& command) {
     cmd.addVariable("THREADS_PAR", par.createParameterString(par.onlythreads).c_str());
     cmd.addVariable("VERBOSITY", par.createParameterString(par.onlyverbosity).c_str());
 
-    std::string program(tmpDir + "/downloaddb.sh");
+    std::string program = tmpDir + "/downloaddb.sh";
     FileUtil::writeFile(program, downloaddb_sh, downloaddb_sh_len);
     cmd.execProgram(program.c_str(), par.filenames);
 

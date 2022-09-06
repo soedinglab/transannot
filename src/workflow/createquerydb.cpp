@@ -25,8 +25,8 @@ int createquerydb(int argc, const char **argv, const Command& command) {
     cmd.addVariable("THREADS_PAR", par.createParameterString(par.onlythreads).c_str());
     cmd.addVariable("VERBOSITY_PAR", par.createParameterString(par.onlyverbosity).c_str());
 
-    std::string program(tmpDir + "/createquerydb.sh");
-    FileUtil::writeFile(program.c_str(), createquerydb_sh, createquerydb_sh_len);
+    std::string program = tmpDir + "/createquerydb.sh";
+    FileUtil::writeFile(program, createquerydb_sh, createquerydb_sh_len);
     cmd.execProgram(program.c_str(), par.filenames);
     
     return EXIT_SUCCESS;
