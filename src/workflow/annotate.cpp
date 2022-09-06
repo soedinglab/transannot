@@ -194,8 +194,8 @@ int annotate(int argc, const char **argv, const Command &command){
     cmd.addVariable("THREADS_PAR", par.createParameterString(par.onlythreads).c_str());
     cmd.addVariable("VERBOSITY_PAR", par.createParameterString(par.onlyverbosity).c_str());
 
+    FileUtil::writeFile(tmpDir + "/annotate.sh", annotate_sh, annotate_sh_len);
     std::string program(tmpDir + "/annotate.sh");
-    FileUtil::writeFile(program.c_str(), annotate_sh, annotate_sh_len);
     cmd.execProgram(program.c_str(), par.filenames);
     
     // should not get here
