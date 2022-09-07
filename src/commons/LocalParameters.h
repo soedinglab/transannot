@@ -43,6 +43,7 @@ private:
     {
         assemblereads.push_back(&PARAM_CREATEDB_MODE);
         assemblereads.push_back(&PARAM_COMPRESSED);
+        assemblereads.push_back(&PARAM_REMOVE_TMP_FILES);
         assemblereads.push_back(&PARAM_THREADS);
         assemblereads.push_back(&PARAM_V);
 
