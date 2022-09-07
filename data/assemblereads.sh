@@ -36,6 +36,5 @@ fi
 #remove temporary files
 if [ -n "$REMOVE_TMP" ]; then
     echo "Remove temporary files and directories"
-    rm -rf "${TMP_PATH}/plass_tmp"
-    rm -f "${TMP_PATH}/assemblereads.sh" 
+    rm -rf "${TMP_PATH}" 
 fi
