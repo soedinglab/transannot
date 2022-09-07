@@ -66,6 +66,7 @@ private:
         contaminationworkflow.push_back(&PARAM_THREADS);
         contaminationworkflow.push_back(&PARAM_V);
 
+        createquerydb.push_back(&PARAM_REMOVE_TMP_FILES);
         createquerydb.push_back(&PARAM_THREADS);
         createquerydb.push_back(&PARAM_V);
 
