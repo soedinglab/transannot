@@ -19,19 +19,8 @@ notExists() {
 # OUT_PATH="$3"
 # TMP_PATH="$4"
 
-#if notExists "${TARGET}.dbtype"; then
-#    #shellcheck disable=SC2086
-#    "$MMSEQS" createdb "${TARGET}" "${TMP_PATH}/target" ${CREATEDB_PAR} \
-#        || fail "create targetDB died"
-#fi
-
-#only INPUT goes to this script, everything else will be automatically generated in easytaxonomy
-#only one variable should be given
-#--tax-lineage 2-> column with full lineage NCBI taxids
-
-# mkdir -p "${TMP_PATH}/easy_taxonomy_tmp"
 #shellcheck disable=SC2086
-"$MMSEQS" taxonomy "$@" "${TARGET}" "${OUT_PATH}" "${TMP_PATH}" ${TAXONOMY_PAR} \
+"$MMSEQS" taxonomy "$@" "${TARGET}" "${OUT_PATH}" "${TMP_PATH}" --compressed ${TAXONOMY_PAR} \
         || fail "taxonomy died"
 
 if [ -f "${OUT_PATH}.1" ]; then
