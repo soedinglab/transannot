@@ -194,7 +194,7 @@ int dolca(int argc, const char **argv, const Command& command, bool majority) {
         }
     }
     Debug(Debug::INFO) << "Taxonomy for " << taxonNotFound << " out of " << taxonNotFound+found << " entries not found\n";
-    writer.close();
+    writer.close(true);
     reader.close();
     delete t;
 
