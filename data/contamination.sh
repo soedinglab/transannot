@@ -10,7 +10,7 @@ notExists() {
 
 #pre-processing
 [ -z "$MMSEQS" ] && echo "Please set the environment variable \$MMSEQS to your current binary" && exit 1;
-[ "$#" -ne 4 ] && echo "Please provide <InputSeq> <targetDB> <outPath> <tmp>" && exit 1; #easytaxonomy takes fasta file as an input
+# [ "$#" -ne 4 ] && echo "Please provide <InputSeq> <targetDB> <outPath> <tmp>" && exit 1; #easytaxonomy takes fasta file as an input
 [ ! -f "$2.dbtype" ] && echo "Please make sure proper target database is provided and mmseqs database is created!" && exit 1;
 [ ! -d "$4" ] && echo "tmp directory $4 not found! tmp will be created." && mkdir -p "$4";
 

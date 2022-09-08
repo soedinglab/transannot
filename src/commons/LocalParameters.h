@@ -63,6 +63,7 @@ private:
         downloaddb.push_back(&PARAM_TAXONOMYID);
 
         contaminationworkflow.push_back(&PARAM_COMPRESSED);
+        contaminationworkflow.push_back(&PARAM_REMOVE_TMP_FILES);
         contaminationworkflow.push_back(&PARAM_THREADS);
         contaminationworkflow.push_back(&PARAM_V);
 
