@@ -29,9 +29,9 @@ notExists() {
 #only one variable should be given
 #--tax-lineage 2-> column with full lineage NCBI taxids
 
-mkdir -p "${TMP_PATH}/easy_taxonomy_tmp"
+# mkdir -p "${TMP_PATH}/easy_taxonomy_tmp"
 #shellcheck disable=SC2086
-"$MMSEQS" easy-taxonomy "$@" "${TARGET}" "${OUT_PATH}" "${TMP_PATH}/easy_taxonomy_tmp" ${EASYTAXONOMY_PAR} \
+"$MMSEQS" taxonomy "$@" "${TARGET}" "${OUT_PATH}" "${TMP_PATH}" ${EASYTAXONOMY_PAR} \
         || fail "easytaxonomy died"
 
 #easy taxonomy returns output in .tsv format
@@ -40,8 +40,11 @@ mkdir -p "${TMP_PATH}/easy_taxonomy_tmp"
 #NOTE: $2 is a second column of tophit_report6 $6 is an taxonomical information identifier
 #we compare values of each line's $2 with (I would suggest) 0.8 (out of 1)
 #NOTE: I decided to use break after each condition so that there will be not so many output lines created, especially in case of contamination
-sort -k2 -rn "${OUT_PATH}_tophit_report" > "${OUT_PATH}_tophit_report_sorted"
-rm -f "${OUT_PATH}_tophit_report"
+# "${OUT_PATH}_tophit_report"
+# "${OUT_PATH}_tophit_report_sorted" 
+
+sort -k2 -rn "${OUT_PATH}" >> "${OUT_PATH}_sorted"
+# rm -f "${OUT_PATH}_tophit_report"
 awk 'NR == 1 {
     if($2 < 0.8) {
         print "Input sequence may be contaminated, for more information see", "${OUT_PATH}_tophit_report_sorted", "\n"
@@ -55,6 +58,6 @@ awk 'NR == 1 {
 if [ -n "$REMOVE_TMP" ]; then
     #shellcheck disable=SC2086
     echo "Remove temporary files and directories"
-    rm -rf "${TMP_PATH}/easy_taxonomy_tmp"
+    # rm -rf "${TMP_PATH}/easy_taxonomy_tmp"
     rm -f "${TMP_PATH}/contamination.sh"
 fi
