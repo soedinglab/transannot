@@ -98,7 +98,7 @@ fi
 #TODO --parallel=${THREADS_PAR} for sort parallelization 
 if notExists "${TMP_PATH}/searchDB_filt.tsv"; then
 	#shellcheck disable=SC2086
-	awk '{if (($12>=50) && ($3>=0.6)) print $1, $2}' "${TMP_PATH}/searchDB.csv" |	sort -n -k5 | awk '!seen[$1]++' >> "${TMP_PATH}/searchDB_filt_IDs.tsv"
+	awk '{if (($12>=50) && ($3>=0.6)) print $1, $2}' "${TMP_PATH}/searchDB.csv" | sort -n -k5 | awk '!seen[$1]++' >> "${TMP_PATH}/searchDB_filt_IDs.tsv"
 fi
 
 #NEW implement foldseek
@@ -124,12 +124,12 @@ python3 "${SCRIPT}/data/access_uniprot.py" "${TMP_PATH}/searchDB_filt_IDs.tsv" >
 #  	|| fail "get gene ontology ids died"
 
 
-#create output in .tsv format
-if notExists "${RESULTS}.tsv"; then
-	#shellcheck disable=SC2086
-	"$MMSEQS" createtsv "${INPUT}" "${RESULTS}" "${RESULTS}.tsv" ${CREATETSV_PAR} \
-		|| fail "createtsv died"
-fi
+# create output in .tsv format
+# if notExists "${RESULTS}.tsv"; then
+# 	#shellcheck disable=SC2086
+# 	"$MMSEQS" createtsv "${INPUT}" "${RESULTS}" "${RESULTS}.tsv" ${CREATETSV_PAR} \
+# 		|| fail "createtsv died"
+# fi
 
 #remove temporary files and directories
 if [ -n "${REMOVE_TMP}" ]; then

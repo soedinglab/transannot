@@ -31,7 +31,6 @@ def map_retrieve(ids2map, source_fmt='ACC+ID',target_fmt='ACC', output_fmt='tab'
 # print(map_db)
 
 search_res = pd.read_csv(sys.argv[-1], header=None, sep='\t')
-# print(search_res)
 # map_db.to_dict()
 # uniprot_ids = open(sys.argv[-1], "r").read().splitlines() #command line arguments passed to script -> only one input in the script
 # print(uniprot_ids)
