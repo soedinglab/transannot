@@ -20,7 +20,7 @@ notExists() {
 # TMP_PATH="$4"
 
 #shellcheck disable=SC2086
-"$MMSEQS" taxonomy "$@" "${TARGET}" "${OUT_PATH}" "${TMP_PATH}" --compressed ${TAXONOMY_PAR} \
+"$MMSEQS" taxonomy "$@" "${TARGET}" "${OUT_PATH}" "${TMP_PATH}" --compressed 1 ${TAXONOMY_PAR} \
         || fail "taxonomy died"
 
 if [ -f "${OUT_PATH}.1" ]; then
