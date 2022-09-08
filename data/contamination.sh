@@ -34,6 +34,9 @@ notExists() {
 "$MMSEQS" taxonomy "$@" "${TARGET}" "${OUT_PATH}" "${TMP_PATH}" ${TAXONOMY_PAR} \
         || fail "taxonomy died"
 
+"$MMSEQS" mergedbs "${OUT_PATH}."[0-9]* "${OUT_PATH}_merged"
+rm -f "${OUT_PATH}."[0-9]*
+
 #easy taxonomy returns output in .tsv format
 #"${OUT_PATH}_tophit_report" -> .tsv
 
@@ -43,7 +46,7 @@ notExists() {
 # "${OUT_PATH}_tophit_report"
 # "${OUT_PATH}_tophit_report_sorted" 
 
-sort -k2 -rn "${OUT_PATH}" >> "${OUT_PATH}_sorted"
+sort -k2 -rn "${OUT_PATH}_merged" >> "${OUT_PATH}_sorted"
 # rm -f "${OUT_PATH}_tophit_report"
 awk 'NR == 1 {
     if($2 < 0.8) {
