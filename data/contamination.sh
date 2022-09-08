@@ -20,14 +20,14 @@ notExists() {
 # TMP_PATH="$4"
 
 #shellcheck disable=SC2086
-"$MMSEQS" taxonomy "$@" "${TARGET}" "${OUT_PATH}" "${TMP_PATH}" --compressed 1 ${TAXONOMY_PAR} \
+"$MMSEQS" taxonomy "$@" "${TARGET}" "${OUT_PATH}" "${TMP_PATH}" ${TAXONOMY_PAR} \
         || fail "taxonomy died"
 
-if [ -f "${OUT_PATH}.1" ]; then
-    #shellcheck disable=SC2086
-    "$MMSEQS" mergedbs "${OUT_PATH}" "${OUT_PATH}_merged" "${OUT_PATH}."[0-9]*
-    rm -f "${OUT_PATH}."[0-9]*
-fi
+# if [ -f "${OUT_PATH}.1" ]; then
+#     #shellcheck disable=SC2086
+#     "$MMSEQS" mergedbs "${OUT_PATH}" "${OUT_PATH}_merged" "${OUT_PATH}."[0-9]*
+#     rm -f "${OUT_PATH}."[0-9]*
+# fi
 
 #easy taxonomy returns output in .tsv format
 #"${OUT_PATH}_tophit_report" -> .tsv
@@ -38,7 +38,7 @@ fi
 # "${OUT_PATH}_tophit_report"
 # "${OUT_PATH}_tophit_report_sorted" 
 
-sort -k2 -rn "${OUT_PATH}_merged" >> "${OUT_PATH}_sorted"
+sort -k2 -rn "${OUT_PATH}" >> "${OUT_PATH}_sorted"
 # rm -f "${OUT_PATH}_tophit_report"
 awk 'NR == 1 {
     if($2 < 0.8) {
