@@ -11,13 +11,13 @@ notExists() {
 #pre-processing
 [ -z "$MMSEQS" ] && echo "Please set the environment variable \$MMSEQS to your current binary" && exit 1;
 # [ "$#" -ne 4 ] && echo "Please provide <InputSeq> <targetDB> <outPath> <tmp>" && exit 1; #easytaxonomy takes fasta file as an input
-[ ! -f "$2.dbtype" ] && echo "Please make sure proper target database is provided and mmseqs database is created!" && exit 1;
-[ ! -d "$4" ] && echo "tmp directory $4 not found! tmp will be created." && mkdir -p "$4";
+[ ! -f "${TARGET}.dbtype" ] && echo "Please make sure proper target database is provided and mmseqs database is created!" && exit 1;
+[ ! -d "${TMP_PATH}" ] && echo "tmp directory ${TMP_PATH} not found! tmp will be created." && mkdir -p "${TMP_PATH}";
 
-INPUT="$1"
-TARGET="$2"
-OUT_PATH="$3"
-TMP_PATH="$4"
+# INPUT="$1"
+# TARGET="$2"
+# OUT_PATH="$3"
+# TMP_PATH="$4"
 
 #if notExists "${TARGET}.dbtype"; then
 #    #shellcheck disable=SC2086
@@ -31,7 +31,7 @@ TMP_PATH="$4"
 
 mkdir -p "${TMP_PATH}/easy_taxonomy_tmp"
 #shellcheck disable=SC2086
-"$MMSEQS" easy-taxonomy "${INPUT}" "${TARGET}" "${OUT_PATH}" "${TMP_PATH}/easy_taxonomy_tmp" ${EASYTAXONOMY_PAR} \
+"$MMSEQS" easy-taxonomy "$@" "${TARGET}" "${OUT_PATH}" "${TMP_PATH}/easy_taxonomy_tmp" ${EASYTAXONOMY_PAR} \
         || fail "easytaxonomy died"
 
 #easy taxonomy returns output in .tsv format
