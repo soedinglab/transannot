@@ -32,7 +32,7 @@ notExists() {
 # mkdir -p "${TMP_PATH}/easy_taxonomy_tmp"
 #shellcheck disable=SC2086
 "$MMSEQS" taxonomy "$@" "${TARGET}" "${OUT_PATH}" "${TMP_PATH}" ${TAXONOMY_PAR} \
-        || fail "easytaxonomy died"
+        || fail "taxonomy died"
 
 #easy taxonomy returns output in .tsv format
 #"${OUT_PATH}_tophit_report" -> .tsv
@@ -53,7 +53,7 @@ awk 'NR == 1 {
         print "No contamination detected, possible taxonomical assignment is ", $6,"\n"
         print "For more information see", "${OUT_PATH}_tophit_report_sorted", "\n"
     }
-}' "${OUT_PATH}_tophit_report_sorted" # or we can call a small separate shellscript to pass the file and report the result. You refer to transannot/util folder in which I added the separate small script to perform this function. Hence, we can write the step like this: 'transannot/util/report_contamination.sh ${OUT_PATH}_tophit_report_sorted'
+}' "${OUT_PATH}_sorted" # or we can call a small separate shellscript to pass the file and report the result. You refer to transannot/util folder in which I added the separate small script to perform this function. Hence, we can write the step like this: 'transannot/util/report_contamination.sh ${OUT_PATH}_tophit_report_sorted'
 
 if [ -n "$REMOVE_TMP" ]; then
     #shellcheck disable=SC2086
