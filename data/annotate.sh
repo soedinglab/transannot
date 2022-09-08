@@ -116,7 +116,7 @@ MMSEQS="$(abspath "$(command -v "${MMSEQS}")")"
 SCRIPT="${MMSEQS%/build*}"
 chmod +x "${SCRIPT}/data/access_uniprot.py"
 #shellcheck disable=SC2086
-python3 "${SCRIPT}/data/access_uniprot.py" "${TMP_PATH}/searchDB_filt_IDs.tsv" "${MAPPING_DB}" >> "${RESULTS}" \
+python3 "${SCRIPT}/data/access_uniprot.py" "${TMP_PATH}/searchDB_filt_IDs.tsv" >> "${RESULTS}" \
  	|| fail "get gene ontology ids died"
 
 
