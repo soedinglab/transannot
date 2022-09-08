@@ -34,8 +34,11 @@ notExists() {
 "$MMSEQS" taxonomy "$@" "${TARGET}" "${OUT_PATH}" "${TMP_PATH}" ${TAXONOMY_PAR} \
         || fail "taxonomy died"
 
-"$MMSEQS" mergedbs "${OUT_PATH}."[0-9]* "${OUT_PATH}_merged"
-rm -f "${OUT_PATH}."[0-9]*
+if [ -f "${OUT_PATH}.1" ]; then
+    #shellcheck disable=SC2086
+    "$MMSEQS" mergedbs "${OUT_PATH}.0" "${OUT_PATH}_merged" "${OUT_PATH}."[0-9]*
+    rm -f "${OUT_PATH}."[0-9]*
+fi
 
 #easy taxonomy returns output in .tsv format
 #"${OUT_PATH}_tophit_report" -> .tsv
