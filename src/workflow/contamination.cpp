@@ -28,7 +28,7 @@ int contamination(int argc, const char **argv, const Command& command) {
     cmd.addVariable("TMP_PATH", tmpDir.c_str());
     cmd.addVariable("TARGET", par.filenames.back().c_str());
     par.filenames.pop_back();
-    cmd.addVariable("EASYTAXONOMY_PAR", par.createParameterString(par.easytaxonomy).c_str());
+    cmd.addVariable("TAXONOMY_PAR", par.createParameterString(par.taxonomy, true).c_str());
     // cmd.addVariable("THREADS_PAR", par.createParameterString(par.onlythreads).c_str());
     cmd.addVariable("VERBOSITY_PAR", par.createParameterString(par.onlyverbosity).c_str());
 

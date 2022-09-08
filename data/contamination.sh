@@ -31,7 +31,7 @@ notExists() {
 
 # mkdir -p "${TMP_PATH}/easy_taxonomy_tmp"
 #shellcheck disable=SC2086
-"$MMSEQS" taxonomy "$@" "${TARGET}" "${OUT_PATH}" "${TMP_PATH}" ${EASYTAXONOMY_PAR} \
+"$MMSEQS" taxonomy "$@" "${TARGET}" "${OUT_PATH}" "${TMP_PATH}" ${TAXONOMY_PAR} \
         || fail "easytaxonomy died"
 
 #easy taxonomy returns output in .tsv format
