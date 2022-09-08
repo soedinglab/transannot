@@ -36,7 +36,7 @@ notExists() {
 
 if [ -f "${OUT_PATH}.1" ]; then
     #shellcheck disable=SC2086
-    "$MMSEQS" mergedbs "${OUT_PATH}.0" "${OUT_PATH}_merged" "${OUT_PATH}."[0-9]*
+    "$MMSEQS" mergedbs "${OUT_PATH}" "${OUT_PATH}_merged" "${OUT_PATH}."[0-9]*
     rm -f "${OUT_PATH}."[0-9]*
 fi
 
