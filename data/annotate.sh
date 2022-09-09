@@ -8,7 +8,7 @@ notExists() {
 		[ ! -f "$1" ]
 }
 
-hasCommand () {
+hasCommand() {
     command -v "$1" >/dev/null 2>&1
 }
 
@@ -26,23 +26,28 @@ abspath() {
     fi
 }
 
+filterDb() {
+	awk '{if (($12>=50) && ($3>=0.6)) print $1, $2}' "$1" | sort -n -k5 | awk '!seen[$1]++' | sort -n - k1 >> "$2"
+}
+
 #pre-processing
 [ -z "$MMSEQS" ] && echo "Please set the environment variable \$MMSEQS to your current binary." && exit 1;
-# hasCommand wget
-# hasCommand foldseek
 
 #checking how many input variables are provided
-#[ "$#" -ne 4 ] && echo "Please provide <assembled transciptome> <targetDB> <outDB> <tmp>" && exit 1;
+[ "$#" -ne 5 ] && echo "Please provide <assembled transciptome> <profile target DB> <sequence target DB> <outDB> <tmp>" && exit 1;
 [ "$("${MMSEQS}" dbtype "$2")" != "Profile" ] && echo "The given target database is not profile! Please download profileDB or create from existing sequenceDB!" && exit 1;
+[ "$("${MMSEQS}" dbtype "$3")" = "Profile" ] && echo "The given target database is profile! Please provide sequence DB!" && exit 1;
+
 #checking whether files already exist
 [ ! -f "$1.dbtype" ] && echo "$1.dbtype not found! please make sure that MMseqs db is already created." && exit 1;
 [ ! -f "$2.dbtype" ] && echo "$2.dbtype not found!" && exit 1;
+[ ! -f "$3.dbtype" ] && echo "$3.dbtype not found!" && exit 1;
 [   -f "$4.dbtype" ] && echo "$4.dbtype exists already!" && exit 1; 
 [ ! -d "$5" ] && echo "tmp directory $5 not found! tmp will be created." && mkdir -p "$5"; 
 
 INPUT="$1" #assembled sequence
-TARGET="$2"  #already downloaded database
-MAPPING_DB="$3"
+PROFILE_TARGET="$2"  #already downloaded database
+TARGET="$3"
 RESULTS="$4"
 TMP_PATH="$5" 
 
@@ -57,79 +62,65 @@ if notExists "${TMP_PATH}/clu.dbtype"; then
 		|| fail "extract representative sequences died"
 fi
 
-	#MMSEQS2 RBH
-	#if we assemble with plass we get "${RESULTS}/plass_assembly.fas" in MMseqs db format as input
-	#otherwise we have .fas file which must be translated into protein sequence and turned into MMseqs db
-	#alignment DB is not a directory and may not be created
-	if [ -n "${TAXONOMY_ID}" ]; then
+if [ -n "${TAXONOMY_ID}" ]; then
 	
-		echo "Taxonomy ID is provided. rbh will be run against known organism's proteins"
-		if notExists "${RESULTS}.dbtype"; then
-			#shellcheck disable=SC2086
-			"$MMSEQS" rbh "${INPUT}" "${TARGET}" "${TMP_PATH}/searchDB" "${TMP_PATH}/search_tmp" ${SEARCH_PAR} \
-				|| fail "rbh search died"
-		fi
+	echo "Taxonomy ID is provided. rbh will be run against known organism's proteins"
+	if notExists "${RESULTS}.dbtype"; then
+		#shellcheck disable=SC2086
+		"$MMSEQS" rbh "${INPUT}" "${PROFILE_TARGET}" "${TMP_PATH}/searchDB" "${TMP_PATH}/search_tmp" ${SEARCH_PAR} \
+			|| fail "rbh search died"
+	fi
 		
 
 	elif [ -z "${TAXONOMY_ID}" ]; then
 		if notExists "${RESULTS}.dbtype"; then
 		echo "No taxonomy ID is provided. Sequence-profile search will be run"
 			#shellcheck disable=SC2086
-			"$MMSEQS" search "${TMP_PATH}/clu_rep" "${TARGET}" "${TMP_PATH}/searchDB" "${TMP_PATH}/search_tmp" ${SEARCH_PAR} \
-				|| fail "search died"
+			"$MMSEQS" search "${TMP_PATH}/clu_rep" "${PROFILE_TARGET}" "${TMP_PATH}/prof_searchDB" "${TMP_PATH}/search_tmp" ${SEARCH_PAR} \
+				|| fail "sequence-profile search died"
 
-			if notExists "${TMP_PATH}/searchDB.csv"; then
+			if notExists "${TMP_PATH}/prof_searchDB.csv"; then
 				#shellcheck disable=SC2086
-				"$MMSEQS" convertalis "${TMP_PATH}/clu_rep" "${TARGET}" "${TMP_PATH}/searchDB" "${TMP_PATH}/searchDB.csv" \
-				|| fail "converatalis died"
+				"$MMSEQS" convertalis "${TMP_PATH}/clu_rep" "${PROFILE_TARGET}" "${TMP_PATH}/prof_searchDB" "${TMP_PATH}/prof_searchDB.csv" \
+					|| fail "converatalis died"
 			fi
-			rm -f "${TMP_PATH}/searchDB."[0-9]*
-		fi
+			rm -f "${TMP_PATH}/prof_searchDB."[0-9]*
 
-		# if "$("${MMSEQS}" dbtype "${TARGET}")" != "Profile"; then
-		# #shellcheck disable=SC2086
-		# "${MMSEQS}" sequence2profile "${TARGET}" "${TARGET}profile" ${CREATE_PROF_PAR} \
-		# 	|| fail "create profile db died"
-		# fi
+			#shellcheck disable=SC2086
+			"$MMSEQS" search "${TMP_PATH}/clu_rep" "${TARGET}" "${TMP_PATH}/seq_searchDB" "${TMP_PATH}/search_tmp" ${SEARCH_PAR} \
+				|| fail "sequence-sequence search died"
+
+			if notExists "${TMP_PATH}/seq_searchDB.csv"; then
+				#shellcheck disable=SC2086
+				"$MMSEQS" convertalis "${TMP_PATH}/clu_rep" "${TARGET}" "${TMP_PATH}/seq_searchDB" "${TMP_PATH}/seq_searchDB.csv" \
+					|| fail "convertalis died"
+			fi
+		fi
 	fi
 
-#TODO extract column with IDs & pre-process it for UniProt mapping from searchDB
-#pre-processing of alignment with bit score and sequence identity cutoff
-#TODO --parallel=${THREADS_PAR} for sort parallelization 
-if notExists "${TMP_PATH}/searchDB_filt.tsv"; then
-	#shellcheck disable=SC2086
-	awk '{if (($12>=50) && ($3>=0.6)) print $1, $2}' "${TMP_PATH}/searchDB.csv" | sort -n -k5 | awk '!seen[$1]++' >> "${TMP_PATH}/searchDB_filt_IDs.tsv"
+if notExists "${TMP_PATH}/searchDB.tsv"; then
+	echo "Filter, sort and merge alignment DBs"
+	filterDb "${TMP_PATH}/prof_searchDB.csv" "${TMP_PATH}/prof_searchDB_filtered_IDs.csv"
+	filterDb "${TMP_PATH}/seq_searchDB.csv" "${TMP_PATH}/seq_searchDB_filtered_IDs.csv"
+	join -t "${TMP_PATH}/prof_searchDB_filtered_IDs.csv" "${TMP_PATH}/seq_searchDB_filtered_IDs.csv" >> "${TMP_PATH}/searchDB.tsv"
 fi
 
-#NEW implement foldseek
+# #TODO --parallel=${THREADS_PAR} for sort parallelization 
+# if notExists "${TMP_PATH}/searchDB_filt_IDs.tsv"; then
+# 	#shellcheck disable=SC2086
+# 	awk '{if (($12>=50) && ($3>=0.6)) print $1, $2}' "${TMP_PATH}/prof_searchDB.csv" | sort -n -k5 | awk '!seen[$1]++' >> "${TMP_PATH}/prof_searchDB_filt_IDs.tsv"
+# fi
+
+#NEW & TODO implement foldseek
 #TODO think about database that can be used
 #TODO think about memory consumption
-# if notExists "${TMP_PATH}/fssearch.dbtype"; then
-# 	#shellcheck disable=SC2086
-# 	foldseek databases "Alphafold/UniProt" "${TMP_PATH}/alphafoldup" "${TMP_PATH}/fs_databases"
-
-# 	#shellcheck disable=SC2086
-# 	foldseek search "${TMP_PATH}/clu_rep" "${TMP_PATH}/alphafoldup" "${TMP_PATH}/fssearch" "${TMP_PATH}/fs_tmp"
-# fi
 
 MMSEQS="$(abspath "$(command -v "${MMSEQS}")")"
 SCRIPT="${MMSEQS%/build*}"
 chmod +x "${SCRIPT}/data/access_uniprot.py"
 #shellcheck disable=SC2086
-python3 "${SCRIPT}/data/access_uniprot.py" "${TMP_PATH}/searchDB_filt_IDs.tsv" >> "${RESULTS}" \
+python3 "${SCRIPT}/data/access_uniprot.py" "${TMP_PATH}/searchDB.tsv" >> "${RESULTS}" \
  	|| fail "get gene ontology ids died"
-
-
-# python3 "${SCRIPT}/data/access_uniprot.py" "${TMP_PATH}/profDB_id.csv" >> "${RESULTS}" \
-#  	|| fail "get gene ontology ids died"
-
-
-# create output in .tsv format
-# if notExists "${RESULTS}.tsv"; then
-# 	#shellcheck disable=SC2086
-# 	"$MMSEQS" createtsv "${INPUT}" "${RESULTS}" "${RESULTS}.tsv" ${CREATETSV_PAR} \
-# 		|| fail "createtsv died"
-# fi
 
 #remove temporary files and directories
 if [ -n "${REMOVE_TMP}" ]; then
@@ -139,5 +130,7 @@ if [ -n "${REMOVE_TMP}" ]; then
 	#shellcheck disable=SC2086
 	"$MMSEQS" rmdb "${TMP_PATH}/clu" ${VERBOSITY_PAR}
 	#shellcheck disable=SC2086
-	rm -f "${TMP_PATH}/searchDB.csv" ${VERBOSITY_PAR}
+	rm -f "${TMP_PATH}/prof_searchDB.csv"
+	#shellcheck disable=SC2086
+	rm -f "${TMP_PATH}/seq_searchDB.csv"
 fi
