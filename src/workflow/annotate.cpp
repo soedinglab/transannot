@@ -128,7 +128,6 @@ extern const char *binary_name;
 int annotate(int argc, const char **argv, const Command &command){
     LocalParameters &par = LocalParameters::getLocalInstance();
     par.parseParameters(argc, argv, command, true, 0, 0);
-    // par.printParameters(command.cmd, argc, argv, *command.params);
 
     // check whether tmp exists and try to create it if not
     std::string tmpDir = par.filenames.back();
@@ -137,8 +136,6 @@ int annotate(int argc, const char **argv, const Command &command){
         hash = FileUtil::getHashFromSymLink(tmpDir + "/latest");
     }
     tmpDir = FileUtil::createTemporaryDirectory(tmpDir, hash);
-    // par.filenames.pop_back(); //removes the last element of the vector
-
 
     // ssize_t infoIdx = -1;
     // for (size_t i = 0; i < annotationOptions.size(); ++i) {
