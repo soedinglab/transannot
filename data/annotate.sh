@@ -27,7 +27,7 @@ abspath() {
 }
 
 filterDb() {
-	awk '{if (($12>=50) && ($3>=0.6)) print $1, $2}' "$1" | sort -n -k5 | awk '!seen[$1]++' | sort -n - k1 >> "$2"
+	awk '{if (($12>=50) && ($3>=0.6)) print $1, $2}' "$1" | sort -n -k5 | awk '!seen[$1]++' | sort -n -k1 >> "$2"
 }
 
 #pre-processing
@@ -113,7 +113,6 @@ fi
 
 #NEW & TODO implement foldseek
 #TODO think about database that can be used
-#TODO think about memory consumption
 
 MMSEQS="$(abspath "$(command -v "${MMSEQS}")")"
 SCRIPT="${MMSEQS%/build*}"
