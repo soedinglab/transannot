@@ -93,7 +93,9 @@ std::vector<struct Command> commands = {
             NO_CITATION, {{"queryDB", DbType::ACCESS_MODE_INPUT, DbType::NEED_DATA, &DbValidator::sequenceDb},
                         {"targetDB", DbType::ACCESS_MODE_INPUT, DbType::NEED_DATA|DbType::NEED_HEADER|DbType::NEED_TAXONOMY, &DbValidator::sequenceDb},
                         {"taxReports", DbType::ACCESS_MODE_OUTPUT, DbType::NEED_DATA, &DbValidator::flatfile},
-                        {"tmpDir", DbType::ACCESS_MODE_OUTPUT, DbType::NEED_DATA, &DbValidator::directory}}}
+                        {"tmpDir", DbType::ACCESS_MODE_OUTPUT, DbType::NEED_DATA, &DbValidator::directory}}},
+
+    {"getorthologs", getorthologs, &localPar.getorthologs, COMMAND_EXPERT,}
 
    //{"easytransannot", easytransannot, &localPar.easytransannot, COMMAND_EASY,
     //    NO_CITATION}

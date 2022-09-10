@@ -6,5 +6,6 @@ set(workflow_source_files
         workflow/assemblereads.cpp
         workflow/createquerydb.cpp
         workflow/easytransannot.cpp
+        workflow/getorthologs.cpp
         PARENT_SCOPE
         )
