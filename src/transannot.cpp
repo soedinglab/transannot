@@ -52,6 +52,7 @@ std::vector<struct Command> commands = {
                         {"outFile", DbType::ACCESS_MODE_OUTPUT, DbType::NEED_DATA, &DbValidator::flatfile},
                         {"tmpDir", DbType::ACCESS_MODE_OUTPUT, DbType::NEED_DATA, &DbValidator::directory}}},
 
+
     {"easytransannot",    easytransannot, &localPar.easytransannot, COMMAND_EASY,
             "Easy module for simple one-step reads assembly and transcriptome annotation",
             "Only ID mapping database should be downloaded in advance, for MMseqs2 databases just provide name of the profile database",
@@ -95,8 +96,14 @@ std::vector<struct Command> commands = {
                         {"taxReports", DbType::ACCESS_MODE_OUTPUT, DbType::NEED_DATA, &DbValidator::flatfile},
                         {"tmpDir", DbType::ACCESS_MODE_OUTPUT, DbType::NEED_DATA, &DbValidator::directory}}},
 
-    {"getorthologs", getorthologs, &localPar.getorthologs, COMMAND_EXPERT,}
 
-   //{"easytransannot", easytransannot, &localPar.easytransannot, COMMAND_EASY,
-    //    NO_CITATION}
+    {"getorthologs", getorthologs, &localPar.getorthologs, COMMAND_EXPERT,
+            "Obtain orthologs from eggNOG database",
+            "eggNOG DB will be downloaded and mmseqs search against it will be executed",
+            "Mariia Zelenskaia mariia.zelenskaia@mpinat.mpg.de & Yazhini A. yazhini@mpinat.mpg.de",
+            "<i:queryDB> <o:resDB> <tmpDir>",
+            NO_CITATION, {{"queryDB", DbType::ACCESS_MODE_INPUT, DbType::NEED_DATA, &DbValidator::sequenceDb},
+                        {"outFile", DbType::ACCESS_MODE_OUTPUT, DbType::NEED_DATA, &DbValidator::flatfile},
+                        {"tmpDir", DbType::ACCESS_MODE_OUTPUT, DbType::NEED_DATA, &DbValidator::directory}}}
+
 };
