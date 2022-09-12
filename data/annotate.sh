@@ -103,7 +103,15 @@ if notExists "${TMP_PATH}/searchDB.tsv"; then
 	echo "Filter, sort and merge alignment DBs"
 	filterDb "${TMP_PATH}/prof_searchDB.csv" "${TMP_PATH}/prof_searchDB_filtered_IDs.csv"
 	filterDb "${TMP_PATH}/seq_searchDB.csv" "${TMP_PATH}/seq_searchDB_filtered_IDs.csv"
-	awk -F" " 'BEGIN{OFS=" "} {if (NR==FNR) {a[$1]=$2; next} if ($1 in a) {print $1, $2, $3, a[$1]}}' "${TMP_PATH}/prof_searchDB_filtered_IDs.csv" "${TMP_PATH}/seq_searchDB_filtered_IDs.csv" >> "${RESULTS}"
+
+	if [ "$(wc -l "${TMP_PATH}/prof_searchDB_filtered_IDs.csv")" > "$(wc -l "${TMP_PATH}/seq_searchDB_filtered_IDs.csv")" ]; then
+		RIGHT_DB="${TMP_PATH}/prof_searchDB_filtered_IDs.csv"
+		LEFT_DB="${TMP_PATH}/seq_searchDB_filtered_IDs.csv"
+	else 
+		RIGHT_DB="${TMP_PATH}/seq_searchDB_filtered_IDs.csv"
+		LEFT_DB="${TMP_PATH}/prof_searchDB_filtered_IDs.csv"
+	fi
+	join -j 1 -a1 -t ' ' "${RIGHT_DB}" "${LEFT_DB}" >> "${RESULTS}"
 fi
 
 # MMSEQS="$(abspath "$(command -v "${MMSEQS}")")"
