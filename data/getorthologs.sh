@@ -39,3 +39,15 @@ if notExists "${OUTDB}.dbtype"; then
 	"$MMSEQS" search "${TMP_PATH}/clu_rep" "eggNOG" "${OUTDB}" "${TMP_PATH}/search_tmp" ${SEARCH_PAR} \
 		|| fail "search died"
 fi
+
+#remove temporary files and directories
+if [ -n "${REMOVE_TMP}" ]; then
+	echo "Remove temporary files and directories"
+    rm -rf "${TMP_PATH}/clu_tmp"
+	rm -rf "${TMP_PATH}/search_tmp"
+	rm -f "${TMP_PATH}/getorthologs.sh"
+	#shellcheck disable=SC2086
+	"$MMSEQS" rmdb "${TMP_PATH}/clu" ${VERBOSITY_PAR}
+	#shellcheck disable=SC2086
+	rm -f "${TMP_PATH}/searchDB.csv" ${VERBOSITY_PAR}
+fi
