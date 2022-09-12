@@ -27,7 +27,7 @@ abspath() {
 }
 
 filterDb() {
-	awk '{if (($12>=50) && ($3>=0.6)) print $1, $2}' "$1" | sort -n -k5 | awk '!seen[$1]++' | sort -n -k1 >> "$2"
+	awk '{if (($12>=50) && ($3>=0.6)) print $1, $2}' "$1" | sort -n -k5 | awk '!seen[$1]++' | sort -s -k1b,1 >> "$2"
 }
 
 #pre-processing
@@ -95,6 +95,7 @@ if [ -n "${TAXONOMY_ID}" ]; then
 				"$MMSEQS" convertalis "${TMP_PATH}/clu_rep" "${TARGET}" "${TMP_PATH}/seq_searchDB" "${TMP_PATH}/seq_searchDB.csv" \
 					|| fail "convertalis died"
 			fi
+			rm -f "${TMP_PATH}/seq_searchDB."[0-9]*
 		fi
 	fi
 
@@ -102,24 +103,15 @@ if notExists "${TMP_PATH}/searchDB.tsv"; then
 	echo "Filter, sort and merge alignment DBs"
 	filterDb "${TMP_PATH}/prof_searchDB.csv" "${TMP_PATH}/prof_searchDB_filtered_IDs.csv"
 	filterDb "${TMP_PATH}/seq_searchDB.csv" "${TMP_PATH}/seq_searchDB_filtered_IDs.csv"
-	join -t "${TMP_PATH}/prof_searchDB_filtered_IDs.csv" "${TMP_PATH}/seq_searchDB_filtered_IDs.csv" >> "${TMP_PATH}/searchDB.tsv"
+	awk -F" " 'BEGIN{OFS=" "} {if (NR==FNR) {a[$1]=$2; next} if ($1 in a) {print $1, $2, $3, a[$1]}}' "${TMP_PATH}/prof_searchDB_filtered_IDs.csv" "${TMP_PATH}/seq_searchDB_filtered_IDs.csv" >> "${RESULTS}"
 fi
 
-# #TODO --parallel=${THREADS_PAR} for sort parallelization 
-# if notExists "${TMP_PATH}/searchDB_filt_IDs.tsv"; then
-# 	#shellcheck disable=SC2086
-# 	awk '{if (($12>=50) && ($3>=0.6)) print $1, $2}' "${TMP_PATH}/prof_searchDB.csv" | sort -n -k5 | awk '!seen[$1]++' >> "${TMP_PATH}/prof_searchDB_filt_IDs.tsv"
-# fi
-
-#NEW & TODO implement foldseek
-#TODO think about database that can be used
-
-MMSEQS="$(abspath "$(command -v "${MMSEQS}")")"
-SCRIPT="${MMSEQS%/build*}"
-chmod +x "${SCRIPT}/data/access_uniprot.py"
-#shellcheck disable=SC2086
-python3 "${SCRIPT}/data/access_uniprot.py" "${TMP_PATH}/searchDB.tsv" >> "${RESULTS}" \
- 	|| fail "get gene ontology ids died"
+# MMSEQS="$(abspath "$(command -v "${MMSEQS}")")"
+# SCRIPT="${MMSEQS%/build*}"
+# chmod +x "${SCRIPT}/data/access_uniprot.py"
+# #shellcheck disable=SC2086
+# python3 "${SCRIPT}/data/access_uniprot.py" "${TMP_PATH}/searchDB.tsv" >> "${RESULTS}" \
+#  	|| fail "get gene ontology ids died"
 
 #remove temporary files and directories
 if [ -n "${REMOVE_TMP}" ]; then
