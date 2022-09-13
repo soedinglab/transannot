@@ -117,7 +117,7 @@ if notExists "${TMP_PATH}/searchDB.tsv"; then
 		filterDb_standard "${TMP_PATH}/seq_searchDB.csv" "${TMP_PATH}/seq_searchDB_filtered_IDs.csv"
 	fi
 
-	if [ "$(wc -l "${TMP_PATH}/prof_searchDB_filtered_IDs.csv")" -ge "$(wc -l "${TMP_PATH}/seq_searchDB_filtered_IDs.csv")" ]; then
+	if [ "$(wc -l < "${TMP_PATH}/prof_searchDB_filtered_IDs.csv")" -ge "$(wc -l < "${TMP_PATH}/seq_searchDB_filtered_IDs.csv")" ]; then
 		RIGHT_DB="${TMP_PATH}/prof_searchDB_filtered_IDs.csv"
 		LEFT_DB="${TMP_PATH}/seq_searchDB_filtered_IDs.csv"
 	else 
