@@ -31,8 +31,7 @@ def map_retrieve(ids2map, source_fmt='ACC+ID',target_fmt='ACC', output_fmt='tab'
 search_res = pd.read_csv(sys.argv[-1], names=['queryID','seqDBID','profileDBID'], sep=' ')
 
 uniprot_acc = map_retrieve(search_res['seqDBID'], source_fmt='ACC+ID')
-search_res['UniProtAcc'] = uniprot_acc
-print(search_res)
+print(uniprot_acc)
 # sys.stdout.write(str(uniprot_acc)+'\n')
 
 

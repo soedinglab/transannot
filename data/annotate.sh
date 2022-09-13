@@ -30,6 +30,10 @@ filterDb() {
 	awk '{if (($12>=50) && ($3>=0.6)) print $1, $2}' "$1" | sort -n -k5 | awk '!seen[$1]++' | sort -s -k1b,1 >> "$2"
 }
 
+filterDb_standard() {
+	awk '{if (($12>=50) && ($3>=0.6)) print $1, $2, $3, $12}' "$1" | sort -n -k5 | awk '!seen[$1]++' | sort -s -k1b,1 >> "$2"
+}
+
 #pre-processing
 [ -z "$MMSEQS" ] && echo "Please set the environment variable \$MMSEQS to your current binary." && exit 1;
 
@@ -101,8 +105,17 @@ if [ -n "${TAXONOMY_ID}" ]; then
 
 if notExists "${TMP_PATH}/searchDB.tsv"; then
 	echo "Filter, sort and merge alignment DBs"
-	filterDb "${TMP_PATH}/prof_searchDB.csv" "${TMP_PATH}/prof_searchDB_filtered_IDs.csv"
-	filterDb "${TMP_PATH}/seq_searchDB.csv" "${TMP_PATH}/seq_searchDB_filtered_IDs.csv"
+
+	# simplified or standard Output
+	if [ -n "${SIMPLE_OUTPUT}" ]; then
+		echo "Simplified output will be provided"
+		filterDb "${TMP_PATH}/prof_searchDB.csv" "${TMP_PATH}/prof_searchDB_filtered_IDs.csv"
+		filterDb "${TMP_PATH}/seq_searchDB.csv" "${TMP_PATH}/seq_searchDB_filtered_IDs.csv"
+	else 
+		echo "Standard output will be provided"
+		filterDb_standard "${TMP_PATH}/prof_searchDB.csv" "${TMP_PATH}/prof_searchDB_filtered_IDs.csv"
+		filterDb_standard "${TMP_PATH}/seq_searchDB.csv" "${TMP_PATH}/seq_searchDB_filtered_IDs.csv"
+	fi
 
 	if [ "$(wc -l "${TMP_PATH}/prof_searchDB_filtered_IDs.csv")" -ge "$(wc -l "${TMP_PATH}/seq_searchDB_filtered_IDs.csv")" ]; then
 		RIGHT_DB="${TMP_PATH}/prof_searchDB_filtered_IDs.csv"
