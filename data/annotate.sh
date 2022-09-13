@@ -121,13 +121,13 @@ if notExists "${TMP_PATH}/searchDB"; then
 	SEQ_DB_SIZE=$(wc -l < "${TMP_PATH}/seq_searchDB_filtered_IDs.csv")
 
 	if [ "${PROF_DB_SIZE}" -ge "${SEQ_DB_SIZE}" ]; then
-		RIGHT_DB="${TMP_PATH}/prof_searchDB_filtered_IDs.csv"
-		LEFT_DB="${TMP_PATH}/seq_searchDB_filtered_IDs.csv"
+		echo "Sequence-profile DB is larger"
+		join -j 1 -a1 -t ' ' "${TMP_PATH}/prof_searchDB_filtered_IDs.csv" "${TMP_PATH}/seq_searchDB_filtered_IDs.csv" >> "${TMP_PATH}/searchDB"
 	else 
-		RIGHT_DB="${TMP_PATH}/seq_searchDB_filtered_IDs.csv"
-		LEFT_DB="${TMP_PATH}/prof_searchDB_filtered_IDs.csv"
+		echo "Seqeunce-sequence DB is larger"
+		join -j 1 -a1 -t ' ' "${TMP_PATH}/seq_searchDB_filtered_IDs.csv" "${TMP_PATH}/prof_searchDB_filtered_IDs.csv" >> "${TMP_PATH}/searchDB"	
 	fi
-	join -j 1 -a1 -t ' ' "${RIGHT_DB}" "${LEFT_DB}" >> "${TMP_PATH}/searchDB"
+
 fi
 
 # MMSEQS="$(abspath "$(command -v "${MMSEQS}")")"
