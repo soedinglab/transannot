@@ -111,14 +111,14 @@ if notExists "${TMP_PATH}/searchDB.tsv"; then
 		RIGHT_DB="${TMP_PATH}/seq_searchDB_filtered_IDs.csv"
 		LEFT_DB="${TMP_PATH}/prof_searchDB_filtered_IDs.csv"
 	fi
-	join -j 1 -a1 -t ' ' "${RIGHT_DB}" "${LEFT_DB}" >> "${RESULTS}"
+	join -j 1 -a1 -t ' ' "${RIGHT_DB}" "${LEFT_DB}" >> "${TMP_PATH}/searchDB"
 fi
 
 # MMSEQS="$(abspath "$(command -v "${MMSEQS}")")"
 # SCRIPT="${MMSEQS%/build*}"
 # chmod +x "${SCRIPT}/data/access_uniprot.py"
 # #shellcheck disable=SC2086
-# python3 "${SCRIPT}/data/access_uniprot.py" "${TMP_PATH}/searchDB.tsv" >> "${RESULTS}" \
+# python3 "${SCRIPT}/data/access_uniprot.py" "${TMP_PATH}/searchDB" >> "${RESULTS}" \
 #  	|| fail "get gene ontology ids died"
 
 #remove temporary files and directories

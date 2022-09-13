@@ -1,14 +1,16 @@
 #!/usr/bin/env python
-from re import search
+
 import numpy as np
 import sys, requests
 import pandas as pd
+# from re import search
 
 BASE = 'http://www.uniprot.org'
 KB_ENDPOINT = '/uniprot/'
 TOOL_ENDPOINT = '/uploadlists/'
 
 def map_retrieve(ids2map, source_fmt='ACC+ID',target_fmt='ACC', output_fmt='tab'):
+    print(ids2map)
     ids2map = ','.join(ids2map)
     if np.size(ids2map)!=0:
         # ids2map = ' '.join(ids2map)
@@ -26,24 +28,11 @@ def map_retrieve(ids2map, source_fmt='ACC+ID',target_fmt='ACC', output_fmt='tab'
     else:
         response.raise_for_status()
 
-# uniprot_ids = open(sys.argv[-1], "r").read()
-# map_db = pd.read_csv(sys.argv[-1], header=None, sep=r'\s{2,}')
-# print(map_db)
+search_res = pd.read_csv(sys.argv[-1], names=['queryID','seqDBID','profileDBID'], sep=' ')
 
-search_res = pd.read_csv(sys.argv[-1], header=None, sep='\t')
-# map_db.to_dict()
-# uniprot_ids = open(sys.argv[-1], "r").read().splitlines() #command line arguments passed to script -> only one input in the script
-# print(uniprot_ids)
-
-def statistics(c, ident, df=search_res):
-    print(ident)
-    print(df.iloc[:,c])
-    print(np.median(df.iloc[:,c]))
-    print(np.min(df.iloc[:,c]))
-    print(np.max(df.iloc[:,c]))
-
-uniprot_acc = map_retrieve(search_res.iloc[:,1], source_fmt='ACC+ID')
-print(uniprot_acc)
+uniprot_acc = map_retrieve(search_res['seqDBID'], source_fmt='ACC+ID')
+search_res['UniProtAcc'] = uniprot_acc
+print(search_res)
 # sys.stdout.write(str(uniprot_acc)+'\n')
 
 
