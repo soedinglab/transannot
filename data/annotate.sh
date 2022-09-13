@@ -117,7 +117,10 @@ if notExists "${TMP_PATH}/searchDB.tsv"; then
 		filterDb_standard "${TMP_PATH}/seq_searchDB.csv" "${TMP_PATH}/seq_searchDB_filtered_IDs.csv"
 	fi
 
-	if [ "$(wc -l < "${TMP_PATH}/prof_searchDB_filtered_IDs.csv")" -ge "$(wc -l < "${TMP_PATH}/seq_searchDB_filtered_IDs.csv")" ]; then
+	PROF_DB_SIZE=$(wc -l < "${TMP_PATH}/prof_searchDB_filtered_IDs.csv")
+	SEQ_DB_SIZE=$(wc -l < "${TMP_PATH}/seq_searchDB_filtered_IDs.csv")
+	
+	if [ "${PROF_DB_SIZE}" -ge "${SEQ_DB_SIZE}" ]; then
 		RIGHT_DB="${TMP_PATH}/prof_searchDB_filtered_IDs.csv"
 		LEFT_DB="${TMP_PATH}/seq_searchDB_filtered_IDs.csv"
 	else 
