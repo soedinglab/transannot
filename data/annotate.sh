@@ -103,7 +103,7 @@ if [ -n "${TAXONOMY_ID}" ]; then
 		fi
 	fi
 
-if notExists "${TMP_PATH}/searchDB.tsv"; then
+if notExists "${TMP_PATH}/searchDB"; then
 	echo "Filter, sort and merge alignment DBs"
 
 	# simplified or standard Output
@@ -119,7 +119,7 @@ if notExists "${TMP_PATH}/searchDB.tsv"; then
 
 	PROF_DB_SIZE=$(wc -l < "${TMP_PATH}/prof_searchDB_filtered_IDs.csv")
 	SEQ_DB_SIZE=$(wc -l < "${TMP_PATH}/seq_searchDB_filtered_IDs.csv")
-	
+
 	if [ "${PROF_DB_SIZE}" -ge "${SEQ_DB_SIZE}" ]; then
 		RIGHT_DB="${TMP_PATH}/prof_searchDB_filtered_IDs.csv"
 		LEFT_DB="${TMP_PATH}/seq_searchDB_filtered_IDs.csv"
