@@ -16,16 +16,16 @@ notExists(){
 
 [ -z "$MMSEQS" ] && echo "Please set the environment variable \$MMSEQS to your current binary." && exit 1;
 
-if notExists "${RESULTS}.fasta"; then
+if notExists "${ASSEMBLY}.fasta"; then
     #shellcheck disable=SC2086
-    "$(pwd)"/plass/bin/plass assemble "$@" "${TMP_PATH}/assembly.fasta" "${TMP_PATH}" ${ASSEMBLY_PAR} \
+    "$(pwd)"/plass/bin/plass assemble "$@" "${ASSEMBLY}" "${TMP_PATH}" ${ASSEMBLY_PAR} \
         || fail "plass assembly died"
 fi
 
 if notExists "${RESULTS}.dbtype"; then
     echo "creating mmseqs db from assembled transcriptome"
     #shellcheck disable=SC2086
-    "$MMSEQS" createdb "${TMP_PATH}/assembly.fasta" "${RESULTS}" --createdb-mode 1 ${CREATEDB_PAR} \
+    "$MMSEQS" createdb "${ASSEMBLY}" "${RESULTS}" --createdb-mode 1 ${CREATEDB_PAR} \
         || fail "createdb died"
 fi
 

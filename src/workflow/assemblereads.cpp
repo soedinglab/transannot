@@ -21,11 +21,14 @@
     par.filenames.pop_back();
     std::string outDb = par.filenames.back();
     par.filenames.pop_back();
+    std::string assembly = par.filenames.back();
+    par.filenames.pop_back();
 
     CommandCaller cmd;
     cmd.addVariable("REMOVE_TMP", par.removeTmpFiles ? "TRUE" : NULL);
     cmd.addVariable("TMP_PATH", tmpDir.c_str());
     cmd.addVariable("RESULTS", outDb.c_str());
+    cmd.addVariable("ASSEMBLY", assembly.c_str());
 
     std::string program = tmpDir + "/assemblereads.sh";
     FileUtil::writeFile(program, assemblereads_sh, assemblereads_sh_len);
