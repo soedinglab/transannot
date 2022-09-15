@@ -9,27 +9,23 @@ notExists(){
 }
 
 # pre-processing
-# if ! command -v plass; then
-#     echo "Please make sure that plass is installed." 
-#     exit 1
-# fi
+if ! command -v plass; then
+    echo "Please make sure that plass is installed." 
+    exit 1
+fi
+
 [ -z "$MMSEQS" ] && echo "Please set the environment variable \$MMSEQS to your current binary." && exit 1;
 
-# INPUT="$1"
-# RESULTS="$2"
-# TMP_PATH="$3"
-
-#mkdir -p "${TMP_PATH}/plass_tmp"
 if notExists "${RESULTS}.fasta"; then
     #shellcheck disable=SC2086
-    "$(pwd)"/plass/bin/plass assemble "$@" "${RESULTS}.fasta" "${TMP_PATH}" ${ASSEMBLY_PAR} \
+    "$(pwd)"/plass/bin/plass assemble "$@" "${TMP_PATH}/assembly.fasta" "${TMP_PATH}" ${ASSEMBLY_PAR} \
         || fail "plass assembly died"
 fi
 
 if notExists "${RESULTS}.dbtype"; then
     echo "creating mmseqs db from assembled transcriptome"
     #shellcheck disable=SC2086
-    "$MMSEQS" createdb "${RESULTS}.fasta" "${RESULTS}" --createdb-mode 1 ${CREATEDB_PAR} \
+    "$MMSEQS" createdb "${TMP_PATH}/assembly.fasta" "${RESULTS}" --createdb-mode 1 ${CREATEDB_PAR} \
         || fail "createdb died"
 fi
 
