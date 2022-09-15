@@ -88,6 +88,7 @@ private:
         // default values
         // infoSelect = 6;
         createdbMode = 1;
+        simpleOutput = false; 
     }
     LocalParameters(LocalParameters const&);
     ~LocalParameters() {};
