@@ -56,6 +56,7 @@ private:
 
         annotateworkflow.push_back(&PARAM_HELP);
         annotateworkflow.push_back(&PARAM_HELP_LONG);
+        annotateworkflow.push_back(&PARAM_S); //sensitivity
         annotateworkflow.push_back(&PARAM_OUTPUT_SIMPLE);
         // annotateworkflow.push_back(&PARAM_INFORMATION_SELECTION);
         // annotateworkflow.push_back(&PARAM_TAXONOMYID);
