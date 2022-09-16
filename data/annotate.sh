@@ -26,16 +26,18 @@ abspath() {
     fi
 }
 
+#we obtain best hits from targetDB based on sequence identity
 filterDb() {
-	awk '{if (($12>=50) && ($3>=0.6)) print $1, $2}' "$1" | sort -n -k5 | awk '!seen[$1]++' | sort -s -k1b,1 >> "$2"
+	awk '{if (($12>=50) && ($3>=0.6)) print $1, $2, $3}' "$1" | sort -n -k3 | awk '!seen[$1]++' | awk '{print $1, $2}' |sort -s -k1b,1 >> "$2"
 }
 
 filterDb_standard() {
-	awk '{if (($12>=50) && ($3>=0.6)) print $1, $2, $3, $12}' "$1" | sort -n -k5 | awk '!seen[$1]++' | sort -s -k1b,1 >> "$2"
+	awk '{if (($12>=50) && ($3>=0.6)) print $1, $2, $3, $12}' "$1" | sort -n -k3 | awk '!seen[$1]++' | sort -s -k1b,1 >> "$2"
 }
 
 #pre-processing
 [ -z "$MMSEQS" ] && echo "Please set the environment variable \$MMSEQS to your current binary." && exit 1;
+hasCommand curl;
 
 #checking how many input variables are provided
 [ "$#" -ne 5 ] && echo "Please provide <assembled transciptome> <profile target DB> <sequence target DB> <outDB> <tmp>" && exit 1;
@@ -106,7 +108,7 @@ if [ -n "${TAXONOMY_ID}" ]; then
 if notExists "${TMP_PATH}/searchDB"; then
 	echo "Filter, sort and merge alignment DBs"
 
-	# simplified or standard Output
+	# simplified or standard output
 	if [ -n "${SIMPLE_OUTPUT}" ]; then
 		echo "Simplified output will be provided"
 		filterDb "${TMP_PATH}/prof_searchDB.csv" "${TMP_PATH}/prof_searchDB_filtered_IDs.csv"
@@ -130,12 +132,12 @@ if notExists "${TMP_PATH}/searchDB"; then
 
 fi
 
-# MMSEQS="$(abspath "$(command -v "${MMSEQS}")")"
-# SCRIPT="${MMSEQS%/build*}"
-# chmod +x "${SCRIPT}/data/access_uniprot.py"
-# #shellcheck disable=SC2086
-# python3 "${SCRIPT}/data/access_uniprot.py" "${TMP_PATH}/searchDB" >> "${RESULTS}" \
-#  	|| fail "get gene ontology ids died"
+MMSEQS="$(abspath "$(command -v "${MMSEQS}")")"
+SCRIPT="${MMSEQS%/build*}"
+chmod +x "${SCRIPT}/data/access_uniprot.py"
+#shellcheck disable=SC2086
+python3 "${SCRIPT}/data/access_uniprot.py" "${TMP_PATH}/searchDB" >> "${RESULTS}" \
+ 	|| fail "get gene ontology ids died"
 
 #remove temporary files and directories
 if [ -n "${REMOVE_TMP}" ]; then
