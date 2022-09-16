@@ -25,7 +25,7 @@ fi
 if notExists "${RESULTS}.dbtype"; then
     echo "creating mmseqs db from assembled transcriptome"
     #shellcheck disable=SC2086
-    "$MMSEQS" createdb "${ASSEMBLY}" "${RESULTS}" --createdb-mode 1 ${CREATEDB_PAR} \
+    "$MMSEQS" createdb "${ASSEMBLY}" "${RESULTS}" ${CREATEDB_PAR} \
         || fail "createdb died"
 fi
 
