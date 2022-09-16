@@ -37,7 +37,6 @@ filterDb_standard() {
 
 #pre-processing
 [ -z "$MMSEQS" ] && echo "Please set the environment variable \$MMSEQS to your current binary." && exit 1;
-hasCommand curl;
 
 #checking how many input variables are provided
 [ "$#" -ne 5 ] && echo "Please provide <assembled transciptome> <profile target DB> <sequence target DB> <outDB> <tmp>" && exit 1;
