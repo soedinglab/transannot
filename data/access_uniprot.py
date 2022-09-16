@@ -3,6 +3,7 @@
 import numpy as np
 import sys, requests
 import pandas as pd
+from io import StringIO
 # from re import search
 
 # BASE = 'http://www.uniprot.org'
@@ -31,14 +32,22 @@ import pandas as pd
 search_res = pd.read_csv(sys.argv[-1], names=['queryID','seqDBID'], sep=' ', usecols=[0,1])
 
 ids_request = {
-    'from': (None, 'UniProtKB'),
-    'to': (None, 'UniProtKB_AC-ID'),
+    'from': (None, 'UniProtKB_AC-ID'),
+    'to': (None, 'UniRef90'),
     'ids': (None,','.join(search_res['seqDBID'].to_list())),
 }
 
 response = requests.post('https://rest.uniprot.org/idmapping/run', files=ids_request)
-# uniprot_acc = map_retrieve(search_res['seqDBID'], source_fmt='ACC+ID')
-# print(uniprot_acc)
-# # sys.stdout.write(str(uniprot_acc)+'\n')
+url=response.json()
 
+# without stream
+url_req='https://rest.uniprot.org/idmapping/uniref/results/'+url['jobId']+'?format=tsv'
+acc = requests.get(url_req)
+# print(type(acc.content))
+data=acc.content
+data=data.decode("utf-8")
 
+data_input=StringIO(data)
+mapping_res=pd.read_csv(data_input, sep='\t')
+data=search_res.merge(mapping_res, left_on='seqDBID', right_on='From', how='outer').drop(['From','Date of creation'], axis=1)
+print(data)
