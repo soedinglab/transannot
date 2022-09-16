@@ -19,7 +19,7 @@ int createquerydb(int argc, const char **argv, const Command& command) {
     tmpDir = FileUtil::createTemporaryDirectory(tmpDir, hash);
 
     CommandCaller cmd;
-    //cmd.addVariable("TMP_PATH", tmpDir.c_str());
+    
     cmd.addVariable("CREATEDB_PAR", par.createParameterString(par.createdb).c_str());
     cmd.addVariable("REMOVE_TMP", par.removeTmpFiles ? "TRUE" : NULL);
     cmd.addVariable("THREADS_PAR", par.createParameterString(par.onlythreads).c_str());

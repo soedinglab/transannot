@@ -27,10 +27,10 @@ int easytransannot(int argc, const char **argv, const Command& command) {
     cmd.addVariable("RESULTS", resDb.c_str());
     par.filenames.pop_back();
     std::string mapDb = par.filenames.back();
-    cmd.addVariable("MAPPING_DB", mapDb.c_str());
+    cmd.addVariable("PROFILE_TARGET", mapDb.c_str());
     par.filenames.pop_back();
     std::string targetDb = par.filenames.back();
-    cmd.addVariable("TARGET", targetDb.c_str());
+    cmd.addVariable("SEQ_TARGET", targetDb.c_str());
     par.filenames.pop_back();
     
     cmd.addVariable("REMOVE_TMP", par.removeTmpFiles ? "TRUE" : NULL);

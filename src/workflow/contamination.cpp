@@ -23,14 +23,11 @@ int contamination(int argc, const char **argv, const Command& command) {
     par.filenames.pop_back();
 
     CommandCaller cmd;
-    cmd.addVariable("OUT_PATH", par.filenames.back().c_str());
-    par.filenames.pop_back();
     cmd.addVariable("TMP_PATH", tmpDir.c_str());
-    cmd.addVariable("TARGET", par.filenames.back().c_str());
-    par.filenames.pop_back();
     cmd.addVariable("TAXONOMY_PAR", par.createParameterString(par.taxonomy, true).c_str());
     // cmd.addVariable("THREADS_PAR", par.createParameterString(par.onlythreads).c_str());
     cmd.addVariable("VERBOSITY_PAR", par.createParameterString(par.onlyverbosity).c_str());
+    cmd.addVariable("REMOVE_TMP", par.removeTmpFiles ? "TRUE" : NULL);
 
     std::string program = tmpDir + "/contamination.sh";
     FileUtil::writeFile(program, contamination_sh, contamination_sh_len);
