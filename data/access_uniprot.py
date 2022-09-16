@@ -29,7 +29,7 @@ from io import StringIO
 #     else:
 #         response.raise_for_status()
 
-search_res = pd.read_csv(sys.argv[-1], names=['queryID','seqDBID'], sep=' ', usecols=[0,1])
+search_res = pd.read_csv(sys.argv[-2], names=['queryID','seqDBID'], sep=' ', usecols=[0,1])
 
 ids_request = {
     'from': (None, 'UniProtKB_AC-ID'),
@@ -38,7 +38,10 @@ ids_request = {
 }
 
 response = requests.post('https://rest.uniprot.org/idmapping/run', files=ids_request)
-url=response.json()
+if response.ok:
+    url=response.json()
+else:
+	response.raise_for_status()
 
 # without stream
 url_req='https://rest.uniprot.org/idmapping/uniref/results/'+url['jobId']+'?format=tsv'
@@ -50,4 +53,4 @@ data=data.decode("utf-8")
 data_input=StringIO(data)
 mapping_res=pd.read_csv(data_input, sep='\t')
 data=search_res.merge(mapping_res, left_on='seqDBID', right_on='From', how='outer').drop(['From','Date of creation'], axis=1)
-print(data)
+data.to_csv(sys.argv[-1])
