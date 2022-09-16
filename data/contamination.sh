@@ -10,29 +10,24 @@ notExists() {
 
 #pre-processing
 [ -z "$MMSEQS" ] && echo "Please set the environment variable \$MMSEQS to your current binary" && exit 1;
-# [ "$#" -ne 4 ] && echo "Please provide <InputSeq> <targetDB> <outPath> <tmp>" && exit 1; #easytaxonomy takes fasta file as an input
-[ ! -f "${TARGET}.dbtype" ] && echo "Please make sure proper target database is provided and mmseqs database is created!" && exit 1;
-[ ! -d "${TMP_PATH}" ] && echo "tmp directory ${TMP_PATH} not found! tmp will be created." && mkdir -p "${TMP_PATH}";
+[ ! -f "$1.dbtype" ] && echo "Please provide mmseqs database as query input!" && exit 1;
+[ ! -f "$2.dbtype" ] && echo "Please make sure proper target database is provided and mmseqs database is created!" && exit 1;
+[   -f "$3.dbtype" ] && echo "resDB $3 exists already!" && exit 1;
+[ ! -d "$4" ] && echo "tmp directory $4 not found! tmp will be created." && mkdir -p "$4";
 
-# INPUT="$1"
-# TARGET="$2"
-# OUT_PATH="$3"
-# TMP_PATH="$4"
+INPUT="$1"
+TARGET="$2"
+OUT_PATH="$3"
+TMP_PATH="$4"
 
 #shellcheck disable=SC2086
-"$MMSEQS" taxonomy "$@" "${TARGET}" "${OUT_PATH}" "${TMP_PATH}" ${TAXONOMY_PAR} \
+"$MMSEQS" taxonomy "${INPUT}" "${TARGET}" "${OUT_PATH}" "${TMP_PATH}" ${TAXONOMY_PAR} \
         || fail "taxonomy died"
-
-# if [ -f "${OUT_PATH}.1" ]; then
-#     #shellcheck disable=SC2086
-#     "$MMSEQS" mergedbs "${OUT_PATH}" "${OUT_PATH}_merged" "${OUT_PATH}."[0-9]*
-#     rm -f "${OUT_PATH}."[0-9]*
-# fi
 
 #easy taxonomy returns output in .tsv format
 #"${OUT_PATH}_tophit_report" -> .tsv
 
-#NOTE: $2 is a second column of tophit_report6 $6 is an taxonomical information identifier
+#NOTE: $2 is a second column of tophit_report $6 is an taxonomical information identifier
 #we compare values of each line's $2 with (I would suggest) 0.8 (out of 1)
 #NOTE: I decided to use break after each condition so that there will be not so many output lines created, especially in case of contamination
 # "${OUT_PATH}_tophit_report"

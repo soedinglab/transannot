@@ -19,8 +19,8 @@ notExists() {
 # [ ! -d "${TMP_PATH}" ] && echo "tmp directory ${TMP_PATH} not found! tmp will be created." && mkdir -p "${TMP_PATH}";
 
 # INPUT="$@"
-# TARGET="$2" #selection to downloaddb, may also be already downloaded mmseqs DB
-# MAPPING_DB="$3"
+# SEQ_TARGET="$2" #selection to downloaddb, may also be already downloaded mmseqs DB
+# PROFILE_TARGET="$3"
 # RESULTS="$4"
 # TMP_PATH="$5"
 
@@ -30,16 +30,23 @@ if notExists "${INPUT}.dbtype"; then
         || fail "plass assembly died"
 fi
 
-if notExists "${TARGET}.dbtype"; then
-    echo "Selected DB $2 not found and will be downloaded."
+if notExists "${SEQ_TARGET}.dbtype"; then
+    echo "sequence target DB $2 not found and will be downloaded."
     #shellcheck disable=SC2086
-    "${MMSEQS}" downloaddb "${TARGET}" "${TARGET}DB" "${TMP_PATH}/downloaddb_tmp" ${DOWNLOADDB_PAR} \
-        || fail "download targetDB died"
+    "${MMSEQS}" downloaddb "${SEQ_TARGET}" "${SEQ_TARGET}DB" "${TMP_PATH}/downloaddb_tmp" ${DOWNLOADDB_PAR} \
+        || fail "download sequence targetDB died"
+fi
+
+if notExists "${PROFILE_TARGET}.dbtype"; then
+    echo "profile target DB $3 not found and will be downloaded."
+    #shellcheck disable=SC2086
+    "${MMSEQS}" downloaddb "${PROFILE_TARGET}" "${PROFILE_TARGET}DB" "${TMP_PATH}/downloaddb_tmp" ${DOWNLOADDB_PAR} \
+        || fail "download profile targetDB died"
 fi
 
 if notExists "${RESULTS}.dbtype"; then
     #shellcheck disable=SC2086
-    "${MMSEQS}" annotate "${TMP_PATH}/assembly" "${TARGET}DB" "${MAPPING_DB}" "${RESULTS}" "${TMP_PATH}/annotate_tmp" ${ANNOTATE_PAR} \
+    "${MMSEQS}" annotate "${TMP_PATH}/assembly" "${PROFILE_TARGET}DB" "${SEQ_TARGET}DB" "${RESULTS}" "${TMP_PATH}/annotate_tmp" ${ANNOTATE_PAR} \
         || fail "annotate died"
 fi
 
