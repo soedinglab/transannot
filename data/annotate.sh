@@ -52,7 +52,7 @@ filterDb_standard() {
 
 INPUT="$1" #assembled sequence
 PROFILE_TARGET="$2"  #already downloaded database
-TARGET="$3"
+SEQ_TARGET="$3"
 RESULTS="$4"
 TMP_PATH="$5" 
 
@@ -92,12 +92,12 @@ if [ -n "${TAXONOMY_ID}" ]; then
 			rm -f "${TMP_PATH}/prof_searchDB."[0-9]*
 
 			#shellcheck disable=SC2086
-			"$MMSEQS" search "${TMP_PATH}/clu_rep" "${TARGET}" "${TMP_PATH}/seq_searchDB" "${TMP_PATH}/search_tmp" ${SEARCH_PAR} \
+			"$MMSEQS" search "${TMP_PATH}/clu_rep" "${SEQ_TARGET}" "${TMP_PATH}/seq_searchDB" "${TMP_PATH}/search_tmp" ${SEARCH_PAR} \
 				|| fail "sequence-sequence search died"
 
 			if notExists "${TMP_PATH}/seq_searchDB.csv"; then
 				#shellcheck disable=SC2086
-				"$MMSEQS" convertalis "${TMP_PATH}/clu_rep" "${TARGET}" "${TMP_PATH}/seq_searchDB" "${TMP_PATH}/seq_searchDB.csv" \
+				"$MMSEQS" convertalis "${TMP_PATH}/clu_rep" "${SEQ_TARGET}" "${TMP_PATH}/seq_searchDB" "${TMP_PATH}/seq_searchDB.csv" \
 					|| fail "convertalis died"
 			fi
 			rm -f "${TMP_PATH}/seq_searchDB."[0-9]*
@@ -118,17 +118,16 @@ if notExists "${TMP_PATH}/searchDB"; then
 		filterDb_standard "${TMP_PATH}/seq_searchDB.csv" "${TMP_PATH}/seq_searchDB_filtered_IDs.csv"
 	fi
 
-	PROF_DB_SIZE=$(wc -l < "${TMP_PATH}/prof_searchDB_filtered_IDs.csv")
-	SEQ_DB_SIZE=$(wc -l < "${TMP_PATH}/seq_searchDB_filtered_IDs.csv")
+	# PROF_DB_SIZE=$(wc -l < "${TMP_PATH}/prof_searchDB_filtered_IDs.csv")
+	# SEQ_DB_SIZE=$(wc -l < "${TMP_PATH}/seq_searchDB_filtered_IDs.csv")
 
-	if [ "${PROF_DB_SIZE}" -ge "${SEQ_DB_SIZE}" ]; then
-		echo "Sequence-profile DB is larger"
-		join -j 1 -a2 -t ' ' "${TMP_PATH}/seq_searchDB_filtered_IDs.csv" "${TMP_PATH}/prof_searchDB_filtered_IDs.csv" >> "${TMP_PATH}/searchDB"
-	else 
-		echo "Seqeunce-sequence DB is larger"
-		join -j 1 -a1 -t ' ' "${TMP_PATH}/seq_searchDB_filtered_IDs.csv" "${TMP_PATH}/prof_searchDB_filtered_IDs.csv" >> "${TMP_PATH}/searchDB"	
-	fi
+	# if [ "${PROF_DB_SIZE}" -ge "${SEQ_DB_SIZE}" ]; then
+	# 	join -j 1 -a2 -t ' ' "${TMP_PATH}/seq_searchDB_filtered_IDs.csv" "${TMP_PATH}/prof_searchDB_filtered_IDs.csv" >> "${TMP_PATH}/searchDB"
+	# else 
+	# 	join -j 1 -a1 -t ' ' "${TMP_PATH}/seq_searchDB_filtered_IDs.csv" "${TMP_PATH}/prof_searchDB_filtered_IDs.csv" >> "${TMP_PATH}/searchDB"	
+	# fi
 
+	join -j 1 -a1 -a2 -t ' ' "${TMP_PATH}/seq_searchDB_filtered_IDs.csv" "${TMP_PATH}/prof_searchDB_filtered_IDs.csv" >> "${TMP_PATH}/searchDB"
 fi
 
 MMSEQS="$(abspath "$(command -v "${MMSEQS}")")"
