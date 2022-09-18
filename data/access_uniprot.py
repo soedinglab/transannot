@@ -4,7 +4,6 @@ import numpy as np
 import sys, requests
 import pandas as pd
 from io import StringIO
-# from re import search
 
 # BASE = 'http://www.uniprot.org'
 # KB_ENDPOINT = '/uniprot/'
