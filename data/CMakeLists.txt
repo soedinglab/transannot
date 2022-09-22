@@ -8,7 +8,6 @@ set(COMPILED_RESOURCES
     assemblereads.sh
     createquerydb.sh
     easytransannot.sh
-    getorthologs.sh
     )
 
 set(GENERATED_OUTPUT_HEADERS "")

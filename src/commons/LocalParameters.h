@@ -23,7 +23,6 @@ public:
     std::vector<MMseqsParameter*> createquerydb;
     std::vector<MMseqsParameter*> annotateprofiles;
     std::vector<MMseqsParameter*> easytransannot;
-    std::vector<MMseqsParameter*> getorthologs;
 
     // annotate
     PARAMETER(PARAM_OUTPUT_SIMPLE)
@@ -31,11 +30,6 @@ public:
     // not yet implemented
     // PARAMETER(PARAM_INFORMATION_SELECTION)
     // PARAMETER(PARAM_TAXONOMYID)
-    
-
-
-    // std::vector<MMseqsParameter*> combineList(const std::vector<MMseqsParameter*> &par1,
-    //                                         const std::vector<MMseqsParameter*> &par2);
 
     // int infoSelect;
     // int taxId;
@@ -84,8 +78,6 @@ private:
         easytransannot = combineList(assemblereads, annotateworkflow);
         easytransannot = combineList(easytransannot, downloaddb);
         easytransannot = combineList(easytransannot, createquerydb);
-
-        getorthologs = combineList(annotateworkflow, downloaddb);
 
         // default values
         // infoSelect = 6;
