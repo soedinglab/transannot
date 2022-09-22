@@ -25,21 +25,10 @@ Other dependencies for the compilation from source are `zlib` and `bzip`.
 
 ## Dependencies
 
-PLASS
-MMseqs2
+PLASS - should be installed separately
+MMseqs2 - will be installed as a library of TransAnnot
 
 ## Before starting
-
-### ID mapping DB
-
-One should download ID Mapping database of the [UniProt knowledgebase](https://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/idmapping/).
-
-To download and extract ID Mapping database simply execute following script:
-
-    chmod +x util/download_mapping_db.sh
-    ./util/download_mapping_db.sh
-
-Script is located in transannot/util directory, so please make sure you run mentioned above commands from the main directory of TransAnnot.
 
 ### tmp folder
 
@@ -66,8 +55,7 @@ Possible inputs are:
 * `assemblereads`            It assembles raw sequencing reads to large genomic fragments (contigs)
 * `annotate`            It clusters given input for the reduction of redundancy and runs sequnce-profile search against profile database (e.g. PDB70)to obtain the closest homologs with annotated function. After running thhe search UniProt IDs will be retrieved to get more detailed information about the provided transcriptome. 
 (It finds homologs for assembled contigs in the custom defined protein seqeunce database (default UniProtKB) using reciprocal-best hits (rbh module) search from MMseqs2 suite if taxonomy ID `--taxid` is provided, or MMseqs2 search if no taxonomy ID is supplied. After runing the search Gene Ontology ID will be obtained from UniProt.)
-* `annotateprofiles`    It ...
-* `contamination`       It checks contaminated contigs using _easy-taxonomy_ module from MMseqs2 suite. This approach uses taxonomy assignments of every contig to identify contamination
+<!-- * `contamination`       It checks contaminated contigs using _easy-taxonomy_ module from MMseqs2 suite. This approach uses taxonomy assignments of every contig to identify contamination -->
 * `createquerydb`            It creates a database from the sequence space (obtained from `downloaddb` module) in a required format for MMseqs2 rbh module
 * `downloaddb`          It downloads the user defined database that serves as a search space for homology detection
 
@@ -103,7 +91,7 @@ Hence transannot runs sequence-profile search in `annotate` module, profile data
 `annotate -h` provides details on sequence type and databases acceptable for the `annotate` module. 
 To run annotate module of transannot execute the following command:
 
-    transannot annotate <assembledQueryDB> <profileTargetDB> <IDmappingDB> <outDB> <tmp> [options]
+    transannot annotate <assembledQueryDB> <profileTargetDB> <sequenceTargetDB> <outDB> <tmp> [options]
 
 ### Profile databases
 
