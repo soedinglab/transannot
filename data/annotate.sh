@@ -28,11 +28,11 @@ abspath() {
 
 #we obtain best hits from targetDB based on sequence identity
 filterDb() {
-	awk '{if (($12>=50) && ($3>=0.6)) print $1, $2, $3}' "$1" | sort -n -k3 | awk '!seen[$1]++' | awk '{print $1, $2}' |sort -s -k1b,1 >> "$2"
+	awk '{if (($5>=50) && ($4>=0.6)) print $1, $2, $6}' "$1" | sort -n -k3 | awk '!seen[$1]++' | sort -s -k1b,1 >> "$2"
 }
 
 filterDb_standard() {
-	awk '{if (($12>=50) && ($3>=0.6)) print $1, $2, $3, $12}' "$1" | sort -n -k3 | awk '!seen[$1]++' | sort -s -k1b,1 >> "$2"
+	awk '{if (($5>=50) && ($4>=0.6)) print }' "$1" | sort -n -k3 | awk '!seen[$1]++' | sort -s -k1b,1 >> "$2"
 }
 
 #pre-processing
@@ -86,8 +86,8 @@ if [ -n "${TAXONOMY_ID}" ]; then
 
 			if notExists "${TMP_PATH}/prof_searchDB.csv"; then
 				#shellcheck disable=SC2086
-				"$MMSEQS" convertalis "${TMP_PATH}/clu_rep" "${PROFILE_TARGET}" "${TMP_PATH}/prof_searchDB" "${TMP_PATH}/prof_searchDB.csv" \
-					|| fail "converatalis died"
+				"$MMSEQS" convertalis "${TMP_PATH}/clu_rep" "${PROFILE_TARGET}" "${TMP_PATH}/prof_searchDB" "${TMP_PATH}/prof_searchDB.csv" --format-output "query, target, evalue, pident, bits, theader" \
+					|| fail "convertalis died"
 			fi
 			rm -f "${TMP_PATH}/prof_searchDB."[0-9]*
 
@@ -97,7 +97,7 @@ if [ -n "${TAXONOMY_ID}" ]; then
 
 			if notExists "${TMP_PATH}/seq_searchDB.csv"; then
 				#shellcheck disable=SC2086
-				"$MMSEQS" convertalis "${TMP_PATH}/clu_rep" "${SEQ_TARGET}" "${TMP_PATH}/seq_searchDB" "${TMP_PATH}/seq_searchDB.csv" \
+				"$MMSEQS" convertalis "${TMP_PATH}/clu_rep" "${SEQ_TARGET}" "${TMP_PATH}/seq_searchDB" "${TMP_PATH}/seq_searchDB.csv" --format-output "query, target, evalue, pident, bits, theader"\
 					|| fail "convertalis died"
 			fi
 			rm -f "${TMP_PATH}/seq_searchDB."[0-9]*
@@ -112,30 +112,15 @@ if notExists "${TMP_PATH}/searchDB"; then
 		echo "Simplified output will be provided"
 		filterDb "${TMP_PATH}/prof_searchDB.csv" "${TMP_PATH}/prof_searchDB_filtered_IDs.csv"
 		filterDb "${TMP_PATH}/seq_searchDB.csv" "${TMP_PATH}/seq_searchDB_filtered_IDs.csv"
+		join -j 1 -a1 -a2 -t ' ' "${TMP_PATH}/seq_searchDB_filtered_IDs.csv" "${TMP_PATH}/prof_searchDB_filtered_IDs.csv" | awk '{print $1, $2, $4}'>> "${RESULTS}"
 	else 
 		echo "Standard output will be provided"
 		filterDb_standard "${TMP_PATH}/prof_searchDB.csv" "${TMP_PATH}/prof_searchDB_filtered_IDs.csv"
 		filterDb_standard "${TMP_PATH}/seq_searchDB.csv" "${TMP_PATH}/seq_searchDB_filtered_IDs.csv"
+		join -j 1 -a1 -a2 -t ' ' "${TMP_PATH}/seq_searchDB_filtered_IDs.csv" "${TMP_PATH}/prof_searchDB_filtered_IDs.csv" | awk '{print $1, $2, $3, $4, $5, $6, $8, $9, $10, $11, $12}'>> "${RESULTS}"
 	fi
-
-	# PROF_DB_SIZE=$(wc -l < "${TMP_PATH}/prof_searchDB_filtered_IDs.csv")
-	# SEQ_DB_SIZE=$(wc -l < "${TMP_PATH}/seq_searchDB_filtered_IDs.csv")
-
-	# if [ "${PROF_DB_SIZE}" -ge "${SEQ_DB_SIZE}" ]; then
-	# 	join -j 1 -a2 -t ' ' "${TMP_PATH}/seq_searchDB_filtered_IDs.csv" "${TMP_PATH}/prof_searchDB_filtered_IDs.csv" >> "${TMP_PATH}/searchDB"
-	# else 
-	# 	join -j 1 -a1 -t ' ' "${TMP_PATH}/seq_searchDB_filtered_IDs.csv" "${TMP_PATH}/prof_searchDB_filtered_IDs.csv" >> "${TMP_PATH}/searchDB"	
-	# fi
-
-	join -j 1 -a1 -a2 -t ' ' "${TMP_PATH}/seq_searchDB_filtered_IDs.csv" "${TMP_PATH}/prof_searchDB_filtered_IDs.csv" >> "${TMP_PATH}/searchDB"
 fi
 
-MMSEQS="$(abspath "$(command -v "${MMSEQS}")")"
-SCRIPT="${MMSEQS%/build*}"
-chmod +x "${SCRIPT}/data/access_uniprot.py"
-#shellcheck disable=SC2086
-python3 "${SCRIPT}/data/access_uniprot.py" "${TMP_PATH}/searchDB" "${RESULTS}" \
- 	|| fail "get gene ontology ids died"
 
 #remove temporary files and directories
 if [ -n "${REMOVE_TMP}" ]; then
@@ -148,4 +133,6 @@ if [ -n "${REMOVE_TMP}" ]; then
 	rm -f "${TMP_PATH}/prof_searchDB.csv"
 	#shellcheck disable=SC2086
 	rm -f "${TMP_PATH}/seq_searchDB.csv"
+	rm -f "${TMP_PATH}/seq_searchDB_filtered_IDs.csv"
+	rm -f "${TMP_PATH}/prof_searchDB_filtered_IDs.csv"
 fi
