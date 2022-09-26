@@ -32,7 +32,7 @@ filterDb() {
 }
 
 filterDb_standard() {
-	awk '{if (($5>=50) && ($4>=0.6)) print }' "$1" | sort -n -k3 | awk '!seen[$1]++' | sort -s -k1b,1 >> "$2"
+	awk '{if (($5>=50) && ($4>=0.6)) print $0}' "$1" | sort -n -k3 | awk '!seen[$1]++' | sort -s -k1b,1 >> "$2"
 }
 
 #pre-processing
@@ -97,7 +97,7 @@ if [ -n "${TAXONOMY_ID}" ]; then
 
 			if notExists "${TMP_PATH}/seq_searchDB.csv"; then
 				#shellcheck disable=SC2086
-				"$MMSEQS" convertalis "${TMP_PATH}/clu_rep" "${SEQ_TARGET}" "${TMP_PATH}/seq_searchDB" "${TMP_PATH}/seq_searchDB.csv" --format-output "query, target, evalue, pident, bits, theader"\
+				"$MMSEQS" convertalis "${TMP_PATH}/clu_rep" "${SEQ_TARGET}" "${TMP_PATH}/seq_searchDB" "${TMP_PATH}/seq_searchDB.csv" --format-output "query, target, evalue, pident, bits, theader" \
 					|| fail "convertalis died"
 			fi
 			rm -f "${TMP_PATH}/seq_searchDB."[0-9]*
@@ -121,18 +121,14 @@ if notExists "${TMP_PATH}/searchDB"; then
 	fi
 fi
 
-
 #remove temporary files and directories
 if [ -n "${REMOVE_TMP}" ]; then
 	echo "Remove temporary files and directories"
-	rm -rf "${TMP_PATH}/annotate_tmp"
-	rm -f "${TMP_PATH}/annotate.sh"
 	#shellcheck disable=SC2086
 	"$MMSEQS" rmdb "${TMP_PATH}/clu" ${VERBOSITY_PAR}
-	#shellcheck disable=SC2086
 	rm -f "${TMP_PATH}/prof_searchDB.csv"
-	#shellcheck disable=SC2086
 	rm -f "${TMP_PATH}/seq_searchDB.csv"
 	rm -f "${TMP_PATH}/seq_searchDB_filtered_IDs.csv"
 	rm -f "${TMP_PATH}/prof_searchDB_filtered_IDs.csv"
+	rm -f "${TMP_PATH}/annotate.sh"
 fi
