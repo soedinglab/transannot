@@ -26,15 +26,18 @@ int easytransannot(int argc, const char **argv, const Command& command) {
     std::string resDb = par.filenames.back();
     cmd.addVariable("RESULTS", resDb.c_str());
     par.filenames.pop_back();
-    std::string mapDb = par.filenames.back();
-    cmd.addVariable("PROFILE_TARGET", mapDb.c_str());
+    std::string seqDb = par.filenames.back();
+    cmd.addVariable("SEQ_TARGET", seqDb.c_str());
     par.filenames.pop_back();
-    std::string targetDb = par.filenames.back();
-    cmd.addVariable("SEQ_TARGET", targetDb.c_str());
+    std::string prof1Db = par.filenames.back();
+    cmd.addVariable("PROF1_TARGET", prof1Db.c_str());
+    par.filenames.pop_back();
+    std::string prof2Db = par.filenames.back();
+    cmd.addVariable("PROF2_TARGET", prof2Db.c_str());
     par.filenames.pop_back();
     
     cmd.addVariable("REMOVE_TMP", par.removeTmpFiles ? "TRUE" : NULL);
-    cmd.addVariable("VERBOSITY_PAR", par.createParameterString(par.onlyverbosity).c_str());
+    cmd.addVariable("VERBOSITY", par.createParameterString(par.onlyverbosity).c_str());
     cmd.addVariable("THREADS_PAR", par.createParameterString(par.onlythreads).c_str());
 
     std::string program = tmpDir + "/easytransannot.sh";

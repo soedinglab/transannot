@@ -18,12 +18,6 @@ notExists() {
 [ -f "${RESULTS}.dbtype" ] && echo "${RESULTS}.dbtype exists already!" && exit 1;
 # [ ! -d "${TMP_PATH}" ] && echo "tmp directory ${TMP_PATH} not found! tmp will be created." && mkdir -p "${TMP_PATH}";
 
-# INPUT="$@"
-# SEQ_TARGET="$2" #selection to downloaddb, may also be already downloaded mmseqs DB
-# PROFILE_TARGET="$3"
-# RESULTS="$4"
-# TMP_PATH="$5"
-
 if notExists "${INPUT}.dbtype"; then
     #shellcheck disable=SC2086
     "${MMSEQS}" assemblereads "$@" "${TMP_PATH}/assembly" "${TMP_PATH}" ${ASSEMBLEREADS_PAR} \
@@ -31,22 +25,29 @@ if notExists "${INPUT}.dbtype"; then
 fi
 
 if notExists "${SEQ_TARGET}.dbtype"; then
-    echo "sequence target DB $2 not found and will be downloaded."
+    echo "sequence target DB not found and will be downloaded."
     #shellcheck disable=SC2086
     "${MMSEQS}" downloaddb "${SEQ_TARGET}" "${SEQ_TARGET}DB" "${TMP_PATH}/downloaddb_tmp" ${DOWNLOADDB_PAR} \
         || fail "download sequence targetDB died"
 fi
 
-if notExists "${PROFILE_TARGET}.dbtype"; then
-    echo "profile target DB $3 not found and will be downloaded."
+if notExists "${PROF1_TARGET}.dbtype"; then
+    echo "first profile target DB not found and will be downloaded."
     #shellcheck disable=SC2086
-    "${MMSEQS}" downloaddb "${PROFILE_TARGET}" "${PROFILE_TARGET}DB" "${TMP_PATH}/downloaddb_tmp" ${DOWNLOADDB_PAR} \
-        || fail "download profile targetDB died"
+    "${MMSEQS}" downloaddb "${PROF1_TARGET}" "${PROF1_TARGET}DB" "${TMP_PATH}/downloaddb_tmp" ${DOWNLOADDB_PAR} \
+        || fail "download first profile targetDB died"
+fi
+
+if notExists "${PROF2_TARGET}.dbtype"; then
+    echo "second profile targte DB not found and will be downloaded."
+    #shellcheck disable=SC2086
+    "${MMSEQS}" downloaddb "${PROF2_TARGET}" "${PROF2_TARGET}DB" "${TMP_PATH}/downloaddb_tmp" ${DOWNLOADDB_PAR} \
+        || fail "download second profile targetDB died"
 fi
 
 if notExists "${RESULTS}.dbtype"; then
     #shellcheck disable=SC2086
-    "${MMSEQS}" annotate "${TMP_PATH}/assembly" "${PROFILE_TARGET}DB" "${SEQ_TARGET}DB" "${RESULTS}" "${TMP_PATH}/annotate_tmp" ${ANNOTATE_PAR} \
+    "${MMSEQS}" annotate "${TMP_PATH}/assembly" "${PROF1_TARGET}DB" "${PROF2_TARGET}DB" "${SEQ_TARGET}DB" "${RESULTS}" "${TMP_PATH}/annotate_tmp" ${ANNOTATE_PAR} \
         || fail "annotate died"
 fi
 
@@ -54,6 +55,10 @@ fi
 if [ -n "$REMOVE_TMP" ]; then
     echo "Remove temporary files and directories"
     #shellcheck disable=SC2086
-    "${MMSEQS}" rmdb "${TARGET}DB" ${VERBOSITY}
+    "${MMSEQS}" rmdb "${PROF1_TARGET}DB" ${VERBOSITY}
+    #shellcheck disable=SC2086
+    "${MMSEQS}" rmdb "${PROF2_TARGET}DB" ${VERBOSITY}
+    #shellcheck disable=SC2086
+    "${MMSEQS}" rmdb "${SEQ_TARGET}DB" ${VERBOSITY}
     rm -f "${TMP_PATH}/easytransannot.sh" 
 fi
