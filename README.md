@@ -87,7 +87,7 @@ Hence transannot runs 3 searches in `annotate` module, this step should be repea
 
 ### Annotate workflow
 
-In the `annotate` module representative sequences will be extracted and used as search input to remove redundancy. 3 searches (one sequence-sequence and two seqeuce-profile) will be executed. It is possible to use any available MMseqs2 [databases] (https://github.com/soedinglab/MMseqs2/wiki#downloading-databases), but we highly recommend to use `Pfam-A.full`, `eggNOG` (profile databases) and `UniProtKB/SwissProt` (sequence database).
+In the `annotate` module representative sequences will be extracted and used as search input to remove redundancy. 3 searches (one sequence-sequence and two seqeuce-profile) will be executed. It is possible to use any available MMseqs2 [databases](https://github.com/soedinglab/MMseqs2/wiki#downloading-databases), but we highly recommend to use `Pfam-A.full`, `eggNOG` (profile databases) and `UniProtKB/SwissProt` (sequence database).
 
 To run annotate module of transannot execute the following command:
 
