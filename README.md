@@ -46,15 +46,17 @@ Possible inputs are:
 
 * assembled transcriptomes (obtained e.g. using Trinity) or raw transcriptome reads, which will be assembled at protein level using `plass`
 * metatranscriptomes
-* single-organism transcriptomes, in such case it is possible to check for the contamination with `contamination` module, which is based on MMseqs2 taxonomy workflow
+* single-organism transcriptomes
+<!-- in such case it is possible to check for the contamination with `contamination` module, which is based on MMseqs2 taxonomy workflow -->
 
 ## Running
 
 ### Modules
 
 * `assemblereads`            It assembles raw sequencing reads to large genomic fragments (contigs)
-* `annotate`            It clusters given input for the reduction of redundancy and runs sequnce-profile search against profile database (e.g. PDB70)to obtain the closest homologs with annotated function. After running thhe search UniProt IDs will be retrieved to get more detailed information about the provided transcriptome. 
-(It finds homologs for assembled contigs in the custom defined protein seqeunce database (default UniProtKB) using reciprocal-best hits (rbh module) search from MMseqs2 suite if taxonomy ID `--taxid` is provided, or MMseqs2 search if no taxonomy ID is supplied. After runing the search Gene Ontology ID will be obtained from UniProt.)
+* `annotate`            It clusters given input for the reduction of redundancy and runs sequnce-profile search against profile database (e.g. PDB70) and sequence-sequence search to obtain the closest homologs with annotated function. 
+<!-- After running thhe search UniProt IDs will be retrieved to get more detailed information about the provided transcriptome.  -->
+<!-- (It finds homologs for assembled contigs in the custom defined protein seqeunce database (default UniProtKB) using reciprocal-best hits (rbh module) search from MMseqs2 suite if taxonomy ID `--taxid` is provided, or MMseqs2 search if no taxonomy ID is supplied. After runing the search Gene Ontology ID will be obtained from UniProt.) -->
 <!-- * `contamination`       It checks contaminated contigs using _easy-taxonomy_ module from MMseqs2 suite. This approach uses taxonomy assignments of every contig to identify contamination -->
 * `createquerydb`            It creates a database from the sequence space (obtained from `downloaddb` module) in a required format for MMseqs2 rbh module
 * `downloaddb`          It downloads the user defined database that serves as a search space for homology detection
@@ -65,42 +67,48 @@ Before running this step PLASS must be installed, detailed information about ins
 
 In this step, reads will be assembled with Protein-Level ASSembler PLASS and afterwards MMseqs2 database will be created, you may skip this step if the transcriptome is already assembled. Usage:
 
-    transannot assemblereads <inputReads.fastq> <seqDB> <tmp> [options]
-
-Assembled transcriptome will be located in `tmp/plass_assembly`
+    transannot assemblereads <inputReads.fastq[.gz|bz]> ... <inputReads.fastq[.gz|bz]> <fastaFile> <seqDB> <tmp> [options]
 
 ### Dowloading databases
 
 In this step, sequence database for homology search will be downloaded.
-Default database is PDB70 and can be obtained using a below command:
+<!-- Default database is PDB70 and can be obtained using a below command:
 
-    transannot downloaddb PDB70 <outDB> <tmp> [options]
-    
-To see other options for your choice, please use the below command:
+    transannot downloaddb PDB70 <outDB> <tmp> [options] -->    
+To see options for your choice, please use the below command:
 
     mmseqs databases -h
 
-and use the below command to download the preferred database (ensure the same keyword as given in `mmseqs database -h`):
+and execute the below command to download the preferred database (ensure the same keyword as given in `mmseqs database -h`):
 
     transannot downloaddb <selection> <outDB> <tmp> [options]
 
-Hence transannot runs sequence-profile search in `annotate` module, profile database must be downloaded, for example Pfam-A or eggNOG.
+Hence transannot runs 3 searches in `annotate` module, this step should be repeated 3 times.
 
 ### Annotate workflow
 
-`annotate -h` provides details on sequence type and databases acceptable for the `annotate` module. 
+In the `annotate` module representative sequences will be extracted and used as search input to remove redundancy. 3 searches (one sequence-sequence and two seqeuce-profile) will be executed. It is possible to use any available MMseqs2 [databases] (https://github.com/soedinglab/MMseqs2/wiki#downloading-databases), but we highly recommend to use `Pfam-A.full`, `eggNOG` (profile databases) and `UniProtKB/SwissProt` (sequence database).
+
 To run annotate module of transannot execute the following command:
 
-    transannot annotate <assembledQueryDB> <profileTargetDB> <sequenceTargetDB> <outDB> <tmp> [options]
+    transannot annotate <assembledQueryDB> <1st profileTargetDB> <2nd profileTargetDB> <sequenceTargetDB> <outDB> <tmp> [options]
+
+#### Important options of the annotate module
+
+`--simple-output` parameter allows user to obtain simplified output, which only includes query and target IDs, header of the target database and E-value. Whereas standard output also contains sequence identity and bit score for each target sequence. Usage: 
+    
+    transannot annotate $1 $2 $3 $4 $5 $6 --simple-output 
+
+When no tag is used, standard output will be provided.
 
 ### Profile databases
 
-Sequence profiles contain linear probabilities for each aminoacid at every position of the set. There is an internal MMseqs2 profile DB format. `annotate` module of transannot implements sequence-profile search, that is why profile database must be provided as a input target database.
+Sequence profiles contain linear probabilities for each aminoacid at every position of the set. There is an internal MMseqs2 profile DB format. `annotate` module of transannot implements sequence-profile search, that is why profile databases must be provided as a input target.
 
-### Contamination
+<!-- ### Contamination
 
 Contamination module checks for the contamination in the transcriptomic data. It uses MMseqs2 _easy-taxonomy_ module.
 
     transannot contamination <Input.fasta> <targetDB> <outPath> <tmp> [options]
  
-You can find the report of taxonomy assignments in `outPath` folder.
+You can find the report of taxonomy assignments in `outPath` folder. -->
