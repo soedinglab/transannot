@@ -28,7 +28,7 @@ abspath() {
 
 #we obtain best hits from targetDB based on sequence identity
 filterDb_simple() {
-	awk '{if (($5>=50) && ($4>=0.6)) print $1, $2, $3, $6, $7}' "$1" | sort -n -k3 | awk '!seen[$1]++' | sort -s -k1b,1 >> "$2"
+	awk '{if (($5>=50) && ($4>=0.6)) print $0}' "$1" | awk '{$4=$5=""; print $0}' |sort -n -k3 | awk '!seen[$1]++' | sort -s -k1b,1 >> "$2"
 }
 
 filterDb() {
