@@ -28,7 +28,7 @@ abspath() {
 
 #we obtain best hits from targetDB based on sequence identity
 filterDb_simple() {
-	awk '{if (($5>=50) && ($4>=0.6)) print $1, $2, $3, $6}' "$1" | sort -n -k3 | awk '!seen[$1]++' | sort -s -k1b,1 >> "$2"
+	awk '{if (($5>=50) && ($4>=0.6)) print $1, $2, $3, $6, $7}' "$1" | sort -n -k3 | awk '!seen[$1]++' | sort -s -k1b,1 >> "$2"
 }
 
 filterDb() {
@@ -143,8 +143,15 @@ fi
 #remove temporary files and directories
 if [ -n "${REMOVE_TMP}" ]; then
 	echo "Remove temporary files and directories"
+
 	#shellcheck disable=SC2086
 	"$MMSEQS" rmdb "${TMP_PATH}/clu" ${VERBOSITY_PAR}
+	#shellcheck disable=SC2086
+	"$MMSEQS" rmdb "${TMP_PATH}/prof1_searchDB" ${VERBOSITY_PAR}
+	#shellcheck disable=SC2086
+	"$MMSEQS" rmdb "${TMP_PATH}/prof2_searchDB" ${VERBOSITY_PAR}
+	#shellcheck disable=SC2086
+	"$MMSEQS" rmdb "${TMP_PATH}/seq_searchDB" ${VERBOSITY_PAR}
 
 	rm -f "${TMP_PATH}/prof1_searchDB.csv"
 	rm -f "${TMP_PATH}/prof2_searchDB.csv"
