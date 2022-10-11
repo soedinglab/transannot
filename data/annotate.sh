@@ -162,8 +162,18 @@ if [ -n "${TAXONOMY_ID}" ]; then
 # fi
 
 if notExists "${TMP_PATH}/tmp_join.csv"; then
-	join -j 1 -a1 -a2 -t ' ' "${TMP_PATH}/prof1_searchDB.csv" "${TMP_PATH}/prof2_searchDB.csv" >> "${TMP_PATH}/tmp_join.csv"
-	join -j 1 -a1 -a2 -t ' ' "${TMP_PATH}/tmp_join.csv" "${TMP_PATH}/seq_searchDB.csv" >> "${RESULTS}"
+	sort -s -k1b,1 "${TMP_PATH}/prof1_searchDB.csv" >> "${TMP_PATH}/prof1_searchDB2join.csv"
+	rm -f "${TMP_PATH}/prof1_searchDB.csv"
+
+	sort -s -k1b,1 "${TMP_PATH}/prof2_searchDB.csv" >> "${TMP_PATH}/prof2_searchDB2join.csv"
+	rm -f "${TMP_PATH}/prof2_searchDB.csv"
+
+	sort -s -k1b,1 "${TMP_PATH}/seq_searchDB.csv" >> "${TMP_PATH}/seq_searchDB2join.csv"
+	rm -f "${TMP_PATH}/seq_searchDB.csv"
+
+	join -j 1 -a1 -a2 -t ' ' "${TMP_PATH}/prof1_searchDB2join.csv" "${TMP_PATH}/prof2_searchDB2join.csv" >> "${TMP_PATH}/tmp_join.csv"
+	join -j 1 -a1 -a2 -t ' ' "${TMP_PATH}/tmp_join.csv" "${TMP_PATH}/seq_searchDB2join.csv" >> "${RESULTS}"
+	rm -f "${TMP_PATH}/tmp_join.csv"
 fi
 
 #remove temporary files and directories
@@ -179,9 +189,9 @@ if [ -n "${REMOVE_TMP}" ]; then
 	#shellcheck disable=SC2086
 	"$MMSEQS" rmdb "${TMP_PATH}/seq_searchDB" ${VERBOSITY_PAR}
 
-	rm -f "${TMP_PATH}/prof1_searchDB.csv"
-	rm -f "${TMP_PATH}/prof2_searchDB.csv"
-	rm -f "${TMP_PATH}/seq_searchDB.csv"
+	rm -f "${TMP_PATH}/prof1_searchDB2join.csv"
+	rm -f "${TMP_PATH}/prof2_searchDB2join.csv"
+	rm -f "${TMP_PATH}/seq_searchDB2join.csv"
 
 	#shellcheck disable=SC2086
 	"$MMSEQS" rmdb"${TMP_PATH}/filtprof1DB" ${VERBOSITY_PAR}
