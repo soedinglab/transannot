@@ -89,7 +89,7 @@ if [ -n "${TAXONOMY_ID}" ]; then
 
 			if notExists "${TMP_PATH}/prof1_searchDB.csv"; then
 				#shellcheck disable=SC2086
-				"$MMSEQS" convertalis "${TMP_PATH}/clu_rep" "${PROF_TARGET1}" "${TMP_PATH}/prof1_searchDB" "${TMP_PATH}/prof1_searchDB.csv" --format-output "query,target,evalue,pident,bits,theader" \
+				"$MMSEQS" convertalis "${TMP_PATH}/clu_rep" "${PROF_TARGET1}" "${TMP_PATH}/prof1_searchDB" "${TMP_PATH}/prof1_searchDB.csv" --format-output "query,target,evalue,pident,bits,theader" --format-mode 4 \
 					|| fail "convertalis died"
 			fi
 			rm -f "${TMP_PATH}/prof1_searchDB."[0-9]*
@@ -100,7 +100,7 @@ if [ -n "${TAXONOMY_ID}" ]; then
 			
 			if notExists "${TMP_PATH}/prof2_searchDB.csv"; then
 				#shellcheck disable=SC2086
-				"$MMSEQS" convertalis "${TMP_PATH}/clu_rep" "${PROF_TARGET2}" "${TMP_PATH}/prof2_searchDB" "${TMP_PATH}/prof2_searchDB.csv" --format-output "query,target,evalue,pident,bits,theader" \
+				"$MMSEQS" convertalis "${TMP_PATH}/clu_rep" "${PROF_TARGET2}" "${TMP_PATH}/prof2_searchDB" "${TMP_PATH}/prof2_searchDB.csv" --format-output "query,target,evalue,pident,bits,theader" --format-mode 4 \
 					|| fail "convertalis died"
 			fi
 			rm -f "${TMP_PATH}/prof2_searchDB."[0-9]*
@@ -111,7 +111,7 @@ if [ -n "${TAXONOMY_ID}" ]; then
 
 			if notExists "${TMP_PATH}/seq_searchDB.csv"; then
 				#shellcheck disable=SC2086
-				"$MMSEQS" convertalis "${TMP_PATH}/clu_rep" "${SEQ_TARGET}" "${TMP_PATH}/seq_searchDB" "${TMP_PATH}/seq_searchDB.csv" --format-output "query,target,evalue,pident,bits,theader" \
+				"$MMSEQS" convertalis "${TMP_PATH}/clu_rep" "${SEQ_TARGET}" "${TMP_PATH}/seq_searchDB" "${TMP_PATH}/seq_searchDB.csv" --format-output "query,target,evalue,pident,bits,theader" --format-mode 4 \
 					|| fail "convertalis died"
 			fi
 			rm -f "${TMP_PATH}/seq_searchDB."[0-9]*
