@@ -35,6 +35,19 @@ filterDb() {
 	awk '{if (($5>=50) && ($4>=0.6)) print $0}' "$1" | sort -n -k3 | awk '!seen[$1]++' | sort -s -k1b,1 >> "$2"
 }
 
+preprocessDb(){
+	#shellcheck disable=SC2086
+	"${MMSEQS}" filterdb "$1" "$2" --comparison-operator ge --comparison-value 0.6 --filter-column 2 \
+		|| fail "filterdb died"
+
+	#shellcheck disable=SC2086
+	"${MMSEQS}" filterdb "$2" "$3" --extract-lines 1 \
+		|| fail "filterdb died"
+	
+	#shellcheck disable=SC2086
+	"${MMSEQS}" rmdb "$2" ${VERBOSITY_PAR}
+}
+
 #pre-processing
 [ -z "$MMSEQS" ] && echo "Please set the environment variable \$MMSEQS to your current binary." && exit 1;
 
@@ -49,7 +62,7 @@ filterDb() {
 [ ! -f "$2.dbtype" ] && echo "$2.dbtype not found!" && exit 1;
 [ ! -f "$3.dbtype" ] && echo "$3.dbtype not found!" && exit 1;
 [ ! -f "$4.dbtype" ] && echo "$4.dbtype not found!" && exit 1;
-[   -f "$5.dbtype" ] && echo "$5.dbtype exists already!" && exit 1; 
+# [   -f "$5.dbtype" ] && echo "$5.dbtype exists already!" && exit 1; 
 [ ! -d "$6" ] && echo "tmp directory $6 not found! tmp will be created." && mkdir -p "$6"; 
 
 INPUT="$1" #assembled sequence
@@ -87,9 +100,11 @@ if [ -n "${TAXONOMY_ID}" ]; then
 			"$MMSEQS" search "${TMP_PATH}/clu_rep" "${PROF_TARGET1}" "${TMP_PATH}/prof1_searchDB" "${TMP_PATH}/search_tmp" ${SEARCH_PAR} \
 				|| fail "first sequence-profile search died"
 
+			preprocessDb "${TMP_PATH}/prof1_searchDB" "${TMP_PATH}/tmp_db" "${TMP_PATH}/filtprof1DB"
+
 			if notExists "${TMP_PATH}/prof1_searchDB.csv"; then
 				#shellcheck disable=SC2086
-				"$MMSEQS" convertalis "${TMP_PATH}/clu_rep" "${PROF_TARGET1}" "${TMP_PATH}/prof1_searchDB" "${TMP_PATH}/prof1_searchDB.csv" --format-output "query,target,evalue,pident,bits,theader" --format-mode 4 \
+				"$MMSEQS" convertalis "${TMP_PATH}/clu_rep" "${PROF_TARGET1}" "${TMP_PATH}/filtprof1DB" "${TMP_PATH}/prof1_searchDB.csv" --format-output "query,target,theader,evalue,pident,bits" --format-mode 4 \
 					|| fail "convertalis died"
 			fi
 			rm -f "${TMP_PATH}/prof1_searchDB."[0-9]*
@@ -98,9 +113,11 @@ if [ -n "${TAXONOMY_ID}" ]; then
 			"$MMSEQS" search "${TMP_PATH}/clu_rep" "${PROF_TARGET2}" "${TMP_PATH}/prof2_searchDB" "${TMP_PATH}/search_tmp" ${SEARCH_PAR} \
 				|| fail "second sequence-profile search died"
 			
+			preprocessDb "${TMP_PATH}/prof2_searchDB" "${TMP_PATH}/tmp_db" "${TMP_PATH}/filtprof2DB"
+
 			if notExists "${TMP_PATH}/prof2_searchDB.csv"; then
 				#shellcheck disable=SC2086
-				"$MMSEQS" convertalis "${TMP_PATH}/clu_rep" "${PROF_TARGET2}" "${TMP_PATH}/prof2_searchDB" "${TMP_PATH}/prof2_searchDB.csv" --format-output "query,target,evalue,pident,bits,theader" --format-mode 4 \
+				"$MMSEQS" convertalis "${TMP_PATH}/clu_rep" "${PROF_TARGET2}" "${TMP_PATH}/filtprof2DB" "${TMP_PATH}/prof2_searchDB.csv" --format-output "query,target,theader,evalue,pident,bits" --format-mode 4 \
 					|| fail "convertalis died"
 			fi
 			rm -f "${TMP_PATH}/prof2_searchDB."[0-9]*
@@ -109,35 +126,44 @@ if [ -n "${TAXONOMY_ID}" ]; then
 			"$MMSEQS" search "${TMP_PATH}/clu_rep" "${SEQ_TARGET}" "${TMP_PATH}/seq_searchDB" "${TMP_PATH}/search_tmp" ${SEARCH_PAR} \
 				|| fail "sequence-sequence search died"
 
+			preprocessDb "${TMP_PATH}/seq_searchDB" "${TMP_PATH}/tmp_db" "${TMP_PATH}/filtseqDB"
+
 			if notExists "${TMP_PATH}/seq_searchDB.csv"; then
 				#shellcheck disable=SC2086
-				"$MMSEQS" convertalis "${TMP_PATH}/clu_rep" "${SEQ_TARGET}" "${TMP_PATH}/seq_searchDB" "${TMP_PATH}/seq_searchDB.csv" --format-output "query,target,evalue,pident,bits,theader" --format-mode 4 \
+				"$MMSEQS" convertalis "${TMP_PATH}/clu_rep" "${SEQ_TARGET}" "${TMP_PATH}/filtseqDB" "${TMP_PATH}/seq_searchDB.csv" --format-output "query,target,theader,evalue,pident,bits" --format-mode 4 \
 					|| fail "convertalis died"
 			fi
 			rm -f "${TMP_PATH}/seq_searchDB."[0-9]*
 		fi
 	fi
 
-if notExists "${TMP_PATH}/tmp_res"; then
-	echo "Filter, sort and merge alignment DBs"
+# if notExists "${TMP_PATH}/tmp_res"; then
+# 	echo "Filter, sort and merge alignment DBs"
 
-	# simplified or standard output
-	if [ -n "${SIMPLE_OUTPUT}" ]; then
-		echo "Simplified output will be provided"
-		filterDb_simple "${TMP_PATH}/prof1_searchDB.csv" "${TMP_PATH}/prof1_searchDB_filt.csv"
-		filterDb_simple "${TMP_PATH}/prof2_searchDB.csv" "${TMP_PATH}/prof2_searchDB_filt.csv"
-		filterDb_simple "${TMP_PATH}/seq_searchDB.csv" "${TMP_PATH}/seq_searchDB_filt.csv"
+# 	# simplified or standard output
+# 	if [ -n "${SIMPLE_OUTPUT}" ]; then
+# 		echo "Simplified output will be provided"
+# 		filterDb_simple "${TMP_PATH}/prof1_searchDB.csv" "${TMP_PATH}/prof1_searchDB_filt.csv"
+# 		filterDb_simple "${TMP_PATH}/prof2_searchDB.csv" "${TMP_PATH}/prof2_searchDB_filt.csv"
+# 		filterDb_simple "${TMP_PATH}/seq_searchDB.csv" "${TMP_PATH}/seq_searchDB_filt.csv"
 		
-	else 
-		echo "Standard output will be provided"
-		filterDb "${TMP_PATH}/prof1_searchDB.csv" "${TMP_PATH}/prof1_searchDB_filt.csv"
-		filterDb "${TMP_PATH}/prof2_searchDB.csv" "${TMP_PATH}/prof2_searchDB_filt.csv"
-		filterDb "${TMP_PATH}/seq_searchDB.csv" "${TMP_PATH}/seq_searchDB_filt.csv"
-	fi
+# 	else 
+# 		echo "Standard output will be provided"
+# 		filterDb "${TMP_PATH}/prof1_searchDB.csv" "${TMP_PATH}/prof1_searchDB_filt.csv"
+# 		filterDb "${TMP_PATH}/prof2_searchDB.csv" "${TMP_PATH}/prof2_searchDB_filt.csv"
+# 		filterDb "${TMP_PATH}/seq_searchDB.csv" "${TMP_PATH}/seq_searchDB_filt.csv"
+# 	fi
 
-	join -j 1 -a1 -a2 -t ' ' "${TMP_PATH}/seq_searchDB_filt.csv" "${TMP_PATH}/prof1_searchDB_filt.csv" >> "${TMP_PATH}/tmp_res"
-	join -j 1 -a1 -a2 -t ' ' "${TMP_PATH}/tmp_res" "${TMP_PATH}/prof2_searchDB_filt.csv" >> "${RESULTS}"
-	rm -f "${TMP_PATH}/tmp_res"
+# 	join -j 1 -a1 -a2 -t ' ' "${TMP_PATH}/seq_searchDB_filt.csv" "${TMP_PATH}/prof1_searchDB_filt.csv" >> "${TMP_PATH}/tmp_res"
+# 	rm -f "${TMP_PATH}/tmp_res"
+# 	join -j 1 -a1 -a2 -t ' ' "${TMP_PATH}/tmp_res" "${TMP_PATH}/prof2_searchDB_filt.csv" >> "${TMP_PATH}/tmp_res1"
+# 	sort -V "${TMP_PATH}/tmp_res1" >> "${RESULTS}"
+# 	rm -f "${TMP_PATH}/tmp_res1"
+# fi
+
+if notExists "${TMP_PATH}/tmp_join.csv"; then
+	join -j 1 -a1 -a2 -t ' ' "${TMP_PATH}/prof1_searchDB.csv" "${TMP_PATH}/prof2_searchDB.csv" >> "${TMP_PATH}/tmp_join.csv"
+	join -j 1 -a1 -a2 -t ' ' "${TMP_PATH}/tmp_join.csv" "${TMP_PATH}/seq_searchDB.csv" >> "${RESULTS}"
 fi
 
 #remove temporary files and directories
@@ -157,9 +183,12 @@ if [ -n "${REMOVE_TMP}" ]; then
 	rm -f "${TMP_PATH}/prof2_searchDB.csv"
 	rm -f "${TMP_PATH}/seq_searchDB.csv"
 
-	rm -f "${TMP_PATH}/prof1_searchDB_filt.csv"
-	rm -f "${TMP_PATH}/prof2_searchDB_filt.csv"
-	rm -f "${TMP_PATH}/seq_searchDB_filt.csv"
+	#shellcheck disable=SC2086
+	"$MMSEQS" rmdb"${TMP_PATH}/filtprof1DB" ${VERBOSITY_PAR}
+	#shellcheck disable=SC2086
+	"$MMSEQS" rmdb"${TMP_PATH}/filtprof2DB" ${VERBOSITY_PAR}
+	#shellcheck disable=SC2086
+	"$MMSEQS" rmdb "${TMP_PATH}/filtseqDB" ${VERBOSITY_PAR}
 
 	rm -f "${TMP_PATH}/annotate.sh"
 fi
