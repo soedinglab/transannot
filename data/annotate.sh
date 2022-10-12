@@ -48,6 +48,17 @@ preprocessDb(){
 	"${MMSEQS}" rmdb "$2" ${VERBOSITY_PAR}
 }
 
+convertalis_standard(){
+	#shellcheck disable=SC2086
+	"${MMSEQS}" convertalis "${TMP_PATH}/clu_rep" $1 $2 $3 --format-output "query,target,theader,evalue,pident,bits" --format-mode 4 \
+		|| fail "convertalis died"
+}
+
+convertalis_simple(){
+	#shellcheck disable=SC2086
+	"${MMSEQS}" convertalis "${TMP_PATH}/clu_rep" $1 $2 $3 --format-output "query,target,theader,evalue" --format-mode 4 \
+		|| fail "convertalis died"
+}
 #pre-processing
 [ -z "$MMSEQS" ] && echo "Please set the environment variable \$MMSEQS to your current binary." && exit 1;
 
@@ -102,25 +113,11 @@ if [ -n "${TAXONOMY_ID}" ]; then
 
 			preprocessDb "${TMP_PATH}/prof1_searchDB" "${TMP_PATH}/tmp_db" "${TMP_PATH}/filtprof1DB"
 
-			if notExists "${TMP_PATH}/prof1_searchDB.csv"; then
-				#shellcheck disable=SC2086
-				"$MMSEQS" convertalis "${TMP_PATH}/clu_rep" "${PROF_TARGET1}" "${TMP_PATH}/filtprof1DB" "${TMP_PATH}/prof1_searchDB.csv" --format-output "query,target,theader,evalue,pident,bits" --format-mode 4 \
-					|| fail "convertalis died"
-			fi
-			rm -f "${TMP_PATH}/prof1_searchDB."[0-9]*
-
 			#shellcheck disable=SC2086
 			"$MMSEQS" search "${TMP_PATH}/clu_rep" "${PROF_TARGET2}" "${TMP_PATH}/prof2_searchDB" "${TMP_PATH}/search_tmp" ${SEARCH_PAR} \
 				|| fail "second sequence-profile search died"
 			
 			preprocessDb "${TMP_PATH}/prof2_searchDB" "${TMP_PATH}/tmp_db" "${TMP_PATH}/filtprof2DB"
-
-			if notExists "${TMP_PATH}/prof2_searchDB.csv"; then
-				#shellcheck disable=SC2086
-				"$MMSEQS" convertalis "${TMP_PATH}/clu_rep" "${PROF_TARGET2}" "${TMP_PATH}/filtprof2DB" "${TMP_PATH}/prof2_searchDB.csv" --format-output "query,target,theader,evalue,pident,bits" --format-mode 4 \
-					|| fail "convertalis died"
-			fi
-			rm -f "${TMP_PATH}/prof2_searchDB."[0-9]*
 			
 			#shellcheck disable=SC2086
 			"$MMSEQS" search "${TMP_PATH}/clu_rep" "${SEQ_TARGET}" "${TMP_PATH}/seq_searchDB" "${TMP_PATH}/search_tmp" ${SEARCH_PAR} \
@@ -128,40 +125,27 @@ if [ -n "${TAXONOMY_ID}" ]; then
 
 			preprocessDb "${TMP_PATH}/seq_searchDB" "${TMP_PATH}/tmp_db" "${TMP_PATH}/filtseqDB"
 
-			if notExists "${TMP_PATH}/seq_searchDB.csv"; then
-				#shellcheck disable=SC2086
-				"$MMSEQS" convertalis "${TMP_PATH}/clu_rep" "${SEQ_TARGET}" "${TMP_PATH}/filtseqDB" "${TMP_PATH}/seq_searchDB.csv" --format-output "query,target,theader,evalue,pident,bits" --format-mode 4 \
-					|| fail "convertalis died"
+			if [ -n "${SIMPLE_OUTPUT}" ]; then
+				echo "Simplified output will be provided"
+				convertalis_simple "${PROF_TARGET1}" "${TMP_PATH}/filtprof1DB" "${TMP_PATH}/prof1_searchDB.csv"
+				convertalis_simple "${PROF_TARGET2}" "${TMP_PATH}/filtprof2DB" "${TMP_PATH}/prof2_searchDB.csv"
+				convertalis_simple "${SEQ_TARGET}" "${TMP_PATH}/filtseqDB" "${TMP_PATH}/seq_searchDB.csv"
+
+			else
+				echo "Standard output will be provided"
+				convertalis_standard "${PROF_TARGET1}" "${TMP_PATH}/filtprof1DB" "${TMP_PATH}/prof1_searchDB.csv"
+				convertalis_standard "${PROF_TARGET2}" "${TMP_PATH}/filtprof2DB" "${TMP_PATH}/prof2_searchDB.csv"
+				convertalis_standard "${SEQ_TARGET}" "${TMP_PATH}/filtseqDB" "${TMP_PATH}/seq_searchDB.csv"
 			fi
+
+			rm -f "${TMP_PATH}/prof1_searchDB."[0-9]*
+			rm -f "${TMP_PATH}/prof2_searchDB."[0-9]*
 			rm -f "${TMP_PATH}/seq_searchDB."[0-9]*
 		fi
 	fi
 
-# if notExists "${TMP_PATH}/tmp_res"; then
-# 	echo "Filter, sort and merge alignment DBs"
-
-# 	# simplified or standard output
-# 	if [ -n "${SIMPLE_OUTPUT}" ]; then
-# 		echo "Simplified output will be provided"
-# 		filterDb_simple "${TMP_PATH}/prof1_searchDB.csv" "${TMP_PATH}/prof1_searchDB_filt.csv"
-# 		filterDb_simple "${TMP_PATH}/prof2_searchDB.csv" "${TMP_PATH}/prof2_searchDB_filt.csv"
-# 		filterDb_simple "${TMP_PATH}/seq_searchDB.csv" "${TMP_PATH}/seq_searchDB_filt.csv"
-		
-# 	else 
-# 		echo "Standard output will be provided"
-# 		filterDb "${TMP_PATH}/prof1_searchDB.csv" "${TMP_PATH}/prof1_searchDB_filt.csv"
-# 		filterDb "${TMP_PATH}/prof2_searchDB.csv" "${TMP_PATH}/prof2_searchDB_filt.csv"
-# 		filterDb "${TMP_PATH}/seq_searchDB.csv" "${TMP_PATH}/seq_searchDB_filt.csv"
-# 	fi
-
-# 	join -j 1 -a1 -a2 -t ' ' "${TMP_PATH}/seq_searchDB_filt.csv" "${TMP_PATH}/prof1_searchDB_filt.csv" >> "${TMP_PATH}/tmp_res"
-# 	rm -f "${TMP_PATH}/tmp_res"
-# 	join -j 1 -a1 -a2 -t ' ' "${TMP_PATH}/tmp_res" "${TMP_PATH}/prof2_searchDB_filt.csv" >> "${TMP_PATH}/tmp_res1"
-# 	sort -V "${TMP_PATH}/tmp_res1" >> "${RESULTS}"
-# 	rm -f "${TMP_PATH}/tmp_res1"
-# fi
-
 if notExists "${TMP_PATH}/tmp_join.csv"; then
+
 	sort -s -k1b,1 "${TMP_PATH}/prof1_searchDB.csv" >> "${TMP_PATH}/prof1_searchDB2join.csv"
 	rm -f "${TMP_PATH}/prof1_searchDB.csv"
 
@@ -194,9 +178,9 @@ if [ -n "${REMOVE_TMP}" ]; then
 	rm -f "${TMP_PATH}/seq_searchDB2join.csv"
 
 	#shellcheck disable=SC2086
-	"$MMSEQS" rmdb"${TMP_PATH}/filtprof1DB" ${VERBOSITY_PAR}
+	"$MMSEQS" rmdb "${TMP_PATH}/filtprof1DB" ${VERBOSITY_PAR}
 	#shellcheck disable=SC2086
-	"$MMSEQS" rmdb"${TMP_PATH}/filtprof2DB" ${VERBOSITY_PAR}
+	"$MMSEQS" rmdb "${TMP_PATH}/filtprof2DB" ${VERBOSITY_PAR}
 	#shellcheck disable=SC2086
 	"$MMSEQS" rmdb "${TMP_PATH}/filtseqDB" ${VERBOSITY_PAR}
 
