@@ -37,7 +37,7 @@ filterDb() {
 
 preprocessDb(){
 	#shellcheck disable=SC2086
-	"${MMSEQS}" filterdb "$1" "$2" --comparison-operator ge --comparison-value 0.6 --filter-column 2 \
+	"${MMSEQS}" filterdb "$1" "$2" --comparison-operator ge --comparison-value 60 --filter-column 2 \
 		|| fail "filterdb died"
 
 	#shellcheck disable=SC2086
