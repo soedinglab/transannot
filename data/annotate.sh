@@ -36,16 +36,14 @@ filterDb() {
 }
 
 preprocessDb(){
+	# #shellcheck disable=SC2086
+	# "${MMSEQS}" filterdb "$1" "$2" --comparison-operator ge --comparison-value 60 --filter-column 2 \
+	# 	|| fail "filterdb died"
 	#shellcheck disable=SC2086
-	"${MMSEQS}" filterdb "$1" "$2" --comparison-operator ge --comparison-value 60 --filter-column 2 \
+	"${MMSEQS}" filterdb "$1" "$2" --extract-lines 1 \
 		|| fail "filterdb died"
-
-	#shellcheck disable=SC2086
-	"${MMSEQS}" filterdb "$2" "$3" --extract-lines 1 \
-		|| fail "filterdb died"
-	
-	#shellcheck disable=SC2086
-	"${MMSEQS}" rmdb "$2" ${VERBOSITY_PAR}
+	# #shellcheck disable=SC2086
+	# "${MMSEQS}" rmdb "$2" ${VERBOSITY_PAR}
 }
 
 convertalis_standard(){
@@ -108,22 +106,22 @@ if [ -n "${TAXONOMY_ID}" ]; then
 		if notExists "${RESULTS}.dbtype"; then
 		# echo "No taxonomy ID is provided. Sequence-profile search will be run"
 			#shellcheck disable=SC2086
-			"$MMSEQS" search "${TMP_PATH}/clu_rep" "${PROF_TARGET1}" "${TMP_PATH}/prof1_searchDB" "${TMP_PATH}/search_tmp" ${SEARCH_PAR} \
+			"$MMSEQS" search "${TMP_PATH}/clu_rep" "${PROF_TARGET1}" "${TMP_PATH}/prof1_searchDB" "${TMP_PATH}/search_tmp" --min-seq-id 0.6 ${SEARCH_PAR} \
 				|| fail "first sequence-profile search died"
 
-			preprocessDb "${TMP_PATH}/prof1_searchDB" "${TMP_PATH}/tmp_db" "${TMP_PATH}/filtprof1DB"
+			preprocessDb "${TMP_PATH}/prof1_searchDB" "${TMP_PATH}/filtprof1DB"
 
 			#shellcheck disable=SC2086
-			"$MMSEQS" search "${TMP_PATH}/clu_rep" "${PROF_TARGET2}" "${TMP_PATH}/prof2_searchDB" "${TMP_PATH}/search_tmp" ${SEARCH_PAR} \
+			"$MMSEQS" search "${TMP_PATH}/clu_rep" "${PROF_TARGET2}" "${TMP_PATH}/prof2_searchDB" "${TMP_PATH}/search_tmp" --min-seq-id 0.6 ${SEARCH_PAR} \
 				|| fail "second sequence-profile search died"
 			
-			preprocessDb "${TMP_PATH}/prof2_searchDB" "${TMP_PATH}/tmp_db" "${TMP_PATH}/filtprof2DB"
+			preprocessDb "${TMP_PATH}/prof2_searchDB" "${TMP_PATH}/filtprof2DB"
 			
 			#shellcheck disable=SC2086
-			"$MMSEQS" search "${TMP_PATH}/clu_rep" "${SEQ_TARGET}" "${TMP_PATH}/seq_searchDB" "${TMP_PATH}/search_tmp" ${SEARCH_PAR} \
+			"$MMSEQS" search "${TMP_PATH}/clu_rep" "${SEQ_TARGET}" "${TMP_PATH}/seq_searchDB" "${TMP_PATH}/search_tmp" --min-seq-id 0.6 ${SEARCH_PAR} \
 				|| fail "sequence-sequence search died"
 
-			preprocessDb "${TMP_PATH}/seq_searchDB" "${TMP_PATH}/tmp_db" "${TMP_PATH}/filtseqDB"
+			preprocessDb "${TMP_PATH}/seq_searchDB" "${TMP_PATH}/filtseqDB"
 
 			if [ -n "${SIMPLE_OUTPUT}" ]; then
 				echo "Simplified output will be provided"
