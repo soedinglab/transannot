@@ -36,14 +36,24 @@ filterDb() {
 }
 
 preprocessDb(){
-	# #shellcheck disable=SC2086
-	# "${MMSEQS}" filterdb "$1" "$2" --comparison-operator ge --comparison-value 60 --filter-column 2 \
-	# 	|| fail "filterdb died"
+	#filter decreasing DBs by bit score and extract one best hit for each query
+
 	#shellcheck disable=SC2086
-	"${MMSEQS}" filterdb "$1" "$2" --extract-lines 1 \
-		|| fail "filterdb died"
-	# #shellcheck disable=SC2086
-	# "${MMSEQS}" rmdb "$2" ${VERBOSITY_PAR}
+	"${MMSEQS}" filterdb "$1" "${TMP_PATH}/bitscorefiltDB" --comparison-operator ge --comparison-value 50 --filter-column 2 \
+		|| fail "filterdb died" 
+
+	#shellcheck disable=SC2086
+	"${MMSEQS}" filterdb "${TMP_PATH}/bitscorefiltDB" "${TMP_PATH}/bitscoresortedDB" --sort-entries 2 --filter-column 2 \
+		|| fail "sort DB decreasing died"
+
+	#shellcheck disable=SC2086
+	"${MMSEQS}" filterdb "${TMP_PATH}/bitscoresortedDB" "$2" --extract-lines 1 \
+		|| fail "extract best hit died"
+	
+	#shellcheck disable=SC2086
+	"${MMSEQS}" rmdb "${TMP_PATH}/bitscorefiltDB" ${VERBOSITY_PAR}
+	#shellcheck disable=SC2086
+	"${MMSEQS}" rmdb "${TMP_PATH}/bitscoresortedDB" ${VERBOSITY_PAR}
 }
 
 convertalis_standard(){
@@ -125,15 +135,15 @@ if [ -n "${TAXONOMY_ID}" ]; then
 
 			if [ -n "${SIMPLE_OUTPUT}" ]; then
 				echo "Simplified output will be provided"
-				convertalis_simple "${PROF_TARGET1}" "${TMP_PATH}/filtprof1DB" "${TMP_PATH}/prof1_searchDB.csv"
-				convertalis_simple "${PROF_TARGET2}" "${TMP_PATH}/filtprof2DB" "${TMP_PATH}/prof2_searchDB.csv"
-				convertalis_simple "${SEQ_TARGET}" "${TMP_PATH}/filtseqDB" "${TMP_PATH}/seq_searchDB.csv"
+				convertalis_simple "${PROF_TARGET1}" "${TMP_PATH}/filtprof1DB" "${TMP_PATH}/prof1_searchDB.tsv"
+				convertalis_simple "${PROF_TARGET2}" "${TMP_PATH}/filtprof2DB" "${TMP_PATH}/prof2_searchDB.tsv"
+				convertalis_simple "${SEQ_TARGET}" "${TMP_PATH}/filtseqDB" "${TMP_PATH}/seq_searchDB.tsv"
 
 			else
 				echo "Standard output will be provided"
-				convertalis_standard "${PROF_TARGET1}" "${TMP_PATH}/filtprof1DB" "${TMP_PATH}/prof1_searchDB.csv"
-				convertalis_standard "${PROF_TARGET2}" "${TMP_PATH}/filtprof2DB" "${TMP_PATH}/prof2_searchDB.csv"
-				convertalis_standard "${SEQ_TARGET}" "${TMP_PATH}/filtseqDB" "${TMP_PATH}/seq_searchDB.csv"
+				convertalis_standard "${PROF_TARGET1}" "${TMP_PATH}/filtprof1DB" "${TMP_PATH}/prof1_searchDB.tsv"
+				convertalis_standard "${PROF_TARGET2}" "${TMP_PATH}/filtprof2DB" "${TMP_PATH}/prof2_searchDB.tsv"
+				convertalis_standard "${SEQ_TARGET}" "${TMP_PATH}/filtseqDB" "${TMP_PATH}/seq_searchDB.tsv"
 			fi
 
 			rm -f "${TMP_PATH}/prof1_searchDB."[0-9]*
@@ -142,20 +152,20 @@ if [ -n "${TAXONOMY_ID}" ]; then
 		fi
 	fi
 
-if notExists "${TMP_PATH}/tmp_join.csv"; then
+if notExists "${TMP_PATH}/tmp_join.tsv"; then
 
-	sort -s -k1b,1 "${TMP_PATH}/prof1_searchDB.csv" >> "${TMP_PATH}/prof1_searchDB2join.csv"
-	rm -f "${TMP_PATH}/prof1_searchDB.csv"
+	sort -s -k1b,1 "${TMP_PATH}/prof1_searchDB.tsv" | awk -F '\t' -v OFS '\t' '{ $(NF+1) = "seq-prof search"; print}' >> "${TMP_PATH}/prof1_searchDB2join.tsv"
+	rm -f "${TMP_PATH}/prof1_searchDB.tsv"
 
-	sort -s -k1b,1 "${TMP_PATH}/prof2_searchDB.csv" >> "${TMP_PATH}/prof2_searchDB2join.csv"
-	rm -f "${TMP_PATH}/prof2_searchDB.csv"
+	sort -s -k1b,1 "${TMP_PATH}/prof2_searchDB.tsv" | awk -F '\t' -v OFS '\t' '{ $(NF+1) = "seq-prof search"; print}' >> "${TMP_PATH}/prof2_searchDB2join.tsv"
+	rm -f "${TMP_PATH}/prof2_searchDB.tsv"
 
-	sort -s -k1b,1 "${TMP_PATH}/seq_searchDB.csv" >> "${TMP_PATH}/seq_searchDB2join.csv"
-	rm -f "${TMP_PATH}/seq_searchDB.csv"
+	sort -s -k1b,1 "${TMP_PATH}/seq_searchDB.tsv" | awk -F '\t' -v OFS '\t' '{ $(NF+1) = "seq-seq search"; print}' >> "${TMP_PATH}/seq_searchDB2join.tsv"
+	rm -f "${TMP_PATH}/seq_searchDB.tsv"
 
-	join -j 1 -a1 -a2 -t ' ' "${TMP_PATH}/prof1_searchDB2join.csv" "${TMP_PATH}/prof2_searchDB2join.csv" >> "${TMP_PATH}/tmp_join.csv"
-	join -j 1 -a1 -a2 -t ' ' "${TMP_PATH}/tmp_join.csv" "${TMP_PATH}/seq_searchDB2join.csv" >> "${RESULTS}"
-	rm -f "${TMP_PATH}/tmp_join.csv"
+	join -j 1 -a1 -a2 -t ' ' "${TMP_PATH}/prof1_searchDB2join.tsv" "${TMP_PATH}/prof2_searchDB2join.tsv" >> "${TMP_PATH}/tmp_join.tsv"
+	join -j 1 -a1 -a2 -t ' ' "${TMP_PATH}/tmp_join.tsv" "${TMP_PATH}/seq_searchDB2join.tsv" >> "${RESULTS}"
+	rm -f "${TMP_PATH}/tmp_join.tsv"
 fi
 
 #remove temporary files and directories
@@ -171,9 +181,9 @@ if [ -n "${REMOVE_TMP}" ]; then
 	#shellcheck disable=SC2086
 	"$MMSEQS" rmdb "${TMP_PATH}/seq_searchDB" ${VERBOSITY_PAR}
 
-	rm -f "${TMP_PATH}/prof1_searchDB2join.csv"
-	rm -f "${TMP_PATH}/prof2_searchDB2join.csv"
-	rm -f "${TMP_PATH}/seq_searchDB2join.csv"
+	rm -f "${TMP_PATH}/prof1_searchDB2join.tsv"
+	rm -f "${TMP_PATH}/prof2_searchDB2join.tsv"
+	rm -f "${TMP_PATH}/seq_searchDB2join.tsv"
 
 	#shellcheck disable=SC2086
 	"$MMSEQS" rmdb "${TMP_PATH}/filtprof1DB" ${VERBOSITY_PAR}
