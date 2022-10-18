@@ -154,13 +154,13 @@ if [ -n "${TAXONOMY_ID}" ]; then
 
 if notExists "${TMP_PATH}/tmp_join.tsv"; then
 
-	sort -s -k1b,1 "${TMP_PATH}/prof1_searchDB.tsv" | awk -F '\t' -v OFS '\t' '{ $(NF+1) = "seq-prof search"; print}' >> "${TMP_PATH}/prof1_searchDB2join.tsv"
+	sort -s -k1b,1 "${TMP_PATH}/prof1_searchDB.tsv" | awk -F '\t' -v OFS='\t' '{ $(NF+1) = "seq-prof search"; print}' >> "${TMP_PATH}/prof1_searchDB2join.tsv"
 	rm -f "${TMP_PATH}/prof1_searchDB.tsv"
 
-	sort -s -k1b,1 "${TMP_PATH}/prof2_searchDB.tsv" | awk -F '\t' -v OFS '\t' '{ $(NF+1) = "seq-prof search"; print}' >> "${TMP_PATH}/prof2_searchDB2join.tsv"
+	sort -s -k1b,1 "${TMP_PATH}/prof2_searchDB.tsv" | awk -F '\t' -v OFS='\t' '{ $(NF+1) = "seq-prof search"; print}' >> "${TMP_PATH}/prof2_searchDB2join.tsv"
 	rm -f "${TMP_PATH}/prof2_searchDB.tsv"
 
-	sort -s -k1b,1 "${TMP_PATH}/seq_searchDB.tsv" | awk -F '\t' -v OFS '\t' '{ $(NF+1) = "seq-seq search"; print}' >> "${TMP_PATH}/seq_searchDB2join.tsv"
+	sort -s -k1b,1 "${TMP_PATH}/seq_searchDB.tsv" | awk -F '\t' -v OFS='\t' '{ $(NF+1) = "seq-seq search"; print}' >> "${TMP_PATH}/seq_searchDB2join.tsv"
 	rm -f "${TMP_PATH}/seq_searchDB.tsv"
 
 	join -j 1 -a1 -a2 -t ' ' "${TMP_PATH}/prof1_searchDB2join.tsv" "${TMP_PATH}/prof2_searchDB2join.tsv" >> "${TMP_PATH}/tmp_join.tsv"
