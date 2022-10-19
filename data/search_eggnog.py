@@ -6,7 +6,7 @@ import sys
 prof_db = pd.read_csv(sys.argv[-3], sep='\t', usecols=[0,1], names=['query','target'])
 nog_db = pd.read_csv(sys.argv[-2], sep='\t', usecols=[1,5], names=['id','family_name'])
 prof_db=prof_db.drop(prof_db.tail(1).index,inplace=True)
-prof_id = prof_db['targetid']
+prof_id = prof_db['target']
 
 nogidsdict=nog_db.set_index('id')['family_name'].to_dict()
 prof_db['family_name']=""
