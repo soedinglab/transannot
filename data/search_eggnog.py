@@ -15,5 +15,6 @@ for i in range(len(prof_id)):
         prof_db.iloc[i,2]=nogidsdict[prof_id[i]]
     except:
         prof_db.iloc[i,2]='None'
+        
 
 prof_db.to_csv(sys.argv[-1], sep='\t')
