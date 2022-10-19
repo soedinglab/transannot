@@ -174,8 +174,9 @@ if notExists "${TMP_PATH}/tmp_join.tsv"; then
 	rm -f "${TMP_PATH}/seq_searchDB.tsv"
 
 	join -j 1 -e -a1 -a2 -t ' ' "${TMP_PATH}/prof1_searchDB2join.tsv" "${TMP_PATH}/finalprof2_searchDB2join.tsv" >> "${TMP_PATH}/tmp_join.tsv"
-	join -j 1 -e -a1 -a2 -t ' ' "${TMP_PATH}/tmp_join.tsv" "${TMP_PATH}/seq_searchDB2join.tsv" >> "${TMP_PATH}/preresDB"
-	sort -V "${TMP_PATH}/preresDB" >> "${RESULTS}"
+	join -j 1 -e -a1 -a2 -t ' ' "${TMP_PATH}/tmp_join.tsv" "${TMP_PATH}/seq_searchDB2join.tsv" >> "${RESULTS}"
+
+	#alphanumerical sort?
 
 	rm -f "${TMP_PATH}/preresDB"
 	rm -f "${TMP_PATH}/tmp_join.tsv"
