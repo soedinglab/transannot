@@ -164,8 +164,8 @@ if notExists "${TMP_PATH}/tmp_join.tsv"; then
 	SCRIPT="${TRANSANNOT%/build*}"
 	chmod +x "${SCRIPT}/data/search_eggnog.py"
 	python3 "${SCRIPT}/data/search_eggnog.py" "${TMP_PATH}/prof2_searchDB2join.tsv" "${SCRIPT}/data/NOG.annotations.tsv" "${TMP_PATH}/namesprof2_searchDB2join.tsv"
-	sort -s -k1b,1 "${TMP_PATH}/namesprof2_searchDB.tsv" >> "${TMP_PATH}/sortnamesprof2_searchDB.tsv"
-	rm -f "${TMP_PATH}/namesprof2_searchDB.tsv"
+	sort -s -k1b,1 "${TMP_PATH}/namesprof2_searchDB2join.tsv" >> "${TMP_PATH}/sortnamesprof2_searchDB.tsv"
+	rm -f "${TMP_PATH}/namesprof2_searchDB2join.tsv"
 
 	join -j 1 -e -a1 -a2 -t ' ' "${TMP_PATH}/sortnamesprof2_searchDB.tsv" "${TMP_PATH}/prof2_searchDB2join.tsv" >> "${TMP_PATH}/finalprof2_searchDB2join.tsv"
 
