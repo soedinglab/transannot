@@ -167,13 +167,19 @@ if notExists "${TMP_PATH}/tmp_join.tsv"; then
 	head -n -1 "${TMP_PATH}/namesprof2_searchDB2join.tsv" >> "${TMP_PATH}/namesprof2_searchDB2joinnotail.tsv"; mv -f "${TMP_PATH}/namesprof2_searchDB2joinnotail.tsv" "${TMP_PATH}/namesprof2_searchDB2join.tsv" 
 	sort -s -k1b,1 "${TMP_PATH}/namesprof2_searchDB2join.tsv" >> "${TMP_PATH}/sortnamesprof2_searchDB.tsv"
 	rm -f "${TMP_PATH}/namesprof2_searchDB2join.tsv"
-
 	join -j 1 -a1 -a2 -t ' ' "${TMP_PATH}/sortnamesprof2_searchDB.tsv" "${TMP_PATH}/prof2_searchDB2join.tsv" >> "${TMP_PATH}/finalprof2_searchDB2join.tsv"
+
+	chmod +x "${SCRIPT}/data/search_pfama.py"
+	python3 "${SCRIPT}/data/search_pfama.py" "${TMP_PATH}/prof1_searchDB2join.tsv" "${SCRIPT}/data/Pfam-A.clans.tsv" "${TMP_PATH}/namesprof1_searchDB2join.tsv"
+	head -n -1 "${TMP_PATH}/namesprof1_searchDB2join.tsv" >> "${TMP_PATH}/namesprof1_searchDB2joinnotail.tsv"; mv -f "${TMP_PATH}/namesprof1_searchDB2joinnotail.tsv" "${TMP_PATH}/namesprof1_searchDB2join.tsv" 
+	sort -s -k1b,1 "${TMP_PATH}/namesprof1_searchDB2join.tsv" >> "${TMP_PATH}/sortnamesprof1_searchDB.tsv"
+	rm -f "${TMP_PATH}/namesprof1_searchDB2join.tsv"
+	join -j 1 -a1 -a2 -t ' ' "${TMP_PATH}/sortnamesprof1_searchDB.tsv" "${TMP_PATH}/prof1_searchDB2join.tsv" >> "${TMP_PATH}/finalprof1_searchDB2join.tsv"
 
 	sort -s -k1b,1 "${TMP_PATH}/seq_searchDB.tsv" | awk -F '\t' -v OFS='\t' '{ $(NF+1) = "seq-seq search"; print}' >> "${TMP_PATH}/seq_searchDB2join.tsv"
 	rm -f "${TMP_PATH}/seq_searchDB.tsv"
 
-	join -j 1 -a1 -a2 -t ' ' "${TMP_PATH}/prof1_searchDB2join.tsv" "${TMP_PATH}/finalprof2_searchDB2join.tsv" >> "${TMP_PATH}/tmp_join.tsv"
+	join -j 1 -a1 -a2 -t ' ' "${TMP_PATH}/finalprof1_searchDB2join.tsv" "${TMP_PATH}/finalprof2_searchDB2join.tsv" >> "${TMP_PATH}/tmp_join.tsv"
 	join -j 1 -a1 -a2 -t ' ' "${TMP_PATH}/tmp_join.tsv" "${TMP_PATH}/seq_searchDB2join.tsv" >> "${RESULTS}"
 
 	#alphanumerical sort?
