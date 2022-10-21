@@ -94,7 +94,7 @@ TMP_PATH="$6"
 #MMSEQS2 LINCLUST for the redundancy reduction
 if notExists "${TMP_PATH}/clu.dbtype"; then
 	#shellcheck disable=SC2086
-	"$MMSEQS" linclust "${INPUT}" "${TMP_PATH}/clu" "${TMP_PATH}/clu_tmp" ${CLUSTER_PAR} \
+	"$MMSEQS" linclust "${INPUT}" "${TMP_PATH}/clu" "${TMP_PATH}/clu_tmp" --min-seq-id 0.6 ${CLUSTER_PAR} \
 		|| fail "linclust died"
 
 	#shellcheck disable=SC2086
@@ -162,12 +162,15 @@ if notExists "${TMP_PATH}/tmp_join.tsv"; then
 
 	TRANSANNOT="$(abspath "$(command -v "${MMSEQS}")")"
 	SCRIPT="${TRANSANNOT%/build*}"
+
+	gzip -d "${SCRIPT}/data/all_OG_annotations.tsv.gz" >> "${TMP_PATH}/all_OG_annotations.tsv"
 	chmod +x "${SCRIPT}/data/search_eggnog.py"
-	python3 "${SCRIPT}/data/search_eggnog.py" "${TMP_PATH}/prof2_searchDB2join.tsv" "${SCRIPT}/data/NOG.annotations.tsv" "${TMP_PATH}/namesprof2_searchDB2join.tsv"
+	python3 "${SCRIPT}/data/search_eggnog.py" "${TMP_PATH}/prof2_searchDB2join.tsv" "${TMP_PATH}/all_OG_annotations.tsv" "${TMP_PATH}/namesprof2_searchDB2join.tsv"
 	head -n -1 "${TMP_PATH}/namesprof2_searchDB2join.tsv" >> "${TMP_PATH}/namesprof2_searchDB2joinnotail.tsv"; mv -f "${TMP_PATH}/namesprof2_searchDB2joinnotail.tsv" "${TMP_PATH}/namesprof2_searchDB2join.tsv" 
 	sort -s -k1b,1 "${TMP_PATH}/namesprof2_searchDB2join.tsv" >> "${TMP_PATH}/sortnamesprof2_searchDB.tsv"
 	rm -f "${TMP_PATH}/namesprof2_searchDB2join.tsv"
 	join -j 1 -a1 -a2 -t ' ' "${TMP_PATH}/sortnamesprof2_searchDB.tsv" "${TMP_PATH}/prof2_searchDB2join.tsv" >> "${TMP_PATH}/finalprof2_searchDB2join.tsv"
+	rm -f "${TMP_PATH}/all_OG_annotations.tsv"
 
 	chmod +x "${SCRIPT}/data/search_pfama.py"
 	python3 "${SCRIPT}/data/search_pfama.py" "${TMP_PATH}/prof1_searchDB2join.tsv" "${SCRIPT}/data/Pfam-A.clans.tsv" "${TMP_PATH}/namesprof1_searchDB2join.tsv"
