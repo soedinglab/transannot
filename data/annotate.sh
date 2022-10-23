@@ -165,7 +165,7 @@ if notExists "${TMP_PATH}/tmp_join.tsv"; then
 
 	# gzip -d "${SCRIPT}/data/all_OG_annotations.tsv.gz" >> "${TMP_PATH}/all_OG_annotations.tsv"
 	chmod +x "${SCRIPT}/data/search_eggnog.py"
-	python3 "${SCRIPT}/data/search_eggnog.py" "${TMP_PATH}/prof2_searchDB2join.tsv" "${SCRIPT}/NOG.annotations.tsv" "${TMP_PATH}/namesprof2_searchDB2join.tsv"
+	python3 "${SCRIPT}/data/search_eggnog.py" "${TMP_PATH}/prof2_searchDB2join.tsv" "${SCRIPT}/data/NOG.annotations.tsv" "${TMP_PATH}/namesprof2_searchDB2join.tsv"
 	head -n -1 "${TMP_PATH}/namesprof2_searchDB2join.tsv" >> "${TMP_PATH}/namesprof2_searchDB2joinnotail.tsv"; mv -f "${TMP_PATH}/namesprof2_searchDB2joinnotail.tsv" "${TMP_PATH}/namesprof2_searchDB2join.tsv" 
 	sort -s -k1b,1 "${TMP_PATH}/namesprof2_searchDB2join.tsv" >> "${TMP_PATH}/sortnamesprof2_searchDB.tsv"
 	rm -f "${TMP_PATH}/namesprof2_searchDB2join.tsv"
