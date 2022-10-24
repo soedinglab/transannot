@@ -95,7 +95,7 @@ TMP_PATH="$6"
 #MMSEQS2 LINCLUST for the redundancy reduction
 if notExists "${TMP_PATH}/clu.dbtype"; then
 	#shellcheck disable=SC2086
-	"$MMSEQS" linclust "${INPUT}" "${TMP_PATH}/clu" "${TMP_PATH}/clu_tmp" --min-seq-id 0.6 ${CLUSTER_PAR} \
+	"$MMSEQS" linclust "${INPUT}" "${TMP_PATH}/clu" "${TMP_PATH}/clu_tmp" --min-seq-id 0.3 ${CLUSTER_PAR} \
 		|| fail "linclust died"
 
 	#shellcheck disable=SC2086
