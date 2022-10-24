@@ -155,16 +155,15 @@ if [ -n "${TAXONOMY_ID}" ]; then
 
 if notExists "${TMP_PATH}/tmp_join.tsv"; then
 
-	sort -s -k1b,1 "${TMP_PATH}/prof1_searchDB.tsv" | awk -F '\t' -v OFS='\t' '{ $(NF+1) = "seq-prof search"; print}' >> "${TMP_PATH}/prof1_search_filt.tsv"
+	sort -s -k1b,1 "${TMP_PATH}/prof1_searchDB.tsv" | awk -F '\t' -v OFS='\t' '{ $(NF+1) = "seq-prof search"; print}' | awk -F '\t' -v OFS='\t' '{ $(NF+1) = "Pfam"; print}' >> "${TMP_PATH}/prof1_search_filt.tsv"
 	rm -f "${TMP_PATH}/prof1_searchDB.tsv"
 
-	sort -s -k1b,1 "${TMP_PATH}/prof2_searchDB.tsv" | awk -F '\t' -v OFS='\t' '{ $(NF+1) = "seq-prof search"; print}' >> "${TMP_PATH}/prof2_search_filt.tsv"
+	sort -s -k1b,1 "${TMP_PATH}/prof2_searchDB.tsv" | awk -F '\t' -v OFS='\t' '{ $(NF+1) = "seq-prof search"; print}' | awk -F '\t' -v OFS='\t' '{ $(NF+1) = "EggNOG"; print}'>> "${TMP_PATH}/prof2_search_filt.tsv"
 	rm -f "${TMP_PATH}/prof2_searchDB.tsv"
 
 	TRANSANNOT="$(abspath "$(command -v "${MMSEQS}")")"
 	SCRIPT="${TRANSANNOT%/build*}"
 
-	# gzip -d "${SCRIPT}/data/all_OG_annotations.tsv.gz" >> "${TMP_PATH}/all_OG_annotations.tsv"
 	chmod +x "${SCRIPT}/data/search_eggnog.py"
 	echo "download eggNOG annotation file"
 	wget -O "${TMP_PATH}/nog_annotations.tsv" http://eggnog5.embl.de/download/eggnog_5.0/e5.og_annotations.tsv 
@@ -183,7 +182,7 @@ if notExists "${TMP_PATH}/tmp_join.tsv"; then
 	rm -f "${TMP_PATH}/namesprof1_search.tsv"
 	join -j 1 -a1 -a2 -t ' ' "${TMP_PATH}/namesprof1_search_sort.tsv" "${TMP_PATH}/prof1_search_filt.tsv" >> "${TMP_PATH}/final_prof1_search.tsv"
 
-	sort -s -k1b,1 "${TMP_PATH}/seq_searchDB.tsv" | awk -F '\t' -v OFS='\t' '{ $(NF+1) = "seq-seq search"; print}' >> "${TMP_PATH}/seq_search_filt.tsv"
+	sort -s -k1b,1 "${TMP_PATH}/seq_searchDB.tsv" | awk -F '\t' -v OFS='\t' '{ $(NF+1) = "seq-seq search"; print}' | awk -F '\t' -v OFS='\t' '{ $(NF+1) = "SwissProt"; print}'>> "${TMP_PATH}/seq_search_filt.tsv"
 	rm -f "${TMP_PATH}/seq_searchDB.tsv"
 
 	join -j 1 -a1 -a2 -t ' ' "${TMP_PATH}/final_prof1_search.tsv" "${TMP_PATH}/final_prof2_search.tsv" >> "${TMP_PATH}/tmp_join.tsv"
