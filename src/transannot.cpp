@@ -21,7 +21,7 @@ LocalParameters& localPar = LocalParameters::getLocalInstance();
 
 std::vector<struct Command> commands = {
       {"assemblereads",    assemblereads,   &localPar.assemblereads, COMMAND_MAIN,
-            "Assembly of de novo transcriptomes on protein level with PLASS \n"
+            "Assembly of de novo transcriptomes on protein level with PLASS \n",
             "It is also possible to give already assembled (e.g. obtained from Trinity) files as input \n",
             "Mariia Zelenskaia mariia.zelenskaia@mpinat.mpg.de & Yazhini A. yazhini@mpinat.mpg.de",
             "<i:fast(a|q)File[.gz|bz]> | <i:fastqFile1_1[.gz]> ... <i:fastqFileN_1[.gz]> <o:fastaFile> <o:seqDB> <tmpDir>",
@@ -34,7 +34,7 @@ std::vector<struct Command> commands = {
     {"downloaddb",  downloaddb,     &localPar.downloaddb, COMMAND_MAIN,
             "Download protein database to run search against \n"
             "User should download 3 databases: 2 profile DBs and 1 sequence DB.(see mmseqs databases) \n"
-            "Our recommendations are Pfam-A.full, eggNOG (profile DBs) and SwissProt (sequence DB) \n"
+            "Our recommendations are Pfam-A.full, eggNOG (profile DBs) and SwissProt (sequence DB) \n",
             "transannot downloaddb eggNOG outpath/eggNOGDB tmp \n",
             "Mariia Zelenskaia mariia.zelenskaia@mpinat.mpg.de & Yazhini A. yazhini@mpinat.mpg.de",
             "<i:selection> <o:outDB> <tmpDir>",
@@ -68,7 +68,7 @@ std::vector<struct Command> commands = {
 
 
     {"annotateprofiles", annotateprofiles, &localPar.annotateprofiles, COMMAND_EXPERT,
-            "Build profiles and run profile-against-profile search\n"
+            "Build profiles and run profile-against-profile search\n",
             "Profile-against-profile search may be more sensitive than profile-against-sequence or sequence-against-sequence\n",
             "Mariia Zelenskaia mariia.zelenskaia@mpinat.mpg.de & Yazhini A. yazhini@mpinat.mpg.de",
             "<i:queryDB> <i:targetDB> <o:outFile> <tmpDir>",
@@ -79,7 +79,7 @@ std::vector<struct Command> commands = {
 
 
     {"createquerydb",    createquerydb, &localPar.createquerydb, COMMAND_MAIN,
-            "Create MMseqs database from assembled sequences (with transannot annotate or other tool) \n"
+            "Create MMseqs database from assembled sequences (with transannot annotate or other tool) \n",
             "MMseqs uses its own database format to avoid slowing down of the system, that is why if transcriptome is assembled not with PLASS, it is obligatory to create using MMseqs DB",
             "Mariia Zelenskaia mariia.zelenskaia@mpinat.mpg.de & Yazhini A. yazhini@mpinat.mpg.de",
             "<i:fast[a|q]File> <o:sequenceDB> <tmpDir>",
@@ -89,7 +89,7 @@ std::vector<struct Command> commands = {
 
 
     {"contamination",   contamination, &localPar.contaminationworkflow, COMMAND_EXPERT,
-            "Check for the contamination using MMseqs taxonomy \n"
+            "Check for the contamination using MMseqs taxonomy \n",
             "Assigns taxaIDs and then finds organisms with minor frequency",
             "Mariia Zelenskaia mariia.zelenskaia@mpinat.mpg.de & Yazhini A. yazhini@mpinat.mpg.de",
             "<i:queryDB>",
