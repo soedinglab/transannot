@@ -45,6 +45,7 @@ std::vector<struct Command> commands = {
 
     {"annotate",    annotate, &localPar.annotateworkflow, COMMAND_MAIN,
             "Run MMseqs2 searches to find homology, depending on obtained IDs get further information about transcriptome functions",
+            NULL,
             "Mariia Zelenskaia mariia.zelenskaia@mpinat.mpg.de & Yazhini A. yazhini@mpinat.mpg.de",
             "<i:queryDB> <i:profile1TargetDB> <i:profile2TargetDB> <i:seqTargetDB> <o:outFile> <tmpDir>",
             NO_CITATION, {{"queryDB", DbType::ACCESS_MODE_INPUT, DbType::NEED_DATA, &DbValidator::sequenceDb},
@@ -57,6 +58,7 @@ std::vector<struct Command> commands = {
 
     {"easytransannot",    easytransannot, &localPar.easytransannot, COMMAND_EASY,
             "Easy module for simple one-step reads assembly and transcriptome annotation",
+            NULL,
             "Mariia Zelenskaia mariia.zelenskaia@mpinat.mpg.de & Yazhini A. yazhini@mpinat.mpg.de \n",
             "<i:fast(a|q)File[.gz|bz]> | <i:fastqFile1_1[.gz]> ... <i:fastqFileN_1[.gz]> <i:targetDB> <i:targetDB> <i:targetDB> <o:outFile> <tmpDir>",
             NO_CITATION, {{"fast[a|q]File[.gz|bz]", DbType::ACCESS_MODE_INPUT, DbType::NEED_DATA | DbType::VARIADIC,  &DbValidator::flatfile},
