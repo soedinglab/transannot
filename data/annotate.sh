@@ -155,10 +155,10 @@ if [ -n "${TAXONOMY_ID}" ]; then
 
 if notExists "${TMP_PATH}/tmp_join.tsv"; then
 
-	sort -s -k1b,1 "${TMP_PATH}/prof1_search.tsv" | awk -F '\t' -v OFS='\t' '{ $(NF+1) = "seq-prof search"; print}' >> "${TMP_PATH}/prof1_search_filt.tsv"
+	sort -s -k1b,1 "${TMP_PATH}/prof1_searchDB.tsv" | awk -F '\t' -v OFS='\t' '{ $(NF+1) = "seq-prof search"; print}' >> "${TMP_PATH}/prof1_search_filt.tsv"
 	rm -f "${TMP_PATH}/prof1_searchDB.tsv"
 
-	sort -s -k1b,1 "${TMP_PATH}/prof2_search.tsv" | awk -F '\t' -v OFS='\t' '{ $(NF+1) = "seq-prof search"; print}' >> "${TMP_PATH}/prof2_search_filt.tsv"
+	sort -s -k1b,1 "${TMP_PATH}/prof2_searchDB.tsv" | awk -F '\t' -v OFS='\t' '{ $(NF+1) = "seq-prof search"; print}' >> "${TMP_PATH}/prof2_search_filt.tsv"
 	rm -f "${TMP_PATH}/prof2_searchDB.tsv"
 
 	TRANSANNOT="$(abspath "$(command -v "${MMSEQS}")")"
