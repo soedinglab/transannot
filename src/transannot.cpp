@@ -21,7 +21,7 @@ LocalParameters& localPar = LocalParameters::getLocalInstance();
 
 std::vector<struct Command> commands = {
       {"assemblereads",    assemblereads,   &localPar.assemblereads, COMMAND_MAIN,
-            "Assembly of de novo transcriptomes on protein level with PLASS \n",
+            "Assembly of de novo transcriptomes on protein level with PLASS \n"
             "It is also possible to give already assembled (e.g. obtained from Trinity) files as input \n",
             "Mariia Zelenskaia mariia.zelenskaia@mpinat.mpg.de & Yazhini A. yazhini@mpinat.mpg.de",
             "<i:fast(a|q)File[.gz|bz]> | <i:fastqFile1_1[.gz]> ... <i:fastqFileN_1[.gz]> <o:fastaFile> <o:seqDB> <tmpDir>",
