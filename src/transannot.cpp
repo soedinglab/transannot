@@ -33,9 +33,9 @@ std::vector<struct Command> commands = {
 
     {"downloaddb",  downloaddb,     &localPar.downloaddb, COMMAND_MAIN,
             "Download protein database to run search against \n",
-            "User should download 3 databases: 2 profile DBs and 1 sequence DB.(see mmseqs databases) \n",
-            "Our recommendations are Pfam-A.full, eggNOG (profile DBs) and SwissProt (sequence DB) \n",
-            "transannot downloaddb eggNOG outpath/eggNOGDB tmp",
+            "User should download 3 databases: 2 profile DBs and 1 sequence DB.(see mmseqs databases) \n"
+            "Our recommendations are Pfam-A.full, eggNOG (profile DBs) and SwissProt (sequence DB) \n"
+            "transannot downloaddb eggNOG outpath/eggNOGDB tmp \n",
             "Mariia Zelenskaia mariia.zelenskaia@mpinat.mpg.de & Yazhini A. yazhini@mpinat.mpg.de",
             "<i:selection> <o:outDB> <tmpDir>",
             NO_CITATION, {{"selection", 0, DbType::ZERO_OR_ALL, &DbValidator::empty},
@@ -57,7 +57,7 @@ std::vector<struct Command> commands = {
 
     {"easytransannot",    easytransannot, &localPar.easytransannot, COMMAND_EASY,
             "Easy module for simple one-step reads assembly and transcriptome annotation",
-            "Mariia Zelenskaia mariia.zelenskaia@mpinat.mpg.de & Yazhini A. yazhini@mpinat.mpg.de",
+            "Mariia Zelenskaia mariia.zelenskaia@mpinat.mpg.de & Yazhini A. yazhini@mpinat.mpg.de \n",
             "<i:fast(a|q)File[.gz|bz]> | <i:fastqFile1_1[.gz]> ... <i:fastqFileN_1[.gz]> <i:targetDB> <i:targetDB> <i:targetDB> <o:outFile> <tmpDir>",
             NO_CITATION, {{"fast[a|q]File[.gz|bz]", DbType::ACCESS_MODE_INPUT, DbType::NEED_DATA | DbType::VARIADIC,  &DbValidator::flatfile},
                         {"targetDB", 0, DbType::ZERO_OR_ALL, &DbValidator::empty},
@@ -68,8 +68,8 @@ std::vector<struct Command> commands = {
 
 
     {"annotateprofiles", annotateprofiles, &localPar.annotateprofiles, COMMAND_EXPERT,
-            "Build profiles and run profile-against-profile search",
-            "Profile-against-profile search may be more sensitive than profile-against-sequence or sequence-against-sequence",
+            "Build profiles and run profile-against-profile search\n"
+            "Profile-against-profile search may be more sensitive than profile-against-sequence or sequence-against-sequence\n",
             "Mariia Zelenskaia mariia.zelenskaia@mpinat.mpg.de & Yazhini A. yazhini@mpinat.mpg.de",
             "<i:queryDB> <i:targetDB> <o:outFile> <tmpDir>",
             NO_CITATION, {{"queryDB", DbType::ACCESS_MODE_INPUT, DbType::NEED_DATA, &DbValidator::sequenceDb},
