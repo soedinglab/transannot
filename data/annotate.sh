@@ -69,6 +69,7 @@ convertalis_simple(){
 }
 #pre-processing
 [ -z "$MMSEQS" ] && echo "Please set the environment variable \$MMSEQS to your current binary." && exit 1;
+hasCommand wget
 
 #checking how many input variables are provided
 [ "$#" -ne 6 ] && echo "Please provide <assembled transciptome> <profile target DB> <sequence target DB> <outDB> <tmp>" && exit 1;
@@ -165,7 +166,11 @@ if notExists "${TMP_PATH}/tmp_join.tsv"; then
 
 	# gzip -d "${SCRIPT}/data/all_OG_annotations.tsv.gz" >> "${TMP_PATH}/all_OG_annotations.tsv"
 	chmod +x "${SCRIPT}/data/search_eggnog.py"
-	python3 "${SCRIPT}/data/search_eggnog.py" "${TMP_PATH}/prof2_searchDB2join.tsv" "${SCRIPT}/NOG.annotations.tsv" "${TMP_PATH}/namesprof2_searchDB2join.tsv"
+	echo "download eggNOG annotation file"
+	wget -O "${TMP_PATH}/nog_annotations.tsv" http://eggnog5.embl.de/download/eggnog_5.0/e5.og_annotations.tsv 
+	python3 "${SCRIPT}/data/search_eggnog.py" "${TMP_PATH}/nog_annotations.tsv" "${TMP_PATH}/namesprof2_searchDB2join.tsv"
+	rm -f "${TMP_PATH}/nog_annotations.tsv"
+
 	head -n -1 "${TMP_PATH}/namesprof2_searchDB2join.tsv" >> "${TMP_PATH}/namesprof2_searchDB2joinnotail.tsv"; mv -f "${TMP_PATH}/namesprof2_searchDB2joinnotail.tsv" "${TMP_PATH}/namesprof2_searchDB2join.tsv" 
 	sort -s -k1b,1 "${TMP_PATH}/namesprof2_searchDB2join.tsv" >> "${TMP_PATH}/sortnamesprof2_searchDB.tsv"
 	rm -f "${TMP_PATH}/namesprof2_searchDB2join.tsv"
