@@ -32,7 +32,7 @@ std::vector<struct Command> commands = {
 
 
     {"downloaddb",  downloaddb,     &localPar.downloaddb, COMMAND_MAIN,
-            "Download protein database to run search against \n",
+            "Download protein database to run search against \n"
             "User should download 3 databases: 2 profile DBs and 1 sequence DB.(see mmseqs databases) \n"
             "Our recommendations are Pfam-A.full, eggNOG (profile DBs) and SwissProt (sequence DB) \n"
             "transannot downloaddb eggNOG outpath/eggNOGDB tmp \n",
@@ -79,7 +79,7 @@ std::vector<struct Command> commands = {
 
 
     {"createquerydb",    createquerydb, &localPar.createquerydb, COMMAND_MAIN,
-            "Create MMseqs database from assembled sequences (with transannot annotate or other tool)",
+            "Create MMseqs database from assembled sequences (with transannot annotate or other tool) \n"
             "MMseqs uses its own database format to avoid slowing down of the system, that is why if transcriptome is assembled not with PLASS, it is obligatory to create using MMseqs DB",
             "Mariia Zelenskaia mariia.zelenskaia@mpinat.mpg.de & Yazhini A. yazhini@mpinat.mpg.de",
             "<i:fast[a|q]File> <o:sequenceDB> <tmpDir>",
