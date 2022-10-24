@@ -89,7 +89,7 @@ std::vector<struct Command> commands = {
 
 
     {"contamination",   contamination, &localPar.contaminationworkflow, COMMAND_EXPERT,
-            "Check for the contamination using MMseqs taxonomy",
+            "Check for the contamination using MMseqs taxonomy \n"
             "Assigns taxaIDs and then finds organisms with minor frequency",
             "Mariia Zelenskaia mariia.zelenskaia@mpinat.mpg.de & Yazhini A. yazhini@mpinat.mpg.de",
             "<i:queryDB>",
