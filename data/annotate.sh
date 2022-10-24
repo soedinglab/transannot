@@ -168,19 +168,19 @@ if notExists "${TMP_PATH}/tmp_join.tsv"; then
 	chmod +x "${SCRIPT}/data/search_eggnog.py"
 	echo "download eggNOG annotation file"
 	wget -O "${TMP_PATH}/nog_annotations.tsv" http://eggnog5.embl.de/download/eggnog_5.0/e5.og_annotations.tsv 
-	python3 "${SCRIPT}/data/search_eggnog.py" "${TMP_PATH}/prof2_search_filt.tsv" "${TMP_PATH}/nog_annotations.tsv" "${TMP_PATH}/namesprof2_search_filt.tsv"
+	python3 "${SCRIPT}/data/search_eggnog.py" "${TMP_PATH}/prof2_search_filt.tsv" "${TMP_PATH}/nog_annotations.tsv" "${TMP_PATH}/namesprof2_search.tsv"
 	rm -f "${TMP_PATH}/nog_annotations.tsv"
 
-	head -n -1 "${TMP_PATH}/namesprof2_search_filt.tsv" >> "${TMP_PATH}/namesprof2_searchtmp.tsv"; mv -f "${TMP_PATH}/namesprof2_searchtmp.tsv" "${TMP_PATH}/namesprof2_search_filt.tsv" 
-	sort -s -k1b,1 "${TMP_PATH}/namesprof2_search_filt.tsv" >> "${TMP_PATH}/namesprof2_search_sort.tsv"
-	rm -f "${TMP_PATH}/namesprof2_search_filt.tsv"
+	head -n -1 "${TMP_PATH}/namesprof2_search.tsv" >> "${TMP_PATH}/namesprof2_searchtmp.tsv"; mv -f "${TMP_PATH}/namesprof2_searchtmp.tsv" "${TMP_PATH}/namesprof2_search.tsv" 
+	sort -s -k1b,1 "${TMP_PATH}/namesprof2_search.tsv" >> "${TMP_PATH}/namesprof2_search_sort.tsv"
+	rm -f "${TMP_PATH}/namesprof2_search.tsv"
 	join -j 1 -a1 -a2 -t ' ' "${TMP_PATH}/namesprof2_search_sort.tsv" "${TMP_PATH}/prof2_search_filt.tsv" >> "${TMP_PATH}/final_prof2_search.tsv"
 
 	chmod +x "${SCRIPT}/data/search_pfama.py"
-	python3 "${SCRIPT}/data/search_pfama.py" "${TMP_PATH}/prof1_search_filt.tsv" "${SCRIPT}/data/Pfam-A.clans.tsv" "${TMP_PATH}/namesprof1_search_filt.tsv"
-	head -n -1 "${TMP_PATH}/namesprof1_search_filt.tsv" >> "${TMP_PATH}/namesprof1_searchtmp.tsv"; mv -f "${TMP_PATH}/namesprof1_searchtmp.tsv" "${TMP_PATH}/namesprof1_search_filt.tsv" 
-	sort -s -k1b,1 "${TMP_PATH}/namesprof1_search_filt.tsv" >> "${TMP_PATH}/namesprof1_search_sort.tsv"
-	rm -f "${TMP_PATH}/namesprof1_search_filt.tsv"
+	python3 "${SCRIPT}/data/search_pfama.py" "${TMP_PATH}/prof1_search_filt.tsv" "${SCRIPT}/data/Pfam-A.clans.tsv" "${TMP_PATH}/namesprof1_search.tsv"
+	head -n -1 "${TMP_PATH}/namesprof1_search.tsv" >> "${TMP_PATH}/namesprof1_searchtmp.tsv"; mv -f "${TMP_PATH}/namesprof1_searchtmp.tsv" "${TMP_PATH}/namesprof1_search.tsv" 
+	sort -s -k1b,1 "${TMP_PATH}/namesprof1_search.tsv" >> "${TMP_PATH}/namesprof1_search_sort.tsv"
+	rm -f "${TMP_PATH}/namesprof1_search.tsv"
 	join -j 1 -a1 -a2 -t ' ' "${TMP_PATH}/namesprof1_search_sort.tsv" "${TMP_PATH}/prof1_search_filt.tsv" >> "${TMP_PATH}/final_prof1_search.tsv"
 
 	sort -s -k1b,1 "${TMP_PATH}/seq_searchDB.tsv" | awk -F '\t' -v OFS='\t' '{ $(NF+1) = "seq-seq search"; print}' >> "${TMP_PATH}/seq_search_filt.tsv"
