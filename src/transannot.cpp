@@ -21,10 +21,10 @@ LocalParameters& localPar = LocalParameters::getLocalInstance();
 
 std::vector<struct Command> commands = {
       {"assemblereads",    assemblereads,   &localPar.assemblereads, COMMAND_MAIN,
-            "Assembly of de novo transcriptomes on protein level with PLASS",
-            "It is also possible to give already assembled (e.g. obtained from Trinity) files as input",
+            "Assembly of de novo transcriptomes on protein level with PLASS \n",
+            "It is also possible to give already assembled (e.g. obtained from Trinity) files as input \n",
             "Mariia Zelenskaia mariia.zelenskaia@mpinat.mpg.de & Yazhini A. yazhini@mpinat.mpg.de",
-            "<i:fast(a|q)File[.gz|bz]> | <i:fastqFile1_1[.gz]> ... <i:fastqFileN_1[.gz]> <o:fastaFile> <seqDB> <tmpDir>",
+            "<i:fast(a|q)File[.gz|bz]> | <i:fastqFile1_1[.gz]> ... <i:fastqFileN_1[.gz]> <o:fastaFile> <o:seqDB> <tmpDir>",
             NO_CITATION, {{"fast[a|q]File[.gz|bz]", DbType::ACCESS_MODE_INPUT, DbType::NEED_DATA | DbType::VARIADIC,  &DbValidator::flatfile},
                         {"fastaFile", DbType::ACCESS_MODE_OUTPUT, DbType::NEED_DATA, &DbValidator::flatfile},
                         {"seqDB", DbType::ACCESS_MODE_OUTPUT, DbType::NEED_DATA, &DbValidator::sequenceDb},
@@ -32,8 +32,9 @@ std::vector<struct Command> commands = {
 
 
     {"downloaddb",  downloaddb,     &localPar.downloaddb, COMMAND_MAIN,
-            "Download protein database to run search against",
-            "We recommend to download eggNOG (profiles database), but there are more possible protein databases (see mmseqs databases) \n"
+            "Download protein database to run search against \n",
+            "User should download 3 databases: 2 profile DBs and 1 sequence DB.(see mmseqs databases) \n",
+            "Our recommendations are Pfam-A.full, eggNOG (profile DBs) and SwissProt (sequence DB) \n",
             "transannot downloaddb eggNOG outpath/eggNOGDB tmp",
             "Mariia Zelenskaia mariia.zelenskaia@mpinat.mpg.de & Yazhini A. yazhini@mpinat.mpg.de",
             "<i:selection> <o:outDB> <tmpDir>",
@@ -43,8 +44,7 @@ std::vector<struct Command> commands = {
 
 
     {"annotate",    annotate, &localPar.annotateworkflow, COMMAND_MAIN,
-            "Run RBH of MMseqs2 to find homology, depending on UniProtID get further information about transcriptome functions",
-            "Information from KEGG, ExPASy, Pfam, EggNOG and other databases may be assigned. For details call annotate -h or --help",
+            "Run MMseqs2 searches to find homology, depending on obtained IDs get further information about transcriptome functions",
             "Mariia Zelenskaia mariia.zelenskaia@mpinat.mpg.de & Yazhini A. yazhini@mpinat.mpg.de",
             "<i:queryDB> <i:profile1TargetDB> <i:profile2TargetDB> <i:seqTargetDB> <o:outFile> <tmpDir>",
             NO_CITATION, {{"queryDB", DbType::ACCESS_MODE_INPUT, DbType::NEED_DATA, &DbValidator::sequenceDb},
@@ -57,12 +57,12 @@ std::vector<struct Command> commands = {
 
     {"easytransannot",    easytransannot, &localPar.easytransannot, COMMAND_EASY,
             "Easy module for simple one-step reads assembly and transcriptome annotation",
-            "Only ID mapping database should be downloaded in advance, for MMseqs2 databases just provide name of the profile database",
             "Mariia Zelenskaia mariia.zelenskaia@mpinat.mpg.de & Yazhini A. yazhini@mpinat.mpg.de",
-            "<i:fast(a|q)File[.gz|bz]> | <i:fastqFile1_1[.gz]> ... <i:fastqFileN_1[.gz]> <i:targetDB> <i:idMappingDB> <o:outFile> <tmpDir>",
+            "<i:fast(a|q)File[.gz|bz]> | <i:fastqFile1_1[.gz]> ... <i:fastqFileN_1[.gz]> <i:targetDB> <i:targetDB> <i:targetDB> <o:outFile> <tmpDir>",
             NO_CITATION, {{"fast[a|q]File[.gz|bz]", DbType::ACCESS_MODE_INPUT, DbType::NEED_DATA | DbType::VARIADIC,  &DbValidator::flatfile},
                         {"targetDB", 0, DbType::ZERO_OR_ALL, &DbValidator::empty},
-                        {"idMappingDB", DbType::ACCESS_MODE_INPUT, DbType::NEED_DATA, &DbValidator::flatfile},
+                        {"targetDB", 0, DbType::ZERO_OR_ALL, &DbValidator::empty},
+                        {"targetDB", 0, DbType::ZERO_OR_ALL, &DbValidator::empty},
                         {"outFile", DbType::ACCESS_MODE_OUTPUT, DbType::NEED_DATA, &DbValidator::flatfile},
                         {"tmpDir", DbType::ACCESS_MODE_OUTPUT, DbType::NEED_DATA, &DbValidator::directory}}},
 
