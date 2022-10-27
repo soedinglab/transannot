@@ -195,10 +195,10 @@ fi
 # add headers
 if [ -n "${SIMPLE_OUTPUT}" ]; then
 		echo "Simple output"
-		awk -F'\t' -v OFS='\t' 'BEGIN { print "queryID\ttargetID\theader_or_description\te-value\tsequenceidentity\tbitscore\tsearch_type\t"}{print}' "${TMP_PATH}/restmp" "${RESULTS}"
+		awk -F'\t' -v OFS='\t' 'BEGIN { print "queryID\ttargetID\theader_or_description\te-value\tsequenceidentity\tbitscore\tsearch_type\t"}{print}' "${TMP_PATH}/restmp" >> "${RESULTS}"
 	else
 		echo "Standard output"
-		awk -F'\t' -v OFS='\t' 'BEGIN { print "queryID\ttargetID\theader_or_description\te-value\t"}{print}' "${TMP_PATH}/restmp" "${RESULTS}"
+		awk -F'\t' -v OFS='\t' 'BEGIN { print "queryID\ttargetID\theader_or_description\te-value\t"}{print}' "${TMP_PATH}/restmp" >> "${RESULTS}"
 fi
 rm -f "${TMP_PATH}/restmp"
 
