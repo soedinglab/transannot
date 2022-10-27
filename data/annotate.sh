@@ -177,7 +177,7 @@ if notExists "${TMP_PATH}/tmp_join.tsv"; then
 
 	chmod +x "${SCRIPT}/data/search_pfama.py"
 	python3 "${SCRIPT}/data/search_pfama.py" "${TMP_PATH}/prof1_search_filt.tsv" "${SCRIPT}/data/Pfam-A.clans.tsv" "${TMP_PATH}/namesprof1_search.tsv"
-	head -n -1 "${TMP_PATH}/namesprof1_search.tsv" >> "${TMP_PATH}/namesprof1_searchtmp.tsv"; mv -f "${TMP_PATH}/namesprof1_searchtmp.tsv" "${TMP_PATH}/namesprof1_search.tsv" 
+	head -n -4 "${TMP_PATH}/namesprof1_search.tsv" >> "${TMP_PATH}/namesprof1_searchtmp.tsv"; mv -f "${TMP_PATH}/namesprof1_searchtmp.tsv" "${TMP_PATH}/namesprof1_search.tsv" 
 	sort -s -k1b,1 "${TMP_PATH}/namesprof1_search.tsv" >> "${TMP_PATH}/namesprof1_search_sort.tsv"
 	rm -f "${TMP_PATH}/namesprof1_search.tsv"
 	join -j 1 -a1 -a2 -t ' ' "${TMP_PATH}/namesprof1_search_sort.tsv" "${TMP_PATH}/prof1_search_filt.tsv" >> "${TMP_PATH}/final_prof1_search.tsv"
@@ -186,11 +186,21 @@ if notExists "${TMP_PATH}/tmp_join.tsv"; then
 	rm -f "${TMP_PATH}/seq_searchDB.tsv"
 
 	join -j 1 -a1 -a2 -t ' ' "${TMP_PATH}/final_prof1_search.tsv" "${TMP_PATH}/final_prof2_search.tsv" >> "${TMP_PATH}/tmp_join.tsv"
-	join -j 1 -a1 -a2 -t ' ' "${TMP_PATH}/tmp_join.tsv" "${TMP_PATH}/seq_search_filt.tsv" >> "${RESULTS}"
+	join -j 1 -a1 -a2 -t ' ' "${TMP_PATH}/tmp_join.tsv" "${TMP_PATH}/seq_search_filt.tsv" >> "${TMP_PATH}/restmp"
 
 	#alphanumerical sort?
 	rm -f "${TMP_PATH}/tmp_join.tsv"
 fi
+
+# add headers
+if [ -n "${SIMPLE_OUTPUT}" ]; then
+		echo "Simple output"
+		awk -F'\t' -v OFS='\t' 'BEGIN { print "queryID\ttargetID\theader_or_description\te-value\tsequenceidentity\tbitscore\tsearch_type\t"}{print}' "${TMP_PATH}/restmp" "${RESULTS}"
+	else
+		echo "Standard output"
+		awk -F'\t' -v OFS='\t' 'BEGIN { print "queryID\ttargetID\theader_or_description\te-value\t"}{print}' "${TMP_PATH}/restmp" "${RESULTS}"
+fi
+rm -f "${TMP_PATH}/restmp"
 
 #remove temporary files and directories
 if [ -n "${REMOVE_TMP}" ]; then
