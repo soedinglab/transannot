@@ -20,7 +20,7 @@ notExists() {
 
 if notExists "${INPUT}.dbtype"; then
     #shellcheck disable=SC2086
-    "${MMSEQS}" assemblereads "$@" "${TMP_PATH}/assembly" "${TMP_PATH}" ${ASSEMBLEREADS_PAR} \
+    "${MMSEQS}" assemblereads "$@" "${TMP_PATH}/assembly" "${TMP_PATH}/inputDB" "${TMP_PATH}" ${ASSEMBLEREADS_PAR} \
         || fail "plass assembly died"
 fi
 
@@ -47,7 +47,7 @@ fi
 
 if notExists "${RESULTS}.dbtype"; then
     #shellcheck disable=SC2086
-    "${MMSEQS}" annotate "${TMP_PATH}/assembly" "${PROF1_TARGET}DB" "${PROF2_TARGET}DB" "${SEQ_TARGET}DB" "${RESULTS}" "${TMP_PATH}/annotate_tmp" ${ANNOTATE_PAR} \
+    "${MMSEQS}" annotate "${TMP_PATH}/inputDB" "${PROF1_TARGET}DB" "${PROF2_TARGET}DB" "${SEQ_TARGET}DB" "${RESULTS}" "${TMP_PATH}/annotate_tmp" ${ANNOTATE_PAR} \
         || fail "annotate died"
 fi
 
