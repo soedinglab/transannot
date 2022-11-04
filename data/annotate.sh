@@ -167,7 +167,7 @@ if notExists "${TMP_PATH}/tmp_join.tsv"; then
 	# chmod +x "${SCRIPT}/data/search_eggnog.py"
 	echo "download eggNOG annotation file"
 	wget -O "${TMP_PATH}/nog_annotations.tsv" http://eggnog5.embl.de/download/eggnog_5.0/e5.og_annotations.tsv
-	sort -s -k1b,1 "${TMP_PATH}/nog_annotations.tsv" | awk -F'\t' -v OFS='\t' '{print $2, $6}' >> "${TMP_PATH}/names_nog_annotations.tsv"
+	sort -s -k2b,2 "${TMP_PATH}/nog_annotations.tsv" | awk -F'\t' -v OFS='\t' '{print $2, $6}' >> "${TMP_PATH}/names_nog_annotations.tsv"
 	rm -f "${TMP_PATH}/nog_annotations.tsv"
 	sort -s -k2b,2 "${TMP_PATH}/prof2_search_filt.tsv" | awk -F'\t' -v OFS='\t' '{print $1, $2}' >> "${TMP_PATH}/prof2_2join.tsv"
 	join -1 2 -2 1 "${TMP_PATH}/prof2_2join.tsv" "${TMP_PATH}/names_nog_annotations.tsv" >> "${TMP_PATH}/namesprof2_search.tsv"
