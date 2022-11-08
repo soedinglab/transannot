@@ -26,15 +26,6 @@ abspath() {
     fi
 }
 
-#we obtain best hits from targetDB based on sequence identity
-filterDb_simple() {
-	awk '{if (($5>=50) && ($4>=0.6)) print $0}' "$1" | awk '{$4=$5=""; print $0}' |sort -n -k3 | awk '!seen[$1]++' | sort -s -k1b,1 >> "$2"
-}
-
-filterDb() {
-	awk '{if (($5>=50) && ($4>=0.6)) print $0}' "$1" | sort -n -k3 | awk '!seen[$1]++' | sort -s -k1b,1 >> "$2"
-}
-
 preprocessDb(){
 	#filter decreasing DBs by bit score and extract one best hit for each query
 
@@ -155,51 +146,31 @@ if [ -n "${TAXONOMY_ID}" ]; then
 
 if notExists "${TMP_PATH}/tmp_join.tsv"; then
 
-	sort -s -k1b,1 "${TMP_PATH}/prof1_searchDB.tsv" | awk -F '\t' -v OFS='\t' '{ $(NF+1) = "seq-prof search"; print}' | awk -F '\t' -v OFS='\t' '{ $(NF+1) = "Pfam"; print}' >> "${TMP_PATH}/prof1_search_filt.tsv"
-	rm -f "${TMP_PATH}/prof1_searchDB.tsv"
-
-	sort -s -k1b,1 "${TMP_PATH}/prof2_searchDB.tsv" | awk -F '\t' -v OFS='\t' '{ $(NF+1) = "seq-prof search"; print}' | awk -F '\t' -v OFS='\t' '{ $(NF+1) = "EggNOG"; print}'>> "${TMP_PATH}/prof2_search_filt.tsv"
-	rm -f "${TMP_PATH}/prof2_searchDB.tsv"
-
 	TRANSANNOT="$(abspath "$(command -v "${MMSEQS}")")"
 	SCRIPT="${TRANSANNOT%/build*}"
 
-	chmod +x "${SCRIPT}/data/search_eggnog.py"
 	echo "download eggNOG annotation file"
 	wget -O "${TMP_PATH}/nog_annotations.tsv" http://eggnog5.embl.de/download/eggnog_5.0/e5.og_annotations.tsv
-	# sort -s -k2b,2 "${TMP_PATH}/nog_annotations.tsv" | awk -F'\t' -v OFS='\t' '{print $2, $6}' >> "${TMP_PATH}/names_nog_annotations.tsv"
-	# rm -f "${TMP_PATH}/nog_annotations.tsv"
-	# sort -s -k2b,2 "${TMP_PATH}/prof2_search_filt.tsv" | awk -F'\t' -v OFS='\t' '{print $1, $2}' >> "${TMP_PATH}/prof2_2join.tsv"
-	# join -1 2 -2 1 "${TMP_PATH}/prof2_2join.tsv" "${TMP_PATH}/names_nog_annotations.tsv" >> "${TMP_PATH}/namesprof2_search.tsv"
-	# rm -f "${TMP_PATH}/prof2_2join.tsv"
-	# rm -f "${TMP_PATH}/names_nog_annotations.tsv"
-	python3 "${SCRIPT}/data/search_eggnog.py" "${TMP_PATH}/prof2_search_filt.tsv" "${TMP_PATH}/nog_annotations.tsv" "${TMP_PATH}/namesprof2_search.tsv"
-	rm -f "${TMP_PATH}/nog_annotations.tsv"
 
-	head -n -1 "${TMP_PATH}/namesprof2_search.tsv" >> "${TMP_PATH}/namesprof2_searchtmp.tsv"; mv -f "${TMP_PATH}/namesprof2_searchtmp.tsv" "${TMP_PATH}/namesprof2_search.tsv" 
-	sort -s -k1b,1 "${TMP_PATH}/namesprof2_search.tsv" >> "${TMP_PATH}/namesprof2_search_sort.tsv"
-	rm -f "${TMP_PATH}/namesprof2_search.tsv"
-	join -j 1 -a1 -a2 -t ' ' "${TMP_PATH}/namesprof2_search_sort.tsv" "${TMP_PATH}/prof2_search_filt.tsv" >> "${TMP_PATH}/final_prof2_search.tsv"
+	awk -F '\t' -v OFS='\t' 'BEGIN{OFS=FS="\t"} {print $2, $4}' "${TMP_PATH}/nog_annotations.tsv" >> "${TMP_PATH}/mappingFile" 
+	rm -f "${TMP_PATH}/nog_annotations.tsv" 
+	awk -F '\t' -v OFS='\t' 'BEGIN{OFS=FS="\t"} NR==FNR{clr[$1]=$2; next} { if ($3 in clr) {$3=clr[$3]; print}}' "${TMP_PATH}/mappingFile" "${TMP_PATH}/prof2_searchDB.tsv" | \
+	 sort -s -k1b,1 | awk -F '\t' -v OFS='\t' '{ $(NF+1) = "seq-prof search"; print}' | awk -F '\t' -v OFS='\t' '{ $(NF+1) = "eggNOG"; print}' >> "${TMP_PATH}/prof2_search_annot.tsv"
+	rm -f "${TMP_PATH}/prof2_searchDB.tsv"
 
-	chmod +x "${SCRIPT}/data/search_pfama.py"
-	python3 "${SCRIPT}/data/search_pfama.py" "${TMP_PATH}/prof1_search_filt.tsv" "${SCRIPT}/data/Pfam-A.clans.tsv" "${TMP_PATH}/namesprof1_search.tsv"
-	# sort -s -k1b,1 "${SCRIPT}/data/Pfam-A.clans.tsv" | awk -F'\t' -v OFS='\t' '{print $1, $5}' >> "${TMP_PATH}/Pfam-A.clans_names.tsv"
-	# sort -s -k2b,2 "${TMP_PATH}/prof1_search_filt.tsv" | awk -F'\t' -v OFS='\t' '{print $1, $2}' >> "${TMP_PATH}/prof1_2join.tsv"
-	# join -1 2 -2 1 "${TMP_PATH}/prof1_2join.tsv" "${TMP_PATH}/Pfam-A.clans_names.tsv" >> "${TMP_PATH}/namesprof1_search.tsv"
-	# rm -f "${TMP_PATH}/prof1_2join.tsv"
-	# rm -f "${TMP_PATH}/Pfam-A.clans_names.tsv"
-	# head -n-4 "${TMP_PATH}/namesprof1_search.tsv" >> "${TMP_PATH}/namesprof1_searchtmp.tsv"; mv -f "${TMP_PATH}/namesprof1_searchtmp.tsv" "${TMP_PATH}/namesprof1_search.tsv" 
-	sort -s -k1b,1 "${TMP_PATH}/namesprof1_search.tsv" >> "${TMP_PATH}/namesprof1_search_sort.tsv"
-	rm -f "${TMP_PATH}/namesprof1_search.tsv"
-	join -j 1 -a1 -a2 -t ' ' "${TMP_PATH}/namesprof1_search_sort.tsv" "${TMP_PATH}/prof1_search_filt.tsv" >> "${TMP_PATH}/final_prof1_search.tsv"
+	awk -F '\t' -v OFS='\t' '{sub(/\.[^\.]+$/,"",$3)}1' "${TMP_PATH}/prof1_searchDB.tsv" >> "${TMP_PATH}/tmpfile"; mv -f "${TMP_PATH}/tmpfile" "${TMP_PATH}/prof1_searchDB.tsv"
 
+	awk -F '\t' -v OFS='\t' '{print $1, $5}' "${SCRIPT}/data/Pfam-A.clans.tsv" >> "${TMP_PATH}/PfamMappingFile"
+	awk -F '\t' -v OFS='\t' 'BEGIN{OFS=FS="\t"} NR==FNR{clr[$1]=$2; next} { if ($3 in clr) {$3=clr[$3]; print}}' "${TMP_PATH}/PfamMappingFile" "${TMP_PATH}/prof1_searchDB.tsv" | \
+	 sort -s -k1b,1 | awk -F '\t' -v OFS='\t' '{ $(NF+1) = "seq-prof search"; print}' | awk -F '\t' -v OFS='\t' '{ $(NF+1) = "PfamA"; print}'  >> "${TMP_PATH}/prof1_search_annot.tsv"
+	rm -f "${TMP_PATH}/PfamMappingFile"
+	
 	sort -s -k1b,1 "${TMP_PATH}/seq_searchDB.tsv" | awk -F '\t' -v OFS='\t' '{ $(NF+1) = "seq-seq search"; print}' | awk -F '\t' -v OFS='\t' '{ $(NF+1) = "SwissProt"; print}'>> "${TMP_PATH}/seq_search_filt.tsv"
 	rm -f "${TMP_PATH}/seq_searchDB.tsv"
 
-	join -j 1 -a1 -a2 -t ' ' "${TMP_PATH}/final_prof1_search.tsv" "${TMP_PATH}/final_prof2_search.tsv" >> "${TMP_PATH}/tmp_join.tsv"
+	join -j 1 -a1 -a2 -t ' ' "${TMP_PATH}/prof1_search_annot.tsv" "${TMP_PATH}/prof2_search_annot.tsv" >> "${TMP_PATH}/tmp_join.tsv"
 	join -j 1 -a1 -a2 -t ' ' "${TMP_PATH}/tmp_join.tsv" "${TMP_PATH}/seq_search_filt.tsv" >> "${TMP_PATH}/restmp"
 
-	#alphanumerical sort?
 	rm -f "${TMP_PATH}/tmp_join.tsv"
 fi
 
@@ -225,11 +196,6 @@ if [ -n "${REMOVE_TMP}" ]; then
 	"$MMSEQS" rmdb "${TMP_PATH}/prof2_searchDB" ${VERBOSITY_PAR}
 	#shellcheck disable=SC2086
 	"$MMSEQS" rmdb "${TMP_PATH}/seq_searchDB" ${VERBOSITY_PAR}
-
-	rm -f "${TMP_PATH}/prof1_searchDB2join.tsv"
-	rm -f "${TMP_PATH}/prof2_searchDB2join.tsv"
-	rm -f "${TMP_PATH}/seq_searchDB2join.tsv"
-
 	#shellcheck disable=SC2086
 	"$MMSEQS" rmdb "${TMP_PATH}/prof1_searchDB_filt" ${VERBOSITY_PAR}
 	#shellcheck disable=SC2086
