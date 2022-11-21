@@ -1,7 +1,7 @@
 # TransAnnot - a fast and easy transcriptome annotation pipeline
 
-TransAnnot predicts protein functions, orthologous relationships and biological pathways for the whole newly sequenced transcriptome.
-It uses MMseqs2 sequence-profile search to obtain closest homologs from profile database and infer protein function, structure and orthologous groups based on the identified homologs.
+TransAnnot is a GPL-3.0 licensed, C++ implemented modular toolkit. TransAnnot predicts protein functions, orthologous relationships and biological pathways for the whole newly sequenced transcriptome.
+It uses high-performative MMseqs2 sequence-profile search to obtain closest homologs from profile database and infer protein function, structure and orthologous groups based on the identified homologs.
 Prior to functional annotation, it can perform transcriptome sequence assembly using PLASS (Protein-Level ASSembler) to *de novo* assemble raw sequence reads on protein level upon user request.
 
 ## Compile from source
