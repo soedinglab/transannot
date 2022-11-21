@@ -1,8 +1,6 @@
 set(workflow_source_files
         workflow/downloaddb.cpp
         workflow/annotate.cpp
-        workflow/annotateprofiles.cpp
-        workflow/contamination.cpp
         workflow/assemblereads.cpp
         workflow/createquerydb.cpp
         workflow/easytransannot.cpp

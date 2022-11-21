@@ -18,7 +18,7 @@ int downloaddb(int argc, const char **argv, const Command& command) {
     tmpDir = FileUtil::createTemporaryDirectory(tmpDir, hash);
 
     CommandCaller cmd;
-    cmd.addVariable("CREATESUBDB_PAR", par.createParameterString(par.createsubdb).c_str());
+    // cmd.addVariable("CREATESUBDB_PAR", par.createParameterString(par.createsubdb).c_str());
     // cmd.addVariable("TAXONOMY_ID", par.taxId == 1 ? "TRUE" : NULL);
     cmd.addVariable("REMOVE_TMP", par.removeTmpFiles ? "TRUE" : NULL);
     cmd.addVariable("THREADS_PAR", par.createParameterString(par.onlythreads).c_str());

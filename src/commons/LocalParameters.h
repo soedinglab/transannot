@@ -19,9 +19,9 @@ public:
     std::vector<MMseqsParameter*> assemblereads;
     std::vector<MMseqsParameter*> annotateworkflow;
     std::vector<MMseqsParameter*> downloaddb;
-    std::vector<MMseqsParameter*> contaminationworkflow;
+    // std::vector<MMseqsParameter*> contaminationworkflow;
     std::vector<MMseqsParameter*> createquerydb;
-    std::vector<MMseqsParameter*> annotateprofiles;
+    // std::vector<MMseqsParameter*> annotateprofiles;
     std::vector<MMseqsParameter*> easytransannot;
 
     // annotate
@@ -60,16 +60,16 @@ private:
         annotateworkflow.push_back(&PARAM_THREADS);
         annotateworkflow.push_back(&PARAM_V);
 
-        annotateprofiles = annotateworkflow; //same parameters so far, but later combineList() may be used
+        // annotateprofiles = annotateworkflow; //same parameters so far, but later combineList() may be used
 
         downloaddb.push_back(&PARAM_THREADS);
         downloaddb.push_back(&PARAM_V);
         // downloaddb.push_back(&PARAM_TAXONOMYID);
 
-        contaminationworkflow.push_back(&PARAM_COMPRESSED);
-        contaminationworkflow.push_back(&PARAM_REMOVE_TMP_FILES);
-        contaminationworkflow.push_back(&PARAM_THREADS);
-        contaminationworkflow.push_back(&PARAM_V);
+        // contaminationworkflow.push_back(&PARAM_COMPRESSED);
+        // contaminationworkflow.push_back(&PARAM_REMOVE_TMP_FILES);
+        // contaminationworkflow.push_back(&PARAM_THREADS);
+        // contaminationworkflow.push_back(&PARAM_V);
 
         createquerydb.push_back(&PARAM_REMOVE_TMP_FILES);
         createquerydb.push_back(&PARAM_THREADS);

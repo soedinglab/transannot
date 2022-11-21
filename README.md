@@ -1,12 +1,12 @@
-# TransAnnot - a transcriptome annotation pipeline
+# TransAnnot - a fast and easy transcriptome annotation pipeline
 
 TransAnnot predicts protein functions, orthologous relationships and biological pathways for the whole newly sequenced transcriptome.
 It uses MMseqs2 sequence-profile search to obtain closest homologs from profile database and infer protein function, structure and orthologous groups based on the identified homologs.
-Prior to functional annotation, it can perform transcriptome sequence assembly using PLASS (Protein-Level ASSembler) to assemble raw sequence reads on protein level upon user request.
+Prior to functional annotation, it can perform transcriptome sequence assembly using PLASS (Protein-Level ASSembler) to *de novo* assemble raw sequence reads on protein level upon user request.
 
 ## Compile from source
 
-Compiling from source helps to optimize TransAnnot for the specific system, which improve its performance. For the compilation `cmake`, `g++` and `git` are required. After the compilation the TransAnnot will be located in `build/bin` directory (or just run `which transannot` in the command line to get the pathway to TransAnnot)
+Compiling from source helps to optimize TransAnnot for the specific system, which improve its performance. For the compilation `cmake`, `g++` and `git` are required. After the compilation TransAnnot will be located in `build/bin` directory.
 
     git clone https://github.com/mariia-zelenskaia/transannot.git
     cd transannot && mkdir build && cd build
@@ -15,7 +15,7 @@ Compiling from source helps to optimize TransAnnot for the specific system, whic
     sudo make install
     export PATH=$(pwd)/transannot/bin/:$PATH
 
-❗️ If you compile from source under macOS we recommend to install and use `gcc` instead of `clang` as a compiler. gcc can be installed with Homebrew. Force cmake to use gcc as a compiler by running:
+❗️ If you compile from source under macOS we recommend to install and use `gcc` instead of `clang` as a compiler. `gcc` can be installed with Homebrew. Force cmake to use gcc as a compiler by running:
 
     CC="$(brew --prefix)/bin/gcc-10"
     CCX="$(brew --prefix)/bin/g++-10"
@@ -23,10 +23,10 @@ Compiling from source helps to optimize TransAnnot for the specific system, whic
 
 Other dependencies for the compilation from source are `zlib` and `bzip`.
 
-## Dependencies
+## Workflow dependencies
 
-PLASS - should be installed separately
-MMseqs2 - will be installed as a library of TransAnnot
+- PLASS - should be installed separately, see [corresponding repository](https://github.com/soedinglab/plass). After installation please copy/move PLASS to the current working directory.
+- MMseqs2 - will be installed as a library of TransAnnot
 
 ## Before starting
 
@@ -38,13 +38,15 @@ MMseqs2 - will be installed as a library of TransAnnot
 
 There is a possibility to run TransAnnot using easy module
 
-    transannot easytransannot <inputReads.fastq> <name of targetDB> <IDmappingDB> <resDB> <tmp> [options]
+    transannot easytransannot <inputReads.fastq> Pfam-A.full eggNOG UniProtKB/Swiss-Prot <resDB> <tmp> [options]
+
+If (one of the) target databases are already downloaded in MMseqs2 format, just provide pathway to them, otherwise simply use their names, and the databases will be downloaded in easy module.
 
 ## Input
 
 Possible inputs are:
 
-* assembled transcriptomes (obtained e.g. using Trinity) or raw transcriptome reads, which will be assembled at protein level using `plass`
+* assembled transcriptomes (obtained e.g. using Trinity) or raw transcriptome reads, which will be de novo assembled at protein level using `plass`
 * metatranscriptomes
 * single-organism transcriptomes
 <!-- in such case it is possible to check for the contamination with `contamination` module, which is based on MMseqs2 taxonomy workflow -->
@@ -53,17 +55,18 @@ Possible inputs are:
 
 ### Modules
 
-* `assemblereads`            It assembles raw sequencing reads to large genomic fragments (contigs)
-* `annotate`            It clusters given input for the reduction of redundancy and runs sequnce-profile search against profile database (e.g. PDB70) and sequence-sequence search to obtain the closest homologs with annotated function. 
+* `assemblereads`            It *de novo* assembles raw sequencing reads to large genomic fragments (contigs)
+* `annotate`            It clusters given input for the reduction of redundancy and runs sequnce-profile search against profile database (e.g. PDB70) and sequence-sequence search to obtain the closest homologs with annotated function
 <!-- After running thhe search UniProt IDs will be retrieved to get more detailed information about the provided transcriptome.  -->
 <!-- (It finds homologs for assembled contigs in the custom defined protein seqeunce database (default UniProtKB) using reciprocal-best hits (rbh module) search from MMseqs2 suite if taxonomy ID `--taxid` is provided, or MMseqs2 search if no taxonomy ID is supplied. After runing the search Gene Ontology ID will be obtained from UniProt.) -->
 <!-- * `contamination`       It checks contaminated contigs using _easy-taxonomy_ module from MMseqs2 suite. This approach uses taxonomy assignments of every contig to identify contamination -->
 * `createquerydb`            It creates a database from the sequence space (obtained from `downloaddb` module) in a required format for MMseqs2 rbh module
 * `downloaddb`          It downloads the user defined database that serves as a search space for homology detection
+* `easytransannot`      Easy module for a quick start, performs assembly, downloads DB and executes annotation
 
 ### PLASS assembly
 
-Before running this step PLASS must be installed, detailed information about installation can be found [here](https://github.com/soedinglab/plass#install-plass).
+Before running this step PLASS must be installed, detailed information about installation can be found [here](https://github.com/soedinglab/plass#install-plass). Please make sure PLASS is located in the current working directory.
 
 In this step, reads will be assembled with Protein-Level ASSembler PLASS and afterwards MMseqs2 database will be created, you may skip this step if the transcriptome is already assembled. Usage:
 
@@ -83,15 +86,15 @@ and execute the below command to download the preferred database (ensure the sam
 
     transannot downloaddb <selection> <outDB> <tmp> [options]
 
-Hence transannot runs 3 searches in `annotate` module, this step should be repeated 3 times.
+Hence transannot runs 3 searches in `annotate` module, this step should be repeated 3 times. For the annotation module `Pfam-A.full`, `eggNOG` (profile datbases) and `UniProtKB/SwissProt` (sequence database) are standard, so please download them using this module, for more information also check [MMseqs2 user guide](https://github.com/soedinglab/MMseqs2/wiki#downloading-databases).
 
 ### Annotate workflow
 
-In the `annotate` module representative sequences will be extracted and used as search input to remove redundancy. 3 searches (one sequence-sequence and two seqeuce-profile) will be executed. It is possible to use any available MMseqs2 [databases](https://github.com/soedinglab/MMseqs2/wiki#downloading-databases), but we highly recommend to use `Pfam-A.full`, `eggNOG` (profile databases) and `UniProtKB/SwissProt` (sequence database).
+In the `annotate` module representative sequences will be extracted and used as search input to remove redundancy. 3 searches (one sequence-sequence and two seqeuce-profile) will be performed.
 
 To run annotate module of transannot execute the following command:
 
-    transannot annotate <assembledQueryDB> <1st profileTargetDB> <2nd profileTargetDB> <sequenceTargetDB> <outDB> <tmp> [options]
+    transannot annotate <assembledQueryDB> <path to Pfam profileTargetDB> <path to eggNOG profileTargetDB> <path to SwissProt sequenceTargetDB> <outDB> <tmp> [options]
 
 #### Important options of the annotate module
 

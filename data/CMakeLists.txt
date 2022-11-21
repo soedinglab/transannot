@@ -1,10 +1,8 @@
-include(MMseqsResourceCompiler) #not sure whether we need a full pathway
+include(MMseqsResourceCompiler) 
 
 set(COMPILED_RESOURCES
     downloaddb.sh
     annotate.sh
-    annotateprofiles.sh
-    contamination.sh
     assemblereads.sh
     createquerydb.sh
     easytransannot.sh

@@ -39,15 +39,6 @@ if notExists "${OUTDB}.dbtype"; then
         || fail "download database died"
 fi
 
-if [ -n "${TAXONOMY_ID}" ]; then
-    #shellcheck disable=SC2086
-    "$MMSEQS" createsubdb "${}" "${OUTDB}" "${OUTDB}_tax" ${CREATESUBDB_PAR} \
-        || fail "create subdb died"
-    echo "complete database will be removed"
-    #shellcheck disable=SC2086
-    "$MMSEQS" rmdb "${OUTDB}" ${VERBOSITY}
-fi
-
 if [ -n "$REMOVE_TMP" ]; then
     #shellcheck disable=SC2086
     echo "Remove temporary files and directories"

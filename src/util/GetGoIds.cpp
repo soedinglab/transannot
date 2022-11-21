@@ -1,10 +1,13 @@
-#include "LocalParameters.h"
-#include "FileUtil.h"
-#include "Util.h"
-#include "Debug.h"
+// #include "LocalParameters.h"
+// #include "FileUtil.h"
+// #include "Util.h"
+// #include "Debug.h"
 
+// int getgoid(int argc, const char **argv, const Command& command) {
+//     LocalParameters &par = LocalParameters::getLocalInstance();
+//     par.parseParameters(argc, argv, command, true, 0, 0);
+//     std::string profDb = par.filenames.back();
+//     par.filenames.pop_back();
+//     std:string annotDb = par.filenames;
 
-// NEW: we are writing function which can be used in sh script like "$MMSEQS" getgoid (Input)
-//int getgoid(int argc, const char **argv, const Command& command) {
-//
-//}
+// }

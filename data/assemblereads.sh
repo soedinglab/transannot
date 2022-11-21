@@ -9,12 +9,9 @@ notExists(){
 }
 
 # pre-processing
-# if ! command -v plass; then
-#     echo "Please make sure that plass is installed." 
-#     exit 1
-# fi
-
+echo "Please set PLASS to the current working directory!"
 [ -z "$MMSEQS" ] && echo "Please set the environment variable \$MMSEQS to your current binary." && exit 1;
+[ -f "${RESULTS}.dbtype" ] && "${RESULTS}.dbtype exists already! Assembly is already performed!" && echo 1;
 
 if notExists "${ASSEMBLY}.fasta"; then
     #shellcheck disable=SC2086
