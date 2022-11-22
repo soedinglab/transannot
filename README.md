@@ -103,6 +103,8 @@ To run annotate module of transannot execute the following command:
 
 When no tag is used, standard output will be provided.
 
+`--min-seq-id` is a parameter to adjust minimum sequence identity for the searches. Default value is set to 0.6.
+
 ### Profile databases
 
 Sequence profiles contain linear probabilities for each aminoacid at every position of the set. There is an internal MMseqs2 profile DB format. `annotate` module of transannot implements sequence-profile search, that is why profile databases must be provided as a input target.

@@ -104,19 +104,19 @@ if [ -n "${TAXONOMY_ID}" ]; then
 	elif [ -z "${TAXONOMY_ID}" ]; then
 		if notExists "${RESULTS}.dbtype"; then
 			#shellcheck disable=SC2086
-			"$MMSEQS" search "${TMP_PATH}/clu_rep" "${PROF_TARGET1}" "${TMP_PATH}/prof1_searchDB" "${TMP_PATH}/search_tmp" --min-seq-id 0.6 ${SEARCH_PAR} \
+			"$MMSEQS" search "${TMP_PATH}/clu_rep" "${PROF_TARGET1}" "${TMP_PATH}/prof1_searchDB" "${TMP_PATH}/search_tmp" ${SEARCH_PAR} \
 				|| fail "first sequence-profile search died"
 
 			preprocessDb "${TMP_PATH}/prof1_searchDB" "${TMP_PATH}/prof1_searchDB_filt"
 
 			#shellcheck disable=SC2086
-			"$MMSEQS" search "${TMP_PATH}/clu_rep" "${PROF_TARGET2}" "${TMP_PATH}/prof2_searchDB" "${TMP_PATH}/search_tmp" --min-seq-id 0.6 ${SEARCH_PAR} \
+			"$MMSEQS" search "${TMP_PATH}/clu_rep" "${PROF_TARGET2}" "${TMP_PATH}/prof2_searchDB" "${TMP_PATH}/search_tmp" ${SEARCH_PAR} \
 				|| fail "second sequence-profile search died"
 			
 			preprocessDb "${TMP_PATH}/prof2_searchDB" "${TMP_PATH}/prof2_searchDB_filt"
 			
 			#shellcheck disable=SC2086
-			"$MMSEQS" search "${TMP_PATH}/clu_rep" "${SEQ_TARGET}" "${TMP_PATH}/seq_searchDB" "${TMP_PATH}/search_tmp" --min-seq-id 0.6 ${SEARCH_PAR} \
+			"$MMSEQS" search "${TMP_PATH}/clu_rep" "${SEQ_TARGET}" "${TMP_PATH}/seq_searchDB" "${TMP_PATH}/search_tmp" ${SEARCH_PAR} \
 				|| fail "sequence-sequence search died"
 
 			preprocessDb "${TMP_PATH}/seq_searchDB" "${TMP_PATH}/seq_searchDB_filt"
