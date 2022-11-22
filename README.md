@@ -25,8 +25,7 @@ Other dependencies for the compilation from source are `zlib` and `bzip`.
 
 ## Workflow dependencies
 
-- PLASS - should be installed separately, see [corresponding repository](https://github.com/soedinglab/plass). After installation please copy/move PLASS to the current working directory.
-- MMseqs2 - will be installed as a library of TransAnnot
+- PLASS - should be installed separately, see [corresponding repository](https://github.com/soedinglab/plass). To perform *de novo* assembly, it is required to install PLASS to the current working directory.
 
 ## Before starting
 
