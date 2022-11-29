@@ -1,0 +1,21 @@
+Bootstrap: library
+From: ubuntu:20.04
+
+%post
+    export DEBIAN_FRONTEND=noninteractive
+    apt-get update
+    apt-get install -y build-essential cmake bzip2 gzip wget
+    apt-get install -y git libz-dev
+    apt-get install -y curl
+
+    git clone https://github.com/mariia-zelenskaia/transannot.git
+    cd transannot 
+    mkdir build && cd build
+    cmake -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX=. ..
+    make -j 4
+    make install
+    export PATH=$(pwd)/transannot/bin/:$PATH
+
+%labels
+    Author Mariia Zelenskaia
+    Version v0.0.1
