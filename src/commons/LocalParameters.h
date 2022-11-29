@@ -57,7 +57,7 @@ private:
         annotateworkflow.push_back(&PARAM_REMOVE_TMP_FILES);
         annotateworkflow.push_back(&PARAM_COMPRESSED);
         annotateworkflow.push_back(&PARAM_C);
-        annotateworkflow.push_back(&PARAM_MIN_SEQ_ID)
+        annotateworkflow.push_back(&PARAM_MIN_SEQ_ID);
         annotateworkflow.push_back(&PARAM_THREADS);
         annotateworkflow.push_back(&PARAM_V);
 
