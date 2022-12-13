@@ -4,7 +4,7 @@ TransAnnot is a GPL-3.0 licensed, C++ implemented modular toolkit. TransAnnot pr
 It uses high-performative MMseqs2 sequence-profile search to obtain closest homologs from profile database and infer protein function, structure and orthologous groups based on the identified homologs.
 Prior to functional annotation, it can perform transcriptome sequence assembly using PLASS (Protein-Level ASSembler) to *de novo* assemble raw sequence reads on protein level upon user request.
 
-<p align="center"><img src="https://github.com/mariia-zelenskaia/transannot/blob/main/.github/TransAnnot_logo.png" height="256" /></p>
+<p align="center"><img src="https://github.com/mariia-zelenskaia/transannot/blob/main/.github/TransAnnot_logo.png" height="800" /></p>
 
 ## Compile from source
 
