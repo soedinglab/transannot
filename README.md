@@ -69,14 +69,12 @@ Before running this step PLASS must be installed, detailed information about ins
 
 In this step, reads will be assembled with Protein-Level ASSembler PLASS and afterwards MMseqs2 database will be created, you may skip this step if the transcriptome is already assembled. Usage:
 
-    transannot assemblereads <inputReads.fastq[.gz|bz]> ... <inputReads.fastq[.gz|bz]> <fastaFile> <seqDB> <tmp> [options]
+    transannot assemblereads <inputReads.fastq[.gz|bz]> ... <inputReads.fastq[.gz|bz]> <o: fastaFile with assembly> <seqDB> <tmp> [options]
 
 ### Dowloading databases
 
 In this step, sequence database for homology search will be downloaded.
-<!-- Default database is PDB70 and can be obtained using a below command:
-
-    transannot downloaddb PDB70 <outDB> <tmp> [options] -->    
+   
 To see options for your choice, please use the below command:
 
     mmseqs databases -h
