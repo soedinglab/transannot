@@ -83,14 +83,25 @@ RESULTS="$5"
 TMP_PATH="$6" 
 
 #MMSEQS2 LINCLUST for the redundancy reduction
-if notExists "${TMP_PATH}/clu.dbtype"; then
-	#shellcheck disable=SC2086
-	"$MMSEQS" linclust "${INPUT}" "${TMP_PATH}/clu" "${TMP_PATH}/clu_tmp" --min-seq-id 0.3 ${CLUSTER_PAR} \
-		|| fail "linclust died"
+if [ -z "${NO_LINCLUST}" ]; then
 
-	#shellcheck disable=SC2086
-	"$MMSEQS" result2repseq "${INPUT}" "${TMP_PATH}/clu" "${TMP_PATH}/clu_rep" ${RESULT2REPSEQ_PAR} \
-		|| fail "extract representative sequences died"
+	echo "Perform linclust for redundancy reduction"
+	if notExists "${TMP_PATH}/clu.dbtype"; then
+		#shellcheck disable=SC2086
+		"$MMSEQS" linclust "${INPUT}" "${TMP_PATH}/clu" "${TMP_PATH}/clu_tmp" --min-seq-id 0.3 ${CLUSTER_PAR} \
+			|| fail "linclust died"
+
+		#shellcheck disable=SC2086
+		"$MMSEQS" result2repseq "${INPUT}" "${TMP_PATH}/clu" "${TMP_PATH}/clu_rep" ${RESULT2REPSEQ_PAR} \
+			|| fail "extract representative sequences died"
+	fi
+
+elif [ -n "${NO_LINCLUST}" ]; then
+	echo "No linclust will be performed"
+	if notExists "${TMP_PATH}/clu_rep"; then
+		#shellcheck disable=SC2086
+		"$MMSEQS" mvdb "${INPUT}" "${TMP_PATH}/clu_rep"
+	fi
 fi
 
 if [ -n "${TAXONOMY_ID}" ]; then
