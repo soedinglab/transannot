@@ -100,12 +100,12 @@ elif [ -n "${NO_LINCLUST}" ]; then
 	echo "No linclust will be performed"
 	if notExists "${TMP_PATH}/clu_rep"; then
 		#shellcheck disable=SC2086
-		"$MMSEQS" mvdb "${INPUT}" "${TMP_PATH}/clu_rep" ${VERBOSITY} \
-			|| fail "move db died"
+		"$MMSEQS" cpdb "${INPUT}" "${TMP_PATH}/clu_rep" ${VERBOSITY} \
+			|| fail "copy db died"
 		
 		#shellcheck disable=SC2086
-		"$MMSEQS" mvdb "${INPUT}_h" "${TMP_PATH}/clu_rep_h" ${VERBOSITY} \
-			|| fail "move header db died"
+		"$MMSEQS" cpdb "${INPUT}_h" "${TMP_PATH}/clu_rep_h" ${VERBOSITY} \
+			|| fail "copy header db died"
 	fi
 fi
 
