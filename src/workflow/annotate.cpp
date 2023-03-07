@@ -30,7 +30,7 @@ int annotate(int argc, const char **argv, const Command &command){
     cmd.addVariable("CLUSTER_PAR", par.createParameterString(par.linclustworkflow, true).c_str());
     cmd.addVariable("RESULT2REPSEQ_PAR", par.createParameterString(par.result2repseq).c_str());
     cmd.addVariable("CREATETSV_PAR", par.createParameterString(par.createtsv).c_str());
-    cmd.addVariable("MIN_SEQ_ID", SSTR(par.seqIdThr)).c_str()); 
+    cmd.addVariable("MIN_SEQ_ID", SSTR(par.seqIdThr).c_str()); 
     cmd.addVariable("THREADS_PAR", par.createParameterString(par.onlythreads).c_str());
     cmd.addVariable("VERBOSITY_PAR", par.createParameterString(par.onlyverbosity).c_str());
 
