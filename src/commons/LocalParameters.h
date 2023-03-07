@@ -89,7 +89,7 @@ private:
         createdbMode = 1;
         simpleOutput = false; 
         noPerformClust = false;
-        seqIdThr = 0.6;
+        seqIdThr = 0.3;
 
     }
     LocalParameters(LocalParameters const&);

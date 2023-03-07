@@ -86,10 +86,19 @@ TMP_PATH="$6"
 if [ -z "${NO_LINCLUST}" ]; then
 
 	echo "Perform linclust for redundancy reduction"
+
 	if notExists "${TMP_PATH}/clu.dbtype"; then
+
+		if [ -n "${MIN_SEQ_ID}" ]; then
+			#shellcheck disable=SC2086
+			"$MMSEQS" linclust "${INPUT}" "${TMP_PATH}/clu" "${TMP_PATH}/clu_tmp" ${CLUSTER_PAR} \
+			|| fail "linclust died"
+		else
+		
 		#shellcheck disable=SC2086
 		"$MMSEQS" linclust "${INPUT}" "${TMP_PATH}/clu" "${TMP_PATH}/clu_tmp" --min-seq-id 0.3 ${CLUSTER_PAR} \
 			|| fail "linclust died"
+		fi
 
 		#shellcheck disable=SC2086
 		"$MMSEQS" result2repseq "${INPUT}" "${TMP_PATH}/clu" "${TMP_PATH}/clu_rep" ${RESULT2REPSEQ_PAR} \
