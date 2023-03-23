@@ -161,7 +161,6 @@ jobs:
       - build_macos_1015
       - build_ubuntu_1804
       - build_ubuntu_cross_2004
-      - build_ubuntu_cross_2204
     steps:
       - script: |
           cd "${BUILD_SOURCESDIRECTORY}"
