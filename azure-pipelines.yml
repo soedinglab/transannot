@@ -129,55 +129,6 @@ jobs:
           targetPath: $(Build.SourcesDirectory)/build/src/transannot
           artifactName: transannot-linux-$(SIMD)
   
-  - job: build_ubuntu_cross_2204
-    displayName: Ubuntu 2204 Cross-Compile
-    pool:
-      vmImage: 'Ubuntu-22.04'
-    strategy:
-      matrix:
-        power8:
-          SIMD: POWER8
-          ARCH: ppc64el
-          CPREF: powerpc64le
-        power9:
-          SIMD: POWER9
-          ARCH: ppc64el
-          CPREF: powerpc64le
-        arm64:
-          SIMD: ARM8
-          ARCH: arm64
-          CPREF: aarch64
-    steps:
-      - script: |
-          sudo dpkg --add-architecture $ARCH
-          cat << HEREDOC | sudo tee /etc/apt/sources.list
-          deb [arch=amd64,i386] http://archive.ubuntu.com/ubuntu/ focal main universe multiverse
-          deb [arch=amd64,i386] http://archive.ubuntu.com/ubuntu/ focal-updates main universe multiverse
-          deb [arch=amd64,i386] http://archive.ubuntu.com/ubuntu/ focal-backports main universe multiverse
-          deb [arch=amd64,i386] http://security.ubuntu.com/ubuntu/ focal-security main universe multiverse
-          deb [arch=$ARCH] http://ports.ubuntu.com/ubuntu-ports/ focal main  universe multiverse
-          deb [arch=$ARCH] http://ports.ubuntu.com/ubuntu-ports/ focal-updates main universe multiverse
-          deb [arch=$ARCH] http://ports.ubuntu.com/ubuntu-ports/ focal-backports main universe multiverse
-          deb [arch=$ARCH] http://ports.ubuntu.com/ubuntu-ports/ focal-security main universe multiverse
-          HEREDOC
-          sudo apt-get update
-          sudo apt-get -y install -o APT::Immediate-Configure=false crossbuild-essential-$ARCH zlib1g-dev:$ARCH libbz2-dev:$ARCH
-        displayName: Install Toolchain
-      - script: |
-          mkdir build && cd build
-          CC=${CPREF}-linux-gnu-gcc CXX=${CPREF}-linux-gnu-g++ \
-           cmake -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DHAVE_TESTS=1 \
-            -DBUILD_SHARED_LIBS=OFF \
-            -DCMAKE_EXE_LINKER_FLAGS="-static -static-libgcc \
-            -static-libstdc++" -DCMAKE_FIND_LIBRARY_SUFFIXES=".a" \
-            -DENABLE_WERROR=1 -DHAVE_${SIMD}=1 ..
-          make -j $(nproc --all)
-        displayName: Build TransAnnot
-      - task: PublishPipelineArtifact@0
-        inputs:
-          targetPath: $(Build.SourcesDirectory)/build/src/transannot
-          artifactName: transannot-linux-$(SIMD)
-
   - job: build_macos_1015
     displayName: macOS 1015
     pool:
