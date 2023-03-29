@@ -14,7 +14,7 @@ Compiling from source helps to optimize TransAnnot for the specific system, whic
     cd transannot && mkdir build && cd build
     cmake -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX=. ..
     make -j 4
-    sudo make install
+    make install
     export PATH=$(pwd)/transannot/bin/:$PATH
 
 ❗️ If you compile from source under macOS we recommend to install and use `gcc` instead of `clang` as a compiler. `gcc` can be installed with Homebrew. Force cmake to use gcc as a compiler by running:
@@ -56,14 +56,14 @@ Possible inputs are:
 
 ### Modules
 
-* `assemblereads`            It *de novo* assembles raw sequencing reads to large genomic fragments (contigs)
-* `annotate`            It clusters given input for the reduction of redundancy and runs sequnce-profile search against profile database (e.g. PDB70) and sequence-sequence search to obtain the closest homologs with annotated function
+* `assemblereads`            *de novo* assembles raw sequencing reads to large genomic fragments (contigs).
+* `annotate`            clusters given input for the reduction of redundancy and runs sequnce-profile and sequence-sequence searches to obtain the closest homologs with annotated function. It also retrieves descriptions of orthologous groups and protein families throgh mapping. 
 <!-- After running thhe search UniProt IDs will be retrieved to get more detailed information about the provided transcriptome.  -->
 <!-- (It finds homologs for assembled contigs in the custom defined protein seqeunce database (default UniProtKB) using reciprocal-best hits (rbh module) search from MMseqs2 suite if taxonomy ID `--taxid` is provided, or MMseqs2 search if no taxonomy ID is supplied. After runing the search Gene Ontology ID will be obtained from UniProt.) -->
 <!-- * `contamination`       It checks contaminated contigs using _easy-taxonomy_ module from MMseqs2 suite. This approach uses taxonomy assignments of every contig to identify contamination -->
-* `createquerydb`            It creates a database from the sequence space (obtained from `downloaddb` module) in a required format for MMseqs2 rbh module
-* `downloaddb`          It downloads the user defined database that serves as a search space for homology detection
-* `easytransannot`      Easy module for a quick start, performs assembly, downloads DB and executes annotation
+* `createquerydb`            creates a database from the sequence space (obtained from `downloaddb` module) in a memory-efficient MMSeqs2 format.
+* `downloaddb`          downloads databases that serve as a search space for homology detection
+* `easytransannot`      easy module for a quick start, performs assembly, downloads DB and executes annotation
 
 ### PLASS assembly
 
@@ -71,17 +71,17 @@ Before running this step PLASS must be installed, detailed information about ins
 
 In this step, reads will be assembled with Protein-Level ASSembler PLASS and afterwards MMseqs2 database will be created, you may skip this step if the transcriptome is already assembled. Usage:
 
-    transannot assemblereads <inputReads.fastq[.gz|bz]> ... <inputReads.fastq[.gz|bz]> <o: fastaFile with assembly> <seqDB> <tmp> [options]
+    transannot assemblereads <inputReads.fastq[.gz|bz]> ... <inputReads.fastq[.gz|bz]> <o: fastaFile with assembly> <o: seqDB> <tmp> [options]
 
 ### Dowloading databases
 
-In this step, sequence database for homology search will be downloaded.
+In this step, sequence databases for homology searches will be downloaded.
    
-To see options for your choice, please use the below command:
+To see detailed information about databases, please use the following command:
 
     mmseqs databases -h
 
-and execute the below command to download the preferred database (ensure the same keyword as given in `mmseqs database -h`):
+and execute the below command to download the databases (Ensure the same keyword as given in `mmseqs database -h`):
 
     transannot downloaddb <selection> <outDB> <tmp> [options]
 
@@ -93,7 +93,7 @@ In the `annotate` module representative sequences will be extracted and used as 
 
 To run annotate module of transannot execute the following command:
 
-    transannot annotate <assembledQueryDB> <path to Pfam profileTargetDB> <path to eggNOG profileTargetDB> <path to SwissProt sequenceTargetDB> <outDB> <tmp> [options]
+    transannot annotate <assembledQueryDB> <path to Pfam profileTargetDB> <path to eggNOG profileTargetDB> <path to SwissProt sequenceTargetDB> <o:resTsvFile> <tmp> [options]
 
 #### Important options of the annotate module
 
@@ -103,11 +103,13 @@ To run annotate module of transannot execute the following command:
 
 When no tag is used, standard output will be provided.
 
-`--min-seq-id` is a parameter to adjust minimum sequence identity for the searches. Default value is set to 0.6.
+`--min-seq-id` is a parameter to adjust minimum sequence identity for the searches. Default value is set to 0.3.
 
-### Profile databases
+`--no-run-clust` performs annotation without clustering. All the input sequences will undergo similarity searches.
 
-Sequence profiles contain linear probabilities for each aminoacid at every position of the set. There is an internal MMseqs2 profile DB format. `annotate` module of transannot implements sequence-profile search, that is why profile databases must be provided as a input target.
+<!-- ### Profile databases
+
+Sequence profiles contain linear probabilities for each aminoacid at every position of the set. There is an internal MMseqs2 profile DB format. `annotate` module of transannot implements sequence-profile search, that is why profile databases must be provided as a input target. -->
 
 <!-- ### Contamination
 
