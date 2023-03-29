@@ -71,6 +71,7 @@ jobs:
         displayName: Build TransAnnot
       - script: |
           cd ${BUILD_SOURCESDIRECTORY}
+          chmod +x ./util/run_regression.sh
           ./util/run_regression.sh ./build/src/transannot examples EVAL
         displayName: Run Regression Suite
         condition: eq(variables['regression'], 1)
