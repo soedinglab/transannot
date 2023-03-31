@@ -118,3 +118,9 @@ Contamination module checks for the contamination in the transcriptomic data. It
     transannot contamination <Input.fasta> <targetDB> <outPath> <tmp> [options]
  
 You can find the report of taxonomy assignments in `outPath` folder. -->
+
+#### Output
+
+Outut is a tab-separated `.tsv` file containing following columns:
+
+    queryID targetID description E-value sequenceIdentity bitScore typeOfSearch nameOfDatabase 
