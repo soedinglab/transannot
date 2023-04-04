@@ -6,8 +6,8 @@ const int NO_CITATION = 0;
 const char* binary_name = "transannot";
 const char* tool_name = "TransAnnot";
 const char* tool_introduction =
-"TransAnnot: An annotation pipeline that predicts functions of de novo assembled transcripts based on homology search using MMSeqs2";
-const char* main_author = "";
+"TransAnnot - a fast and all-in-one transcriptome annotation pipeline";
+const char* main_author = "Mariia Zelenskaia <mariia.zelenskaia@mpinat.mpg.de>";
 const char* show_extended_help = "1";
 const char* show_bash_info = NULL;
 extern const char* MMSEQS_CURRENT_INDEX_VERSION;
