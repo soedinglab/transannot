@@ -1,6 +1,7 @@
 #include "LocalCommandDeclarations.h"
 #include "LocalParameters.h"
 #include "DownloadDatabase.h"
+#include "Prefiltering.h"
 
 const int NO_CITATION = 0;
 const char* binary_name = "transannot";
@@ -16,6 +17,7 @@ bool hide_base_commands = true;
 bool hide_base_downloads = false;
 void (*validatorUpdate)(void) = 0;
 std::vector<DatabaseDownload> externalDownloads = {};
+std::vector<KmerThreshold> externalThreshold = {};
 
 LocalParameters& localPar = LocalParameters::getLocalInstance();
 
