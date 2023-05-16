@@ -84,7 +84,7 @@ jobs:
   - job: build_ubuntu_cross_2004
     displayName: Ubuntu 2004 Cross-Compile
     pool:
-      vmImage: 'Ubuntu-20.04'
+      vmImage: 'Ubuntu-latest'
     strategy:
       matrix:
         power8:
