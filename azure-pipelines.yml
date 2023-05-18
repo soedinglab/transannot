@@ -7,10 +7,10 @@ variables:
     regression: 1
 
 jobs:
-  - job: build_ubuntu_1804
-    displayName: Ubuntu 1804
+  - job: build_ubuntu_userguide
+    displayName: Ubuntu Userguide
     pool:
-      vmImage: 'Ubuntu-18.04'
+      vmImage: 'Ubuntu-20.04'
     timeoutInMinutes: 120
     strategy:
       matrix:
@@ -81,10 +81,10 @@ jobs:
           targetPath: $(Build.SourcesDirectory)/build/src/transannot
           artifactName: transannot-linux-$(SIMD)
 
-  - job: build_ubuntu_cross_2004
-    displayName: Ubuntu 2004 Cross-Compile
+  - job: build_ubuntu_cross
+    displayName: Ubuntu Cross-Compile
     pool:
-      vmImage: 'Ubuntu-latest'
+      vmImage: 'Ubuntu-20.04'
     strategy:
       matrix:
         power8:
@@ -130,10 +130,10 @@ jobs:
           targetPath: $(Build.SourcesDirectory)/build/src/transannot
           artifactName: transannot-linux-$(SIMD)
   
-  - job: build_macos_1015
-    displayName: macOS 1015
+  - job: build_macos
+    displayName: macOS
     pool:
-      vmImage: 'macos-10.15'
+      vmImage: 'macos-11'
     steps:
       - checkout: self
       - script: |
@@ -153,6 +153,61 @@ jobs:
         inputs:
           targetPath: $(Build.SourcesDirectory)/build/transannot
           artifactName: transannot-darwin-universal
+
+- job: build_windows
+    displayName: Windows
+    pool:
+      vmImage: 'windows-2019'
+    variables:
+      CYGWIN_ROOT: $(System.Workfolder)\cygwin
+      CYGWIN_MIRROR: http://cygwin.mirror.constant.com
+    timeoutInMinutes: 120
+    steps:
+      - powershell: git config --global core.autocrlf false
+        displayName: core.autocrlf false
+      - checkout: self
+        submodules: true
+      - script: |
+          rmdir /s /q C:\Strawberry
+        displayName: Remove Strawberry Perl (Conflict with Cygwin)
+      - script: |
+          choco install cygwin --params="/InstallDir:%CYGWIN_ROOT%"
+        displayName: Install Cygwin
+      - script: |
+          %CYGWIN_ROOT%\cygwinsetup.exe -qnNdO -R "%CYGWIN_ROOT%" -s "%CYGWIN_MIRROR%" -g -P ^
+          bash,^
+          xxd,^
+          cmake,^
+          make,^
+          gcc-core,^
+          gcc-g++,^
+          zlib-devel,^
+          libbz2-devel,^
+          busybox-standalone,^
+          git,^
+          binutils,^
+          wget
+        displayName: Install Dependencies
+      - script: |
+          %CYGWIN_ROOT%\bin\bash.exe -cl "${BUILD_SOURCESDIRECTORY}/util/build_windows.sh $(cygpath ${BUILD_SOURCESDIRECTORY}) $(cygpath ${BUILD_SOURCESDIRECTORY}/build)"
+        displayName: Build TransAnnot
+      - task: "ArchiveFiles@2"
+        inputs:
+          rootFolderOrFile: $(Build.SourcesDirectory)\build\transannot
+          archiveFile: $(Build.SourcesDirectory)\transannot-win64.zip
+          includeRootFolder: true
+          archiveType: zip
+      - task: PublishPipelineArtifact@0
+        inputs:
+          targetPath: $(Build.SourcesDirectory)\transannot-win64.zip
+          artifactName: transannot-win64
+      # - script: |
+      #     %BUILD_SOURCESDIRECTORY%\build\transannot\transannot.bat version
+      #   displayName: Setup Busybox
+      - script: |
+          %CYGWIN_ROOT%\bin\bash.exe -cl "${BUILD_SOURCESDIRECTORY}/util/regression/run_regression.sh $(cygpath ${BUILD_SOURCESDIRECTORY}/build/build_sse41/src/transannot.exe) $(cygpath ${BUILD_SOURCESDIRECTORY}/regression)"
+        displayName: Run Regression Suite
+        condition: eq(variables['regression'], 1)
 
   - job: upload_artifacts
     displayName: Upload Artifacts
