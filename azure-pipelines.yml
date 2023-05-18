@@ -136,17 +136,13 @@ jobs:
       vmImage: 'macos-11'
     steps:
       - checkout: self
-      - script: |
-          sudo xcode-select -s "/Applications/Xcode_12.2.app"
-        displayName: Use Xcode 12.2
+        submodules: true
       - script: |
           cd ${BUILD_SOURCESDIRECTORY}
-          ./lib/mmseqs/util/build_osx.sh . build transannot
+          ./util/build_osx.sh . build
         displayName: Build TransAnnot
       - script: |
-          cd ${BUILD_SOURCESDIRECTORY}
-          chmod +rwx ./util/run_regression.sh
-          ./util/run_regression.sh ./build/transannot examples EVAL
+          ${BUILD_SOURCESDIRECTORY}/util/regression/run_regression.sh ${BUILD_SOURCESDIRECTORY}/build/transannot ${BUILD_SOURCESDIRECTORY}/regression
         displayName: Run Regression Suite
         condition: eq(variables['regression'], 1)
       - task: PublishPipelineArtifact@0
