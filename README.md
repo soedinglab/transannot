@@ -65,7 +65,9 @@ Possible inputs are:
 * `downloaddb`          downloads databases that serve as a search space for homology detection
 * `easytransannot`      easy module for a quick start, performs assembly, downloads DB and executes annotation
 
-### PLASS assembly
+### (PLASS) Assembly
+
+PLASS is a default assembler, which is used in the `easytransannot` module as well. However, we recommend assembly with [Trinity](https://github.com/trinityrnaseq/trinityrnaseq/wiki) since Trinity provides more reliable assemblies compared to PLASS. If assembly was performed using Trinity, proceed with `createquerydb` and further annotation. 
 
 Before running this step PLASS must be installed, detailed information about installation can be found [here](https://github.com/soedinglab/plass#install-plass). Please make sure PLASS is located in the current working directory.
 
@@ -106,18 +108,6 @@ When no tag is used, standard output will be provided.
 `--min-seq-id` is a parameter to adjust minimum sequence identity for the searches. Default value is set to 0.3.
 
 `--no-run-clust` performs annotation without clustering. All the input sequences will undergo similarity searches.
-
-<!-- ### Profile databases
-
-Sequence profiles contain linear probabilities for each aminoacid at every position of the set. There is an internal MMseqs2 profile DB format. `annotate` module of transannot implements sequence-profile search, that is why profile databases must be provided as a input target. -->
-
-<!-- ### Contamination
-
-Contamination module checks for the contamination in the transcriptomic data. It uses MMseqs2 _easy-taxonomy_ module.
-
-    transannot contamination <Input.fasta> <targetDB> <outPath> <tmp> [options]
- 
-You can find the report of taxonomy assignments in `outPath` folder. -->
 
 #### Output
 
