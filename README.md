@@ -1,4 +1,4 @@
-# TransAnnot: fast and all-in-one transcriptome annotation
+# TransAnnot: a fast transcriptome annotation pipeline
 TransAnnot is a toolkit designed to predict protein functions, identify orthologous relationships, and decipher biological pathways for newly sequenced transcriptomes. Utilizing [MMseqs2's](https://mmseqs.com) fast sequence-sequence and sequence-profile search, it identifies the closest homologs from reference databases to infer essential details such as protein function, structure, and orthologous groups.
 
 Optionally, TransAnnot can use [Plass](https://github.com/soedinglab/plass) for transcriptome assembly, enabling de novo assembly of raw sequence reads at the protein level.
@@ -29,7 +29,9 @@ Other dependencies for the compilation from source are `zlib` and `bzip`.
 
 ## Workflow dependencies
 
-- Plass - should be installed separately, see [corresponding repository](https://github.com/soedinglab/plass). To perform *de novo* assembly, it is required to install Plass to the current working directory.
+- Plass - should be installed separately, see [corresponding repository](https://github.com/soedinglab/plass). To perform *de novo* assembly, it is required to install Plass to the current working directory. Standard usage is running on the results of a nucleotide assembler such as `Trinity`.  PLASS requires read lengths of at least 100 nt, so for shorter reads, a nucleotide assembler has to be used. 
+
+- Genome assembly is a dynamic field, so the software is being continously updated. That is why no external assemblers (e.g Trinity) are included in the TransAnnot release package. One can install them separately on demand.
 
 ## Before starting
 

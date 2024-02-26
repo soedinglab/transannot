@@ -9,4 +9,5 @@ extern int annotate(int argc, const char **argv, const Command& command);
 extern int downloaddb(int argc, const char **argv, const Command& command);
 extern int createquerydb(int argc, const char **argv, const Command& command);
 extern int easytransannot(int argc, const char **argv, const Command& command);
+extern int annotatecustom(int argc, const char **argv, const Command& command);
 #endif

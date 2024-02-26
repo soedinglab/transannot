@@ -7,7 +7,7 @@ const int NO_CITATION = 0;
 const char* binary_name = "transannot";
 const char* tool_name = "TransAnnot";
 const char* tool_introduction =
-"TransAnnot - a fast and all-in-one transcriptome annotation pipeline";
+"TransAnnot - a fast transcriptome annotation pipeline";
 const char* main_author = "Mariia Zelenskaia <mariia.zelenskaia@mpinat.mpg.de>";
 const char* show_extended_help = "1";
 const char* show_bash_info = NULL;
@@ -89,7 +89,17 @@ std::vector<struct Command> commands = {
             "<i:fast[a|q]File> <o:sequenceDB> <tmpDir>",
             NO_CITATION, {{"fast[a|q]File", DbType::ACCESS_MODE_INPUT, DbType::NEED_DATA, &DbValidator::flatfile},
                         {"sequenceDB", DbType::ACCESS_MODE_OUTPUT, DbType::NEED_DATA, &DbValidator::sequenceDb},
-                        {"tmpDir", DbType::ACCESS_MODE_OUTPUT, DbType::NEED_DATA, &DbValidator::directory}}}
+                        {"tmpDir", DbType::ACCESS_MODE_OUTPUT, DbType::NEED_DATA, &DbValidator::directory}}},
+
+   {"annotatecustom", annotatecustom, &localPar.annotatecustom, COMMAND_MAIN,
+            "Annotate using a custom, user-provided DB",
+            "Provided custom DB will be converted into the MMseqs format which is followed by a search.",
+            "Mariia Zelenskaia mariia.zelenskaia@mpinat.mpg.de",
+            "<i:queryDB> <i:customDB> <o:outFile> <tmpdir>"
+            NO_CITATION, {{"queryDB", DbType::ACCESS_MODE_INPUT, DbType::NEED_DATA, &DbValidator::sequenceDb},
+                        {"customDB", DbType::ACCESS_MODE_INPUT, DbType::NEED_DATA, &DbValidator::flatfile},
+                        {"outFile", DbType::ACCESS_MODE_OUTPUT, DbType::NEED_DATA, &DbValidator::flatfile},
+                        {"tmpDir", DbType::ACCESS_MODE_OUTPUT, DbType::NEED_DATA, &DbValidator::directory}}
 
 
 //     {"contamination",   contamination, &localPar.contaminationworkflow, COMMAND_EXPERT,
@@ -101,4 +111,4 @@ std::vector<struct Command> commands = {
 //                         {"targetDB", DbType::ACCESS_MODE_INPUT, DbType::NEED_DATA|DbType::NEED_HEADER|DbType::NEED_TAXONOMY, &DbValidator::taxSequenceDb},
 //                         {"taxReports", DbType::ACCESS_MODE_OUTPUT, DbType::NEED_DATA, &DbValidator::flatfile},
 //                         {"tmpDir", DbType::ACCESS_MODE_OUTPUT, DbType::NEED_DATA, &DbValidator::directory}}}
-};
+}};

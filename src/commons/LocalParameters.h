@@ -23,6 +23,7 @@ public:
     std::vector<MMseqsParameter*> createquerydb;
     // std::vector<MMseqsParameter*> annotateprofiles;
     std::vector<MMseqsParameter*> easytransannot;
+    std::vector<MMseqsParameter*> annotatecustom;
 
     // annotate
     PARAMETER(PARAM_OUTPUT_SIMPLE)
@@ -83,6 +84,8 @@ private:
         easytransannot = combineList(assemblereads, annotateworkflow);
         easytransannot = combineList(easytransannot, downloaddb);
         easytransannot = combineList(easytransannot, createquerydb);
+
+        annotatecustom = combineList(createquerydb, annotateworkflow);
 
         // default values
         // infoSelect = 6;

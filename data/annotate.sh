@@ -69,7 +69,7 @@ hasCommand wget
 [ "$("${MMSEQS}" dbtype "$4")" = "Profile" ] && echo "The given target database is profile! Please provide sequence DB!" && exit 1;
 
 #checking whether files already exist
-[ ! -f "$1.dbtype" ] && echo "$1.dbtype not found! please make sure that MMseqs db is already created." && exit 1;
+[ ! -f "$1.dbtype" ] && echo "$1.dbtype not found! please make sure that MMseqs db has already been created." && exit 1;
 [ ! -f "$2.dbtype" ] && echo "$2.dbtype not found!" && exit 1;
 [ ! -f "$3.dbtype" ] && echo "$3.dbtype not found!" && exit 1;
 [ ! -f "$4.dbtype" ] && echo "$4.dbtype not found!" && exit 1;

@@ -6,6 +6,7 @@ set(COMPILED_RESOURCES
     assemblereads.sh
     createquerydb.sh
     easytransannot.sh
+    annotatecustom.sh
     )
 
 set(GENERATED_OUTPUT_HEADERS "")

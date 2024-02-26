@@ -4,5 +4,6 @@ set(workflow_source_files
         workflow/assemblereads.cpp
         workflow/createquerydb.cpp
         workflow/easytransannot.cpp
+        workflow/annotatecustom.cpp
         PARENT_SCOPE
         )
