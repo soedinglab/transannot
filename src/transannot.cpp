@@ -95,11 +95,11 @@ std::vector<struct Command> commands = {
             "Annotate using a custom, user-provided DB",
             "Provided custom DB will be converted into the MMseqs format which is followed by a search.",
             "Mariia Zelenskaia mariia.zelenskaia@mpinat.mpg.de",
-            "<i:queryDB> <i:customDB> <o:outFile> <tmpdir>"
+            "<i:queryDB> <i:customDB> <o:outFile> <tmpdir>",
             NO_CITATION, {{"queryDB", DbType::ACCESS_MODE_INPUT, DbType::NEED_DATA, &DbValidator::sequenceDb},
                         {"customDB", DbType::ACCESS_MODE_INPUT, DbType::NEED_DATA, &DbValidator::flatfile},
                         {"outFile", DbType::ACCESS_MODE_OUTPUT, DbType::NEED_DATA, &DbValidator::flatfile},
-                        {"tmpDir", DbType::ACCESS_MODE_OUTPUT, DbType::NEED_DATA, &DbValidator::directory}}
+                        {"tmpDir", DbType::ACCESS_MODE_OUTPUT, DbType::NEED_DATA, &DbValidator::directory}}}
 
 
 //     {"contamination",   contamination, &localPar.contaminationworkflow, COMMAND_EXPERT,
@@ -111,4 +111,4 @@ std::vector<struct Command> commands = {
 //                         {"targetDB", DbType::ACCESS_MODE_INPUT, DbType::NEED_DATA|DbType::NEED_HEADER|DbType::NEED_TAXONOMY, &DbValidator::taxSequenceDb},
 //                         {"taxReports", DbType::ACCESS_MODE_OUTPUT, DbType::NEED_DATA, &DbValidator::flatfile},
 //                         {"tmpDir", DbType::ACCESS_MODE_OUTPUT, DbType::NEED_DATA, &DbValidator::directory}}}
-}};
+};
