@@ -37,7 +37,7 @@ TMP_PATH="$(abspath "$3")"
 if notExists "${OUT_DB}.dbtype"; then
     if notExists "${INPUT}.dbtype"; then
         #shellcheck disable=SC2086
-        "${MMSEQS}" createdb "${INPUT}" "${OUT_DB}" --remove-tmp-files \
+        "${MMSEQS}" createdb "${INPUT}" "${OUT_DB}" \
             || fail "createdb died"
     else #if db is already created
         echo "mmseqsDB is already created. Copying to the outDb!"

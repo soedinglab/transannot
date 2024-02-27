@@ -35,7 +35,7 @@ TMP_PATH="$3"
 
 if notExists "${OUTDB}.dbtype"; then
     #shellcheck disable=SC2086
-    "$MMSEQS" databases "${SELECTION}" "${OUTDB}" "${TMP_PATH}" ${THREADS_PAR} \
+    "$MMSEQS" databases "${SELECTION}" "${OUTDB}" "${TMP_PATH}" ${THREADS_PAR} --remove-tmp-files \
         || fail "download database died"
 fi
 
