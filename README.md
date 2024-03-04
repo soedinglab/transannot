@@ -101,6 +101,11 @@ To run annotate module of transannot execute the following command:
 
     transannot annotate <assembledQueryDB> <path to Pfam profileTargetDB> <path to eggNOG profileTargetDB> <path to SwissProt sequenceTargetDB> <o:resTsvFile> <tmp> [options]
 
+If one is interested in annotation against an user-defined database, `annotatecustom` provides such an opportunity. To run custom annotate module execute the following command:
+
+    transannot annotatecustom <assembledQueryDB> <user-defined DB>
+User-provided database will be converted to the MMseqs2 format within the module, but it is also possible to initially provide a MMseqs2-formatted database. Limitation is that unless ID descriptors are included in the database, no mapping can be performed and no group descriptors will be retreived.
+
 #### Important options of the annotate module
 
 `--simple-output` parameter allows user to obtain simplified output, which only includes query and target IDs, header of the target database and E-value. Whereas standard output also contains sequence identity and bit score for each target sequence. Usage: 

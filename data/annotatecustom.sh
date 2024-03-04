@@ -78,6 +78,8 @@ if notExists "$2.dbtype"; then
     #shellcheck disable=SC2086
     "$MMSEQS" createdb "$2" "${TARGET}" ${CREATEDB_PAR} \
         || fail "createdb died"
+else
+	TARGET="$2"
 fi
 
 #MMSEQS2 LINCLUST for the input DB redundancy reduction
