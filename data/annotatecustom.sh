@@ -115,7 +115,7 @@ fi
 if notExists "${RESULTS}.dbtype"; then
     echo "Running MMseqs2 search"
     #shellcheck disable=SC2086
-    "$MMSEQS" search "${TMP_PATH}/clu_rep" "${TARGET}" "${TMP_PATH}/search_not_proc" ${SEARCH_PAR} \
+    "$MMSEQS" search "${TMP_PATH}/clu_rep" "${TARGET}" "${TMP_PATH}/search_not_proc" "${TMP_PATH}/tmp_search" ${SEARCH_PAR} \
         || fail "MMseqs2 search died"
 fi
 
@@ -140,6 +140,6 @@ if [ -n "${REMOVE_TMP}" ]; then
 	"$MMSEQS" rmdb "${TMP_PATH}/search_not_proc" ${VERBOSITY_PAR}
 	#shellcheck disable=SC2086
 	"$MMSEQS" rmdb "${TMP_PATH}/search_not_proc_filt" ${VERBOSITY_PAR}
-    
+
 	rm -f "${TMP_PATH}/annotate.sh"
 fi
