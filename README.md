@@ -62,7 +62,7 @@ TransAnnot accepts input files from single-organism transcriptomes as well as me
 <!-- After running thhe search UniProt IDs will be retrieved to get more detailed information about the provided transcriptome.  -->
 <!-- (It finds homologs for assembled contigs in the custom defined protein seqeunce database (default UniProtKB) using reciprocal-best hits (rbh module) search from MMseqs2 suite if taxonomy ID `--taxid` is provided, or MMseqs2 search if no taxonomy ID is supplied. After runing the search Gene Ontology ID will be obtained from UniProt.) -->
 <!-- * `contamination`       It checks contaminated contigs using _easy-taxonomy_ module from MMseqs2 suite. This approach uses taxonomy assignments of every contig to identify contamination -->
-* `easytransannot`      an easy one-line command module for the complete transannot workflow, starting from input assembly, download reference databases to output of sequence annotation.
+* `easytransannot`      an easy one-line command module for the complete transannot workflow, starting from input assembly, download reference databases to output of sequence annotations.
 
 ### assemblereads
 
