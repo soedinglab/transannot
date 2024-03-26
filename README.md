@@ -1,7 +1,7 @@
 # TransAnnot: a fast transcriptome annotation pipeline
 TransAnnot is a toolkit designed to predict protein functions, identify orthologous relationships, and decipher biological pathways for newly sequenced transcriptomes. Utilizing [MMseqs2's](https://mmseqs.com) fast sequence-sequence and sequence-profile search, it identifies the closest homologs from reference databases to infer essential details such as protein function, structure, and orthologous groups.
 
-Optionally, TransAnnot can use [Plass](https://github.com/soedinglab/plass) for transcriptome assembly, enabling de novo assembly of raw sequence reads at the protein level.
+Optionally, TransAnnot can use [Plass](https://github.com/soedinglab/plass) for transcriptome assembly, enabling *de novo* assembly of raw sequence reads at the protein level.
 
 TransAnnot is a free and open source (GPLv3), modular toolkit developed in C++.
 
@@ -17,7 +17,7 @@ Compiling TransAnnot from source allows for system-specific optimization. For th
     cmake -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX=. ..
     make -j 4
     make install
-    export PATH=$(pwd)/transannot/bin/:$PATH
+    export PATH=$(pwd)/bin/:$PATH
 
 ❗️ If you compile from source under macOS we recommend to install and use `gcc` instead of `clang` as a compiler. `gcc` can be installed with Homebrew. Force `cmake` to use `gcc` as a compiler by running:
 
@@ -29,31 +29,26 @@ Other dependencies for the compilation from source are `zlib` and `bzip`.
 
 ## Workflow dependencies
 
-- Plass - should be installed separately, see [corresponding repository](https://github.com/soedinglab/plass). To perform *de novo* assembly, it is required to install Plass to the current working directory. Standard usage is running on the results of a nucleotide assembler such as `Trinity`.  PLASS requires read lengths of at least 100 nt, so for shorter reads, a nucleotide assembler has to be used. 
+- Plass - should be installed separately in the current working directory, see [corresponding repository](https://github.com/soedinglab/plass), to perform *de novo* assembly.
 
-- Genome assembly is a dynamic field, so the software is being continously updated. That is why no external assemblers (e.g Trinity) are included in the TransAnnot release package. One can install them separately on demand.
-
-## Before starting
-
-### tmp folder
-
-`tmp` folder keeps temporary files. By default, all the intermediate output files from different modules will be kept in this folder. To clear `tmp` pass `--remove-tmp-files` parameter.
+<!-- Since genome assembly is a dynamic field and corresponding software are being constantly updated, we prefer not to integrate external genome assemblers (e.g Trinity) into the TransAnnot package. One can install them separately on demand. -->
 
 ## Quick start
 
-The quickest way to run TransAnnot is using the `easy` workflow:
+The quickest way to run TransAnnot is using the `easytransannot` module:
 
     transannot easytransannot <inputReads.fastq> Pfam-A.full eggNOG UniProtKB/Swiss-Prot <resDB> <tmp> [options]
 
-If (one of the) target databases are already downloaded in MMseqs2 format, directly provide the path to them, otherwise simply specify their names, and the databases will be downloaded automatically.
+If (one of the) target databases are already downloaded in MMseqs2 format, directly provide the path to them, otherwise simply specify their names, and the databases will be downloaded automatically. `easytransannot` uses Plass assembler, for more details check the descriptions for `assemblereads` module below.
 
 ## Input
 
 Possible inputs are:
 
-* assembled transcriptomes (aobtained e.g. using Trinity) or raw transcriptome reads, which will be de novo assembled on the protein level using `plass`
-* metatranscriptomes
-* single-organism transcriptomes
+* translated sequences of assembled transcriptomes (obtained e.g. using Trinity followed by TransDecoder)
+* raw transcriptome reads in fastq format, which will be *de novo* assembled by `plass` at the protein level
+
+TransAnnot accepts input files from single-organism transcriptomes as well as metatranscriptomes.
 <!-- in such case it is possible to check for the contamination with `contamination` module, which is based on MMseqs2 taxonomy workflow -->
 
 ## Running
@@ -61,27 +56,36 @@ Possible inputs are:
 ### Modules
 
 * `assemblereads`            *de novo* assembles raw sequencing reads to large genomic fragments (contigs).
-* `annotate`            clusters given input for the reduction of redundancy and runs sequnce-profile and sequence-sequence searches to obtain the closest homologs with annotated function. It also retrieves descriptions of orthologous groups and protein families throgh mapping. 
+* `createquerydb`            creates a database in a memory-efficient MMSeqs2 format for the query input sequence.
+* `downloaddb`          downloads reference databases in MMSeqs2 format on which annotations for query sequences will be searched.
+* `annotate`            performs clustering on input seqeuences to reduce redundancy and runs sequnce-profile and sequence-sequence searches for the reference query sequences to obtain the closest homologs with annotated function. In addition, it maps descriptions of orthologous groups and protein families to the query sequences. 
 <!-- After running thhe search UniProt IDs will be retrieved to get more detailed information about the provided transcriptome.  -->
 <!-- (It finds homologs for assembled contigs in the custom defined protein seqeunce database (default UniProtKB) using reciprocal-best hits (rbh module) search from MMseqs2 suite if taxonomy ID `--taxid` is provided, or MMseqs2 search if no taxonomy ID is supplied. After runing the search Gene Ontology ID will be obtained from UniProt.) -->
 <!-- * `contamination`       It checks contaminated contigs using _easy-taxonomy_ module from MMseqs2 suite. This approach uses taxonomy assignments of every contig to identify contamination -->
-* `createquerydb`            creates a database from the sequence space (obtained from `downloaddb` module) in a memory-efficient MMSeqs2 format.
-* `downloaddb`          downloads databases that serve as a search space for homology detection
-* `easytransannot`      easy module for a quick start, performs assembly, downloads DB and executes annotation
+* `easytransannot`      an easy one-line command module for the complete transannot workflow, starting from input assembly, download reference databases to output of sequence annotation.
 
-### (Plass) Assembly
+### assemblereads
 
-Plass is the default assembler, which is used in the `easytransannot` workflow as well. However, we recommend assembly with [Trinity](https://github.com/trinityrnaseq/trinityrnaseq/wiki) since Trinity provides more reliable assemblies compared to Plass. If assembly was performed using Trinity, proceed with `createquerydb` and further annotation. 
+This module uses Plass to assemble input read sequences and obtain translated protein sequences. Plass requires read length of at least 100nt, therefore `assemblereads` or `easytransannot` module is applicable only for input reads of length $\ge$ 100nt. To run, Plass must be installed and located in the *current working directory*. The detailed information about installation can be found [here](https://github.com/soedinglab/plass#install-plass).
 
-Before running this step Plass must be installed, detailed information about installation can be found [here](https://github.com/soedinglab/plass#install-plass). Please make sure PLASS is located in the current working directory.
-
-In this step, reads will be assembled with Plass and afterwards a MMseqs2 database will be created, you may skip this step if the transcriptome is already assembled. Usage:
+In this step, reads will be assembled with Plass and afterwards a MMseqs2 database will be created, you may skip this step if the transcriptome is already assembled and translated. Usage:
 
     transannot assemblereads <inputReads.fastq[.gz|bz]> ... <inputReads.fastq[.gz|bz]> <o: fastaFile with assembly> <o: seqDB> <tmp> [options]
 
-### Dowloading databases
+Since Plass has not been benchmarked for transcriptome assembly, for standard usage, we recommend using nucleotide assembler such as [Trinity] (https://github.com/trinityrnaseq/trinityrnaseq/wiki) followed by protein translator (e.g TransDecoder) (https://github.com/TransDecoder/TransDecoder/wiki) before running TransAnnot for sequence annotation. If input query sequence obtained from external tools, just proceed directly with `createquerydb` module. 
 
-In this step, sequence databases for homology searches will be downloaded.
+### createquerydb
+This module creates a database for input query sequence in memory-efficient MMSeqs2 format.
+
+To create query database, execute the following command:
+
+    transannot createquerydb <inputFastaFile> <sequenceDB> <tmpDir> [options]
+
+If input fasta file is obtained from external tools without using `assemblereads` module, this `createquerydb` module must be used. Otherwise, `assemblereads` module already provides query sequence database in MMSeqs2 format and hence this step can be skipped. 
+
+### downloaddb
+
+This module downloads sequence databases for homology searches.
    
 To see detailed information about databases, please use the following command:
 
@@ -89,26 +93,27 @@ To see detailed information about databases, please use the following command:
 
 and execute the below command to download the databases (Ensure the same keyword as given in `mmseqs database -h`):
 
-    transannot downloaddb <selection> <outDB> <tmp> [options]
+    transannot downloaddb <selection> <outDB> <tmp> [options]  
 
-Hence, `transannot` runs 3 searches in `annotate` module, this step should be repeated 3 times. For the annotation module `Pfam-A.full`, `eggNOG` (profile database) and `UniProtKB/SwissProt` (sequence database) are standard, so please download them using this module, for more information also check [MMseqs2 user guide](https://github.com/soedinglab/MMseqs2/wiki#downloading-databases).
+By default, `transannot` runs 3 searches in subsequent `annotate` module against the following databases: (i) `Pfam-A.full` (profile database), (ii) `eggNOG` (profile database) and (iii) `UniProtKB/SwissProt` (sequence database). Hence, use the above command seperately for each database to download them, for more information check [MMseqs2 user guide](https://github.com/soedinglab/MMseqs2/wiki#downloading-databases).
 
-### Annotate workflow
+### annotate
 
-In the `annotate` module representative sequences will be extracted and used as search input to remove redundancy. 3 searches (one sequence-sequence and two seqeuce-profile) will be performed.
+This module extracts representative sequences from query database using clustering (redundancy-free set) and uses them as search input for 3 transcriptome annotation searches (one sequence-sequence and two seqeuce-profile).
 
-To run annotate module of transannot execute the following command:
+To run annotate module, execute the following command:
 
     transannot annotate <assembledQueryDB> <path to Pfam profileTargetDB> <path to eggNOG profileTargetDB> <path to SwissProt sequenceTargetDB> <o:resTsvFile> <tmp> [options]
 
-If one is interested in annotation against an user-defined database, `annotatecustom` provides such an opportunity. To run custom annotate module execute the following command:
+#### Output
 
-    transannot annotatecustom <assembledQueryDB> <user-defined DB>
-User-provided database will be converted to the MMseqs2 format within the module, but it is also possible to initially provide a MMseqs2-formatted database. Limitation is that unless ID descriptors are included in the database, no mapping can be performed and no group descriptors will be retreived.
+Outut is a tab-separated `.tsv` file containing the following columns:
+
+    queryID targetID description E-value sequenceIdentity bitScore typeOfSearch nameOfDatabase 
 
 #### Important options of the annotate module
 
-`--simple-output` parameter allows user to obtain simplified output, which only includes query and target IDs, header of the target database and E-value. Whereas standard output also contains sequence identity and bit score for each target sequence. Usage: 
+`--simple-output` parameter allows users to obtain simplified output for each query sequence, which only includes query and target IDs, header of the target database and E-value. Whereas standard output contains sequence identity and bit score in addition to details provided in the `--simple-output`. Usage: 
     
     transannot annotate $1 $2 $3 $4 $5 $6 --simple-output 
 
@@ -116,10 +121,15 @@ When no tag is used, standard output will be provided.
 
 `--min-seq-id` is a parameter to adjust minimum sequence identity for the searches. Default value is set to 0.3.
 
-`--no-run-clust` performs annotation without clustering. All the input sequences will undergo similarity searches.
+`--no-run-clust` performs annotation without clustering. All the input query sequences will undergo annotation searches.
 
-#### Output
+#### Use of custom database for annotation
+If one is interested in annotation against an user-defined database, `annotatecustom` module provides such an opportunity. To run custom annotate module execute the following command:
 
-Outut is a tab-separated `.tsv` file containing following columns:
+    transannot annotatecustom <assembledQueryDB> <user-defined DB>
 
-    queryID targetID description E-value sequenceIdentity bitScore typeOfSearch nameOfDatabase 
+User-provided database will be converted to the MMseqs2 format within the module, but it is also possible to initially provide a MMseqs2-formatted database. Limitation is that unless ID descriptors are included in the database, no mapping can be performed and no group descriptors will be retrieved.
+
+#### tmp folder
+
+`tmp` folder keeps temporary files. By default, all the intermediate output files from different modules will be kept in this folder. To clear `tmp` pass `--remove-tmp-files` parameter [bool], applicable for all modules except `createquerydb` and `downloaddb`.
