@@ -127,7 +127,7 @@ if [ -n "${SIMPLE_OUTPUT}" ]; then
     convertalis_simple "${TARGET}" "${TMP_PATH}/search_not_proc_filt" "${RESULTS}.tsv"
 else
     echo "Standard output will be provided"
-    convertalis "${TARGET}" "${TMP_PATH}/search_not_proc_filt" "${RESULTS}.tsv"
+    convertalis_standard "${TARGET}" "${TMP_PATH}/search_not_proc_filt" "${RESULTS}.tsv"
 fi
 
 #remove temporary files and directories
