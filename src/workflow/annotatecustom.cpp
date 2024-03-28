@@ -22,7 +22,11 @@ int annotatecustom(int argc, const char **argv, const Command& command) {
     CommandCaller cmd;
     cmd.addVariable("REMOVE_TMP", par.removeTmpFiles ? "TRUE" : NULL);
     cmd.addVariable("VERBOSITY", par.createParameterString(par.onlyverbosity).c_str());
+    cmd.addVariable("RESULT2REPSEQ_PAR", par.createParameterString(par.result2repseq).c_str());
+    cmd.addVariable("CREATETSV_PAR", par.createParameterString(par.createtsv).c_str());
     cmd.addVariable("THREADS_PAR", par.createParameterString(par.onlythreads).c_str());
+    cmd.addVariable("SIMPLE_OUTPUT", par.simpleOutput ? "TRUE" : NULL);
+    cmd.addVariable("NO_LINCLUST", par.noPerformClust ? "TRUE" : NULL);
 
     std::string program = tmpDir + "/annotatecustom.sh";
     FileUtil::writeFile(program, annotatecustom_sh, annotatecustom_sh_len);
