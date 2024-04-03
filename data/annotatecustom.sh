@@ -74,10 +74,13 @@ TMP_PATH="$4"
 
 #convert user-provided DBs into MMseqs DBs
 if notExists "$2.dbtype"; then
-    echo "converting user-defined DB into MMseqs2 format."
-    #shellcheck disable=SC2086
-    "$MMSEQS" createdb "$2" "${TARGET}" ${CREATEDB_PAR} \
-        || fail "createdb died"
+	if notExists "$2"_db.dbtype; then
+		echo "converting user-defined DB into MMseqs2 format."
+		#shellcheck disable=SC2086
+		"$MMSEQS" createdb "$2" "$2"_db ${CREATEDB_PAR} \
+			|| fail "createdb died"
+	fi
+	TARGET="$2"_db
 else
 	TARGET="$2"
 fi
