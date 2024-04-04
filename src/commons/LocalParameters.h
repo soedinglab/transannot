@@ -43,7 +43,7 @@ private:
         Parameters(),
         // PARAM_INFORMATION_SELECTION(PARAM_INFORMATION_SELECTION_ID, "--information-selection", "Information about sequence", "What information about the input sequence should be provided, KEGG: 0, ExPASy: 1, Pfam: 2, eggNOG: 3, SCOP: 4, AlphaFold: 5, all: 6 ", typeid(int), (void *) &infoSelect, "^[0-6]{1}$"),
         // PARAM_TAXONOMYID(PARAM_TAXONOMYID_ID, "--taxid", "Taxonomy ID", "Taxonomy ID to run search against proteins from particular organism. 10-digits unique number", typeid(int), (void *) &taxId, "^[0-9]{7}$")
-        PARAM_OUTPUT_SIMPLE(PARAM_OUTPUT_SIMPLE_ID, "--simple-output", "Simplified output", "Provide only query, target IDs and information from UniProt in the output file. No information about alignment (eg. sequence identity and bit score)", typeid(bool), (void *) &simpleOutput, "", MMseqsParameter::COMMAND_COMMON | MMseqsParameter::COMMAND_EXPERT),
+        PARAM_OUTPUT_SIMPLE(PARAM_OUTPUT_SIMPLE_ID, "--simple-output", "Simplified output", "Provide only query, target IDs and information from UniProt in the output file. No information about alignment (eg. sequence identity and bit score)", typeid(bool), (void *) &simpleOutput, "", MMseqsParameter::COMMAND_COMMON),
         PARAM_NO_PERFORM_CLUST(PARAM_NO_PERFORM_CLUST_ID, "--no-run-clust", "Don't linclust for the redundancy reduction", "Per default there is linclust of mmseqs performed for the redundancy reduction. If you don't want it, provide this tag", typeid(bool), (void *) &noPerformClust, "", MMseqsParameter::COMMAND_COMMON)
     {
         assemblereads.push_back(&PARAM_CREATEDB_MODE);
