@@ -43,7 +43,7 @@ If (one of the) target databases is already downloaded in MMseqs2 format, direct
 
 ## Input
 
-Possible inputs are:
+Possible inputs can be one of the following:
 
 * translated sequences of assembled transcriptomes (obtained e.g. using Trinity followed by TransDecoder)
 * raw transcriptome reads in fastq format, which will be *de novo* assembled by `plass` at the protein level
