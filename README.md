@@ -30,7 +30,7 @@ Other dependencies for the compilation from the source are `zlib` and `bzip`.
 ## Workflow dependencies
 
 - Plass - should be installed separately in the current working directory, see [corresponding repository](https://github.com/soedinglab/plass), to perform *de novo* assembly.
-
+- Databases - Pfam, EggNOG and UniProtKB/Swiss-Prot
 <!-- Since genome assembly is a dynamic field and corresponding software are being constantly updated, we prefer not to integrate external genome assemblers (e.g. Trinity) into the TransAnnot package. One can install them separately on demand. -->
 
 ## Quick start
