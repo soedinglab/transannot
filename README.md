@@ -29,9 +29,28 @@ Other dependencies for the compilation from the source are `zlib` and `bzip`.
 
 ## Workflow dependencies
 
+<<<<<<< Updated upstream
 - Plass - should be installed separately in the current working directory, see [corresponding repository](https://github.com/soedinglab/plass), to perform *de novo* assembly.
 - Databases - Pfam, EggNOG and UniProtKB/Swiss-Prot
 <!-- Since genome assembly is a dynamic field and corresponding software are being constantly updated, we prefer not to integrate external genome assemblers (e.g. Trinity) into the TransAnnot package. One can install them separately on demand. -->
+=======
+- Plass - should be installed separately, see [corresponding repository](https://github.com/soedinglab/plass). To perform *de novo* assembly, it is required to install Plass to the current working directory. Standard usage is running on the results of a nucleotide assembler such as `Trinity`.  PLASS requires read lengths of at least 100 nt, so for shorter reads, a nucleotide assembler has to be used. 
+
+- Genome assembly is a dynamic field, so the software is being continously updated. That is why no non-inhouse assemblers (e.g Trinity) are included in the TransAnnot release package. One can install them separately on demand. Some of the tools which might be useful are:
+
+* [transdecoder](https://github.com/TransDecoder/TransDecoder) - identifies coding regions within the transcript
+* [mrna-spades]()
+* [Trinity]()
+
+
+- Another dependencies are UniProtKB/Swiss-Prot, eggNOG and Pfam databases provided in the MMseqs2 format.
+
+## Before starting
+
+### tmp folder
+
+`tmp` folder keeps temporary files. By default, all the intermediate output files from different modules will be kept in this folder. To clear `tmp` pass `--remove-tmp-files` parameter.
+>>>>>>> Stashed changes
 
 ## Quick start
 
@@ -43,6 +62,7 @@ If (one of the) target databases is already downloaded in MMseqs2 format, direct
 
 ## Input
 
+<<<<<<< Updated upstream
 Possible inputs can be one of the following:
 
 * translated sequences of assembled transcriptomes (obtained e.g. using Trinity followed by TransDecoder)
@@ -50,6 +70,14 @@ Possible inputs can be one of the following:
 
 TransAnnot accepts input files from single-organism transcriptomes as well as metatranscriptomes.
 <!-- In such case, it is possible to check for the contamination with the `contamination` module, which is based on MMseqs2 taxonomy workflow -->
+=======
+Possible inputs are assembled on the protein level:
+
+* assembled transcriptomes (obtained e.g. using Trinity) or raw transcriptome reads, which will be *de novo* assembled on the protein level using `plass`
+* metatranscriptomes
+* single-organism transcriptomes
+<!-- in such case it is possible to check for the contamination with `contamination` module, which is based on MMseqs2 taxonomy workflow -->
+>>>>>>> Stashed changes
 
 ## Running
 
