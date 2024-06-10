@@ -27,7 +27,7 @@ abspath() {
 }
 
 preprocessDb(){
-	#filter decreasing DBs by bit score and extract one best hit for each query
+	#filter decreasing DBs by bit score (and extract one best hit for each query)
 
 	#shellcheck disable=SC2086
 	"${MMSEQS}" filterdb "$1" "${TMP_PATH}/bitscorefiltDB" --comparison-operator ge --comparison-value 50 --filter-column 2 \
@@ -38,8 +38,8 @@ preprocessDb(){
 		|| fail "sort DB decreasing died"
 
 	#shellcheck disable=SC2086
-	"${MMSEQS}" filterdb "${TMP_PATH}/bitscoresortedDB" "$2" --extract-lines 1 \
-		|| fail "extract best hit died"
+	# "${MMSEQS}" filterdb "${TMP_PATH}/bitscoresortedDB" "$2" --extract-lines 1 \
+	#	|| fail "extract best hit died"
 	
 	#shellcheck disable=SC2086
 	"${MMSEQS}" rmdb "${TMP_PATH}/bitscorefiltDB" ${VERBOSITY_PAR}

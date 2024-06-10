@@ -29,11 +29,6 @@ Other dependencies for the compilation from the source are `zlib` and `bzip`.
 
 ## Workflow dependencies
 
-<<<<<<< Updated upstream
-- Plass - should be installed separately in the current working directory, see [corresponding repository](https://github.com/soedinglab/plass), to perform *de novo* assembly.
-- Databases - Pfam, EggNOG and UniProtKB/Swiss-Prot
-<!-- Since genome assembly is a dynamic field and corresponding software are being constantly updated, we prefer not to integrate external genome assemblers (e.g. Trinity) into the TransAnnot package. One can install them separately on demand. -->
-=======
 - Plass - should be installed separately, see [corresponding repository](https://github.com/soedinglab/plass). To perform *de novo* assembly, it is required to install Plass to the current working directory. Standard usage is running on the results of a nucleotide assembler such as `Trinity`.  PLASS requires read lengths of at least 100 nt, so for shorter reads, a nucleotide assembler has to be used. 
 
 - Genome assembly is a dynamic field, so the software is being continously updated. That is why no non-inhouse assemblers (e.g Trinity) are included in the TransAnnot release package. One can install them separately on demand. Some of the tools which might be useful are:
@@ -50,7 +45,6 @@ Other dependencies for the compilation from the source are `zlib` and `bzip`.
 ### tmp folder
 
 `tmp` folder keeps temporary files. By default, all the intermediate output files from different modules will be kept in this folder. To clear `tmp` pass `--remove-tmp-files` parameter.
->>>>>>> Stashed changes
 
 ## Quick start
 
@@ -62,22 +56,12 @@ If (one of the) target databases is already downloaded in MMseqs2 format, direct
 
 ## Input
 
-<<<<<<< Updated upstream
-Possible inputs can be one of the following:
-
-* translated sequences of assembled transcriptomes (obtained e.g. using Trinity followed by TransDecoder)
-* raw transcriptome reads in fastq format, which will be *de novo* assembled by `plass` at the protein level
-
-TransAnnot accepts input files from single-organism transcriptomes as well as metatranscriptomes.
-<!-- In such case, it is possible to check for the contamination with the `contamination` module, which is based on MMseqs2 taxonomy workflow -->
-=======
 Possible inputs are assembled on the protein level:
 
 * assembled transcriptomes (obtained e.g. using Trinity) or raw transcriptome reads, which will be *de novo* assembled on the protein level using `plass`
 * metatranscriptomes
 * single-organism transcriptomes
 <!-- in such case it is possible to check for the contamination with `contamination` module, which is based on MMseqs2 taxonomy workflow -->
->>>>>>> Stashed changes
 
 ## Running
 
@@ -123,7 +107,7 @@ and execute the below command to download the databases (Ensure the same keyword
 
     transannot downloaddb <selection> <outDB> <tmp> [options]  
 
-By default, `transannot` runs 3 searches in the subsequent `annotate` module against the following databases: (i) `Pfam-A.full` (profile database), (ii) `eggNOG` (profile database) and (iii) `UniProtKB/SwissProt` (sequence database). Hence, use the above command separately for each database to download them, for more information check [MMseqs2 user guide](https://github.com/soedinglab/MMseqs2/wiki#downloading-databases).
+By default, `transannot` runs 3 searches in the subsequent `annotate` module against the following databases: (i) `Pfam-A.full` (profile database), (ii) `eggNOG` (profile database) and (iii) `UniProtKB/SwissProt` (sequence database). Hence, use the above command separately for each database to download them, for more information check [MMseqs2 user guide](https://github.com/soedinglab/MMseqs2/wiki#downloading-databases).We use the abovementioned databases for the default annotation workflow to ensure comprehensive set of annotations that include hand-reviewed homologs (`SwissProt`), fine-grained orthologs (`eggNOG`), and domains (`Pfam-A`). On demand, one can use [`annotatecustom`](####Use-of-custom-database-for-annotation) to perform annotation against user-defined database.
 
 ### annotate
 
