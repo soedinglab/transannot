@@ -103,22 +103,10 @@ std::vector<struct Command> transannotcommands = {
 };
 
 extern std::vector<Command> baseCommands;
- void init() {
+void init() {
      registerCommands(&baseCommands);
      registerCommands(&transannotcommands);
  }
 
- void (*initCommands)(void) = init;
- void initParameterSingleton() { new LocalParameters; }
-
-
-//     {"contamination",   contamination, &localPar.contaminationworkflow, COMMAND_EXPERT,
-//             "Check for the contamination using MMseqs taxonomy \n",
-//             "Assigns taxaIDs and then finds organisms with minor frequency",
-//             "Mariia Zelenskaia mariia.zelenskaia@mpinat.mpg.de & Yazhini A. yazhini@mpinat.mpg.de",
-//             "<i:queryDB>",
-//             NO_CITATION, {{"queryDB", DbType::ACCESS_MODE_INPUT, DbType::NEED_DATA, &DbValidator::sequenceDb},
-//                         {"targetDB", DbType::ACCESS_MODE_INPUT, DbType::NEED_DATA|DbType::NEED_HEADER|DbType::NEED_TAXONOMY, &DbValidator::taxSequenceDb},
-//                         {"taxReports", DbType::ACCESS_MODE_OUTPUT, DbType::NEED_DATA, &DbValidator::flatfile},
-//                         {"tmpDir", DbType::ACCESS_MODE_OUTPUT, DbType::NEED_DATA, &DbValidator::directory}}}
-};
+void (*initCommands)(void) = init;
+void initParameterSingleton() { new LocalParameters; }
