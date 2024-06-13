@@ -67,14 +67,16 @@ Possible inputs are assembled on the protein level:
 
 ### Modules
 
-* `assemblereads`            *de novo* assembles raw sequencing reads to large genomic fragments (contigs).
-* `createquerydb`            creates a database in a memory-efficient MMSeqs2 format for the query input sequence.
-* `downloaddb`          downloads reference databases in MMSeqs2 format on which annotations for query sequences will be searched.
-* `annotate`            performs clustering on input sequences to reduce redundancy and runs sequence-profile and sequence-sequence searches for the reference query sequences to obtain the closest homologs with the annotated function. In addition, it maps descriptions of orthologous groups and protein families to the query sequences. 
+* `assemblereads` - *de novo* assembles raw sequencing reads to large genomic fragments (contigs).
+* `createquerydb` - creates a database in a memory-efficient MMSeqs2 format for the query input sequence.
+* `downloaddb` - downloads reference databases in MMSeqs2 format on which annotations for query sequences will be searched.
+* `annotate` - performs clustering on input sequences to reduce redundancy and runs sequence-profile and sequence-sequence searches for the reference query sequences to obtain the closest homologs with the annotated function. In addition, it maps descriptions of orthologous groups and protein families to the query sequences.
+* `easytransannot` - an easy one-line command module for the complete transannot workflow, starting from input assembly, downloading reference databases to an output of sequence annotations.
+* `annotatecustom` - facilitates annotation against user-supplied databases instead of the default databases used by `TransAnnot`.
 <!-- After running the search UniProt IDs will be retrieved to get more detailed information about the provided transcriptome.  -->
 <!-- (It finds homologs for assembled contigs in the custom-defined protein sequence database (default UniProtKB) using reciprocal-best hits (rbh module) search from MMseqs2 suite if taxonomy ID `--taxid` is provided, or MMseqs2 search if no taxonomy ID is supplied. After running the search Gene Ontology ID will be obtained from UniProt.) -->
 <!-- * `contamination`       It checks contaminated contigs using _easy-taxonomy_ module from MMseqs2 suite. This approach uses taxonomy assignments of every contig to identify contamination -->
-* `easytransannot`      an easy one-line command module for the complete transannot workflow, starting from input assembly, downloading reference databases to an output of sequence annotations.
+
 
 ### assemblereads
 
@@ -107,7 +109,7 @@ and execute the below command to download the databases (Ensure the same keyword
 
     transannot downloaddb <selection> <outDB> <tmp> [options]  
 
-By default, `transannot` runs 3 searches in the subsequent `annotate` module against the following databases: (i) `Pfam-A.full` (profile database), (ii) `eggNOG` (profile database) and (iii) `UniProtKB/SwissProt` (sequence database). Hence, use the above command separately for each database to download them, for more information check [MMseqs2 user guide](https://github.com/soedinglab/MMseqs2/wiki#downloading-databases).We use the abovementioned databases for the default annotation workflow to ensure comprehensive set of annotations that include hand-reviewed homologs (`SwissProt`), fine-grained orthologs (`eggNOG`), and domains (`Pfam-A`). On demand, one can use [`annotatecustom`](####Use-of-custom-database-for-annotation) to perform annotation against user-defined database.
+By default, `transannot` runs 3 searches in the subsequent `annotate` module against the following databases: (i) `Pfam-A.full` (profile database), (ii) `eggNOG` (profile database) and (iii) `UniProtKB/SwissProt` (sequence database). Hence, use the above command separately for each database to download them, for more information check [MMseqs2 user guide](https://github.com/soedinglab/MMseqs2/wiki#downloading-databases).We use the abovementioned databases for the default annotation workflow to ensure comprehensive set of annotations that include hand-reviewed homologs (`SwissProt`), fine-grained orthologs (`eggNOG`), and domains (`Pfam-A`). On demand, one can use [`annotatecustom`](##Use-of-custom-database-for-annotation) to perform annotation against user-defined database.
 
 ### annotate
 
@@ -117,13 +119,29 @@ To run the annotate module, execute the following command:
 
     transannot annotate <assembledQueryDB> <path to Pfam profileTargetDB> <path to eggNOG profileTargetDB> <path to SwissProt sequenceTargetDB> <o:resTsvFile> <tmp> [options]
 
-#### Output
+### annotatecustom
 
-Outut is a tab-separated `.tsv` file containing the following columns:
+Annotates against user-specified databases. Run as follows:
+
+    transannot annotatecustom <assembledQueryDB> <user-defined DB>
+
+## Output
+
+`TransAnnot`'s output is, in general, a tab-separated `.tsv` file containing the following columns:
 
     queryID targetID description E-value sequenceIdentity bitScore typeOfSearch nameOfDatabase 
 
-#### Important options of the annotate module
+Where,
+* `queryID` is the sequence identifier for the annotated transcript.
+* `targetID` is the identifier for the sequence/profile from which the annotation is sourced.
+* `description` is the string (e.g., `FASTA` header from the matched `Swiss-Prot` sequence) supplying the human-readable annotation (e.g., "XYZ protein").
+* `E-value` is the expectation value for this particular match (combination of query and target sequences) which indicates, loosely, the confidence one can have that the match is real (i.e., due to shared evolutionary history) and not due to chance (lower the `E-value` the better).
+* `sequenceIdentity` is the number of positions in both sequences that are identical to one another, represented as a fraction of the total (sum) of the sequence length(s). This is a percentage value.
+* 'bitScore` is the normalized size (in bits) of the hypothetical database one would have to search against to obtain the match at hand purely by chance (higher the `bitScore` the better).
+* `typeOfSearch` is a filed that indicates whether the database searched is a sequence or a profile database.
+* `nameOfDatabase` is a filed indicating the name of the database searched (e.g., "Pfam).
+
+## Important options of the annotate module
 
 `--simple-output` parameter allows users to obtain simplified output for each query sequence, which only includes query and target IDs, a header of the target database and E-value. Whereas standard output contains sequence identity and bit score in addition to details provided in the `--simple-output`. Usage: 
     
@@ -135,7 +153,7 @@ When no tag is used, standard output will be provided.
 
 `--no-run-clust` performs annotation without clustering. All the input query sequences will undergo annotation searches.
 
-#### Use of custom database for annotation
+## Use of custom database for annotation
 If one is interested in annotation against a user-defined database, `annotatecustom` module provides such an opportunity. To run the custom annotate module execute the following command:
 
     transannot annotatecustom <assembledQueryDB> <user-defined DB>
