@@ -160,6 +160,10 @@ If one is interested in annotation against a user-defined database, `annotatecus
 
 The user-provided database will be converted to the MMseqs2 format within the module, but it is also possible to initially provide a MMseqs2-formatted database. A limitation is that unless ID descriptors are included in the database, no mapping can be performed and no group descriptors will be retrieved.
 
-#### tmp folder
+## tmp folder
 
 `tmp` folder keeps temporary files. By default, all the intermediate output files from different modules will be kept in this folder. To clear `tmp` pass `--remove-tmp-files` parameter [bool], applicable for all modules except `createquerydb` and `downloaddb`.
+
+## TransAnnot wiki
+
+The `TransAnnot` wiki can be found here: [https://github.com/soedinglab/transannot/wiki](https://github.com/soedinglab/transannot/wiki).
