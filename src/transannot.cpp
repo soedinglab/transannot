@@ -104,7 +104,7 @@ std::vector<struct Command> transannotcommands = {
 extern std::vector<Command> baseCommands;
  void init() {
      registerCommands(&baseCommands);
-     registerCommands(&metaeukCommands);
+     registerCommands(&transannotcommands);
  }
 
  void (*initCommands)(void) = init;
