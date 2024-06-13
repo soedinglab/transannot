@@ -21,7 +21,7 @@ std::vector<KmerThreshold> externalThreshold = {};
 
 LocalParameters& localPar = LocalParameters::getLocalInstance();
 
-std::vector<struct Command> commands = {
+std::vector<struct Command> transannotcommands = {
       {"assemblereads",    assemblereads,   &localPar.assemblereads, COMMAND_MAIN,
             "Assembly of de novo transcriptomes on protein level with PLASS \n",
             "It is also possible to give already assembled (e.g. obtained from Trinity) files as input \n",
@@ -100,6 +100,15 @@ std::vector<struct Command> commands = {
                         {"customDB", DbType::ACCESS_MODE_INPUT, DbType::NEED_DATA, &DbValidator::flatfile},
                         {"outFile", DbType::ACCESS_MODE_OUTPUT, DbType::NEED_DATA, &DbValidator::flatfile},
                         {"tmpDir", DbType::ACCESS_MODE_OUTPUT, DbType::NEED_DATA, &DbValidator::directory}}}
+
+extern std::vector<Command> baseCommands;
+ void init() {
+     registerCommands(&baseCommands);
+     registerCommands(&metaeukCommands);
+ }
+
+ void (*initCommands)(void) = init;
+ void initParameterSingleton() { new LocalParameters; }
 
 
 //     {"contamination",   contamination, &localPar.contaminationworkflow, COMMAND_EXPERT,
