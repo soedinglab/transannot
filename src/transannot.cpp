@@ -100,6 +100,7 @@ std::vector<struct Command> transannotcommands = {
                         {"customDB", DbType::ACCESS_MODE_INPUT, DbType::NEED_DATA, &DbValidator::flatfile},
                         {"outFile", DbType::ACCESS_MODE_OUTPUT, DbType::NEED_DATA, &DbValidator::flatfile},
                         {"tmpDir", DbType::ACCESS_MODE_OUTPUT, DbType::NEED_DATA, &DbValidator::directory}}}
+};
 
 extern std::vector<Command> baseCommands;
  void init() {
