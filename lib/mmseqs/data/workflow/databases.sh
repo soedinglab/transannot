@@ -40,13 +40,22 @@ downloadFile() {
         ARIA)
             FILENAME=$(basename "${OUTPUT}")
             DIR=$(dirname "${OUTPUT}")
-            aria2c --max-connection-per-server="$ARIA_NUM_CONN" --allow-overwrite=true -o "$FILENAME" -d "$DIR" "$URL" && return 0
+            if aria2c -c --max-connection-per-server="$ARIA_NUM_CONN" --allow-overwrite=true -o "${FILENAME}.aria2" -d "$DIR" "$URL"; then
+                mv -f -- "${OUTPUT}.aria2" "${OUTPUT}"
+                return 0
+            fi
             ;;
         CURL)
-            curl -L -o "$OUTPUT" "$URL" && return 0
+            if curl -L -C - -o "${OUTPUT}.curl" "$URL"; then
+                mv -f -- "${OUTPUT}.curl" "${OUTPUT}"
+                return 0
+            fi
             ;;
         WGET)
-            wget -O "$OUTPUT" "$URL" && return 0
+            if wget -O "${OUTPUT}.wget" -c "$URL"; then
+                mv -f -- "${OUTPUT}.wget" "${OUTPUT}"
+                return 0
+            fi
             ;;
         esac
     done
@@ -118,9 +127,9 @@ case "${SELECTION}" in
         if notExists "${TMP_PATH}/nr.gz"; then
             date "+%s" > "${TMP_PATH}/version"
             downloadFile "https://ftp.ncbi.nlm.nih.gov/blast/db/FASTA/nr.gz" "${TMP_PATH}/nr.gz"
-            downloadFile "https://ftp.ncbi.nih.gov/pub/taxonomy/accession2taxid/prot.accession2taxid.gz" "${TMP_PATH}/prot.accession2taxid.gz"
+            downloadFile "https://ftp.ncbi.nlm.nih.gov/pub/taxonomy/accession2taxid/prot.accession2taxid.gz" "${TMP_PATH}/prot.accession2taxid.gz"
             gunzip "${TMP_PATH}/prot.accession2taxid.gz"
-            downloadFile "https://ftp.ncbi.nih.gov/pub/taxonomy/accession2taxid/pdb.accession2taxid.gz" "${TMP_PATH}/pdb.accession2taxid.gz"
+            downloadFile "https://ftp.ncbi.nlm.nih.gov/pub/taxonomy/accession2taxid/pdb.accession2taxid.gz" "${TMP_PATH}/pdb.accession2taxid.gz"
             gunzip "${TMP_PATH}/pdb.accession2taxid.gz"
         fi
         push_back "${TMP_PATH}/nr.gz"
@@ -136,7 +145,7 @@ case "${SELECTION}" in
     ;;
     "GTDB")
         if notExists "${TMP_PATH}/download.done"; then
-            downloadFile "https://data.ace.uq.edu.au/public/gtdb/data/releases/latest/VERSION" "${TMP_PATH}/version"
+            downloadFile "https://data.ace.uq.edu.au/public/gtdb/data/releases/latest/VERSION.txt" "${TMP_PATH}/version"
             downloadFile "https://data.ace.uq.edu.au/public/gtdb/data/releases/latest/genomic_files_reps/gtdb_proteins_aa_reps.tar.gz" "${TMP_PATH}/gtdb.tar.gz"
             downloadFile "https://data.ace.uq.edu.au/public/gtdb/data/releases/latest/bac120_taxonomy.tsv" "${TMP_PATH}/bac120_taxonomy.tsv"
             downloadFile "https://data.ace.uq.edu.au/public/gtdb/data/releases/latest/ar53_taxonomy.tsv" "${TMP_PATH}/ar53_taxonomy.tsv"
@@ -147,7 +156,7 @@ case "${SELECTION}" in
     "PDB")
         if notExists "${TMP_PATH}/pdb_seqres.txt.gz"; then
             date "+%s" > "${TMP_PATH}/version"
-            downloadFile "https://ftp.wwpdb.org/pub/pdb/derived_data/pdb_seqres.txt.gz" "${TMP_PATH}/pdb_seqres.txt.gz"
+            downloadFile "https://files.wwpdb.org/pub/pdb/derived_data/pdb_seqres.txt.gz" "${TMP_PATH}/pdb_seqres.txt.gz"
         fi
         push_back "${TMP_PATH}/pdb_seqres.txt.gz"
         INPUT_TYPE="FASTA_LIST"
@@ -212,8 +221,8 @@ case "${SELECTION}" in
     ;;
     "CDD")
         if notExists "${TMP_PATH}/msa.msa.gz"; then
-            downloadFile "https://ftp.ncbi.nih.gov/pub/mmdb/cdd/cdd.info" "${TMP_PATH}/version"
-            downloadFile "https://ftp.ncbi.nih.gov/pub/mmdb/cdd/fasta.tar.gz" "${TMP_PATH}/msa.tar.gz"
+            downloadFile "https://ftp.ncbi.nlm.nih.gov/pub/mmdb/cdd/cdd.info" "${TMP_PATH}/version"
+            downloadFile "https://ftp.ncbi.nlm.nih.gov/pub/mmdb/cdd/fasta.tar.gz" "${TMP_PATH}/msa.tar.gz"
         fi
         INPUT_TYPE="FASTA_MSA"
         SED_FIX_LOOKUP='s|\.FASTA||g'
@@ -371,9 +380,9 @@ case "${INPUT_TYPE}" in
     ;;
     "GTDB")
         # shellcheck disable=SC2086
-        "${MMSEQS}" tar2db "${TMP_PATH}/gtdb.tar.gz" "${TMP_PATH}/tardb" --tar-include 'faa$' ${THREADS_PAR} \
+        "${MMSEQS}" tar2db "${TMP_PATH}/gtdb.tar.gz" "${TMP_PATH}/tardb" --tar-include 'faa.gz$' ${THREADS_PAR} \
             || fail "tar2db died"
-        sed 's|_protein\.faa||g' "${TMP_PATH}/tardb.lookup" > "${TMP_PATH}/tardb.lookup.tmp"
+        sed 's|_protein\.faa\.gz||g' "${TMP_PATH}/tardb.lookup" > "${TMP_PATH}/tardb.lookup.tmp"
         mv -f -- "${TMP_PATH}/tardb.lookup.tmp" "${TMP_PATH}/tardb.lookup"
         # shellcheck disable=SC2086
         "${MMSEQS}" createdb "${TMP_PATH}/tardb" "${OUTDB}" ${COMP_PAR} \

@@ -47,17 +47,15 @@ void MultipleAlignment::computeQueryGaps(unsigned int *queryGaps, Sequence *cent
     for(size_t i = 0; i < alignmentResults.size(); i++) {
         const Matcher::result_t& alignment = alignmentResults[i];
         const std::string& bt = alignment.backtrace;
-        size_t queryPos = 0;
-        size_t targetPos = 0;
         size_t currentQueryGapSize = 0;
-        queryPos = alignment.qStartPos;
-        targetPos = alignment.dbStartPos;
+        size_t queryPos = alignment.qStartPos;
+        // size_t targetPos = alignment.dbStartPos;
         // compute query gaps (deletions)
         for (size_t pos = 0; pos < bt.size(); ++pos) {
             char bt_letter = bt.at(pos);
             if (bt_letter == 'M') { // match state
                 ++queryPos;
-                ++targetPos;
+                // ++targetPos;
                 currentQueryGapSize = 0;
             } else {
                 if (bt_letter == 'I') { // insertion
@@ -65,7 +63,7 @@ void MultipleAlignment::computeQueryGaps(unsigned int *queryGaps, Sequence *cent
                     currentQueryGapSize = 0;
                 }
                 else { // deletion
-                    ++targetPos;
+                    // ++targetPos;
                     currentQueryGapSize += 1;
                     size_t gapCount = queryGaps[queryPos];
                     queryGaps[queryPos] = std::max(gapCount, currentQueryGapSize);
@@ -105,8 +103,9 @@ void MultipleAlignment::updateGapsInSequenceSet(char **msaSequence, size_t cente
         unsigned int queryPos = result.qStartPos;
         unsigned int targetPos = result.dbStartPos;
         // HACK: score was 0 and sequence was rejected, so we fill in an empty gap sequence
+        // Needed for pairaln with dummy sequences
         if(targetPos == UINT_MAX) {
-            Debug(Debug::WARNING) << "Edge sequence " << i << " was not aligned." << "\n";
+            //Debug(Debug::WARNING) << "Edge sequence " << i << " was not aligned." << "\n";
             // fill up with gaps
             for(size_t pos = 0; pos < centerSeqSize; pos++){
                 edgeSeqMSA[pos] = '-';

@@ -39,9 +39,9 @@ std::vector<Command> baseCommands = {
                 "Slower, sensitive clustering",
                 "mmseqs easy-cluster examples/DB.fasta result tmp\n"
                 "# Cluster output\n"
-                "#  - result_rep_seq.fasta: Representatives\n"
-                "#  - result_all_seq.fasta: FASTA-like per cluster\n"
-                "#  - result_cluster.tsv:   Adjacency list\n\n"
+                "#  - result_rep_seq.fasta:  Representatives\n"
+                "#  - result_all_seqs.fasta: FASTA-like per cluster\n"
+                "#  - result_cluster.tsv:    Adjacency list\n\n"
                 "# Important parameter: --min-seq-id, --cov-mode and -c \n"
                 "#                  --cov-mode \n"
                 "#                  0    1    2\n"
@@ -62,9 +62,9 @@ std::vector<Command> baseCommands = {
                 "Fast linear time cluster, less sensitive clustering",
                 "mmseqs easy-linclust examples/DB.fasta result tmp\n\n"
                 "# Linclust output\n"
-                "#  - result_rep_seq.fasta: Representatives\n"
-                "#  - result_all_seq.fasta: FASTA-like per cluster\n"
-                "#  - result_cluster.tsv:   Adjecency list\n\n"
+                "#  - result_rep_seq.fasta:  Representatives\n"
+                "#  - result_all_seqs.fasta: FASTA-like per cluster\n"
+                "#  - result_cluster.tsv:    Adjecency list\n\n"
                 "# Important parameter: --min-seq-id, --cov-mode and -c \n"
                 "#                  --cov-mode \n"
                 "#                  0    1    2\n"
@@ -130,6 +130,13 @@ std::vector<Command> baseCommands = {
                 "<i:fastaFile1[.gz|.bz2]> ... <i:fastaFileN[.gz|.bz2]>|<i:stdin> <o:sequenceDB>",
                 CITATION_MMSEQS2, {{"fast[a|q]File[.gz|bz2]|stdin", DbType::ACCESS_MODE_INPUT, DbType::NEED_DATA | DbType::VARIADIC, &DbValidator::flatfileStdinAndGeneric },
                                                            {"sequenceDB", DbType::ACCESS_MODE_OUTPUT, DbType::NEED_DATA, &DbValidator::flatfile }}},
+        {"makepaddedseqdb",               makepaddedseqdb,              &par.onlyverbosity,              COMMAND_HIDDEN,
+                "Generate a padded sequence DB",
+                "Generate a padded sequence DB",
+                "Martin Steinegger <martin.steinegger@snu.ac.kr>",
+                "<i:sequenceDB> <o:sequenceDB>",
+                CITATION_MMSEQS2, {{"sequenceDB", DbType::ACCESS_MODE_INPUT, DbType::NEED_DATA|DbType::NEED_HEADER, &DbValidator::sequenceDb },
+                                          {"sequenceIndexDB", DbType::ACCESS_MODE_OUTPUT, DbType::NEED_DATA, &DbValidator::sequenceDb }}},
         {"appenddbtoindex",      appenddbtoindex,      &par.appenddbtoindex,      COMMAND_HIDDEN,
                 NULL,
                 NULL,
@@ -137,7 +144,7 @@ std::vector<Command> baseCommands = {
                 "<i:DB1> ... <i:DBN> <o:DB>",
                 CITATION_MMSEQS2, {{"DB", DbType::ACCESS_MODE_INPUT, DbType::NEED_DATA | DbType::VARIADIC, &DbValidator::allDb },
                                    {"DB", DbType::ACCESS_MODE_INPUT, DbType::NEED_DATA, &DbValidator::allDb }}},
-       {"indexdb",               indexdb,              &par.indexdb,              COMMAND_HIDDEN,
+        {"indexdb",               indexdb,              &par.indexdb,              COMMAND_HIDDEN,
                 NULL,
                 NULL,
                 "Martin Steinegger <martin.steinegger@snu.ac.kr>",
@@ -555,7 +562,7 @@ std::vector<Command> baseCommands = {
                                                            {"resultDB", DbType::ACCESS_MODE_INPUT, DbType::NEED_DATA, &DbValidator::resultDb },
                                                            {"pvalDB", DbType::ACCESS_MODE_OUTPUT, DbType::NEED_DATA, &DbValidator::resultDb },
                                                            {"tmpDir", DbType::ACCESS_MODE_OUTPUT, DbType::NEED_DATA, &DbValidator::directory }}},
-        {"mergeresultsbyset",    mergeresultsbyset,    &par.threadsandcompression,COMMAND_MULTIHIT,
+        {"mergeresultsbyset",    mergeresultsbyset,    &par.mergeresultsbyset,    COMMAND_MULTIHIT,
                 "Merge results from multiple ORFs back to their respective contig",
                 NULL,
                 "Ruoshi Zhang, Clovis Norroy & Milot Mirdita <milot@mirdita.de>",
@@ -577,6 +584,14 @@ std::vector<Command> baseCommands = {
 
         {"ungappedprefilter",    ungappedprefilter,    &par.ungappedprefilter,    COMMAND_PREFILTER,
                 "Optimal diagonal score search",
+                NULL,
+                "Martin Steinegger <martin.steinegger@snu.ac.kr>",
+                "<i:queryDB> <i:targetDB> <o:prefilterDB>",
+                CITATION_MMSEQS2, {{"queryDB", DbType::ACCESS_MODE_INPUT, DbType::NEED_DATA, &DbValidator::sequenceDb },
+                                                           {"targetDB", DbType::ACCESS_MODE_INPUT, DbType::NEED_DATA, &DbValidator::sequenceDb },
+                                                           {"prefilterDB", DbType::ACCESS_MODE_OUTPUT, DbType::NEED_DATA, &DbValidator::prefilterDb }}},
+        {"gappedprefilter",      gappedprefilter,      &par.gappedprefilter,      COMMAND_PREFILTER,
+                "Optimal Smith-Waterman-based prefiltering (slow)",
                 NULL,
                 "Martin Steinegger <martin.steinegger@snu.ac.kr>",
                 "<i:queryDB> <i:targetDB> <o:prefilterDB>",
@@ -793,8 +808,13 @@ std::vector<Command> baseCommands = {
                 CITATION_MMSEQS2, {{"resultDBLeft", DbType::ACCESS_MODE_INPUT, DbType::NEED_DATA, &DbValidator::resultDb },
                                           {"resultDBRight", DbType::ACCESS_MODE_INPUT, DbType::NEED_DATA, &DbValidator::resultDb },
                                           {"resultDB", DbType::ACCESS_MODE_OUTPUT, DbType::NEED_DATA, &DbValidator::resultDb }}},
-
-
+        {"setextendeddbtype",                 setextendeddbtype,                 &par.extendeddbtype,                 COMMAND_DB,
+                "Write an extended DB ",
+                "# Print entries with keys 1, 2 and 3 from a sequence DB to stdout\n"
+                "mmseqs setextendedbtype db --extended-dbtype 2\n",
+                "Martin Steinegger <martin.steinegger@snu.ac.kr>",
+                "<i:DB>",
+                CITATION_MMSEQS2, {{"DB", DbType::ACCESS_MODE_INPUT, DbType::NEED_DATA, &DbValidator::allDb }}},
 
         {"view",                 view,                 &par.view,                 COMMAND_DB,
                 "Print DB entries given in --id-list to stdout",
@@ -887,6 +907,14 @@ std::vector<Command> baseCommands = {
                 "Eli Levy Karin <eli.levy.karin@gmail.com> ",
                 "<i:contigsSequenceDB> <i:extractedOrfsHeadersDB> <o:orfsAlignedToContigDB>",
                 CITATION_MMSEQS2, {{"",DbType::ACCESS_MODE_INPUT, DbType::NEED_DATA, NULL}}},
+        {"recoverlongestorf",    recoverlongestorf,    &par.onlythreads,          COMMAND_EXPERT,
+                "Recover longest ORF for taxonomy annotation after elimination",
+                NULL,
+                "Sung-eun Jang",
+                "<i:orfDB> <i:resultDB> <o:tsvFile>",
+                CITATION_MMSEQS2, {{"orfDB", DbType::ACCESS_MODE_INPUT, DbType::NEED_DATA, &DbValidator::sequenceDb},
+                                                           {"resultDB", DbType::ACCESS_MODE_INPUT, DbType::NEED_DATA, &DbValidator::resultDb},
+                                                           {"tsvFile", DbType::ACCESS_MODE_OUTPUT, DbType::NEED_DATA, &DbValidator::flatfile}}},
         {"reverseseq",          reverseseq,            &par.reverseseq,           COMMAND_SEQUENCE,
                 "Reverse (without complement) sequences",
                 NULL,
@@ -1245,9 +1273,14 @@ std::vector<Command> baseCommands = {
                 "Martin Steinegger <martin.steinegger@snu.ac.kr>",
                 "<i:sequenceDB> ",
                 CITATION_MMSEQS2, {{"sequenceDB", DbType::ACCESS_MODE_INPUT, DbType::NEED_DATA, &DbValidator::sequenceDb }}},
-
-
-
+        {"createclusearchdb",           createclusearchdb,             &par.createclusearchdb,            COMMAND_HIDDEN,
+                "Separates a sequence DB into a representative and a non-representative DB",
+                NULL,
+                "Martin Steinegger <martin.steinegger@snu.ac.kr>",
+                "<i:sequenceDB> <i:resultDB> <o:sequenceDB>",
+                CITATION_MMSEQS2, {{"sequenceDB", DbType::ACCESS_MODE_INPUT, DbType::NEED_DATA, &DbValidator::sequenceDb },
+                                          {"resultDB", DbType::ACCESS_MODE_INPUT, DbType::NEED_DATA, &DbValidator::resultDb },
+                                          {"sequenceDB", DbType::ACCESS_MODE_OUTPUT, DbType::NEED_DATA, &DbValidator::sequenceDb }}},
         {"dbtype",              dbtype,                &par.empty,                COMMAND_HIDDEN,
                 "",
                 NULL,

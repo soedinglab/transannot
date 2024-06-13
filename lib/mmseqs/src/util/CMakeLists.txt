@@ -31,11 +31,13 @@ set(util_source_files
         util/filterdb.cpp
         util/gff2db.cpp
         util/renamedbkeys.cpp
+        util/makepaddedseqdb.cpp
         util/masksequence.cpp
         util/maskbygff.cpp
         util/mergeclusters.cpp
         util/mergeresultsbyset.cpp
         util/mergedbs.cpp
+        util/createclusterdb.cpp
         util/msa2profile.cpp
         util/msa2result.cpp
         util/nrtotaxmapping.cpp
@@ -45,6 +47,7 @@ set(util_source_files
         util/profile2pssm.cpp
         util/profile2neff.cpp
         util/profile2seq.cpp
+        util/recoverlongestorf.cpp
         util/result2dnamsa.cpp
         util/result2flat.cpp
         util/result2msa.cpp
@@ -56,8 +59,10 @@ set(util_source_files
         util/cpmvrmlndb.cpp
         util/extractframes.cpp
         util/sequence2profile.cpp
+        util/setextendeddbtype.cpp
         util/sortresult.cpp
         util/splitdb.cpp
+        util/setextendeddbtype.cpp
         util/splitsequence.cpp
         util/subtractdbs.cpp
         util/summarizealis.cpp
