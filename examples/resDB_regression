@@ -23,5 +23,6 @@ TRINITY_DN44_c0_g1_i1.p1	C0ZBW7	sp|C0ZBW7|GCSPB_BREBN Probable glycine dehydroge
 TRINITY_DN48_c1_g1_i1.p2	PF00437.23	Type II/IV secretion system protein	9.161E-26	33.400	98	seq-prof search	PfamA
 TRINITY_DN4_c2_g1_i1.p1	B1JIV5	sp|B1JIV5|EFG_YERPY Elongation factor G OS=Yersinia pseudotuberculosis serotype O:3 (strain YPIII) OX=502800 GN=fusA PE=3 SV=1	2.438E-130	37.000	425	seq-seq search	SwissProt
 TRINITY_DN5_c0_g1_i3.p1	B1JIV5	sp|B1JIV5|EFG_YERPY Elongation factor G OS=Yersinia pseudotuberculosis serotype O:3 (strain YPIII) OX=502800 GN=fusA PE=3 SV=1	3.302E-260	60.100	804	seq-seq search	SwissProt
+TRINITY_DN5_c0_g1_i3.p1	Q754I9	sp|Q754I9|RRF2M_ASHGO Ribosome-releasing factor 2, mitochondrial OS=Ashbya gossypii (strain ATCC 10895 / CBS 109.51 / FGSC 9923 / NRRL Y-1056) OX=284811 GN=MEF2 PE=3 SV=1	2.874E-111	31.600	370	seq-seq search	SwissProt
 TRINITY_DN5_c0_g1_i4.p1	B0K3Q4	sp|B0K3Q4|PURL_THEPX Phosphoribosylformylglycinamidine synthase subunit PurL OS=Thermoanaerobacter sp. (strain X514) OX=399726 GN=purL PE=3 SV=1	5.545E-212	49.500	666	seq-seq search	SwissProt
 query	target	theader	evalue	pident	bits	seq-seq search	SwissProt
