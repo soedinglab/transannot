@@ -34,7 +34,7 @@ preprocessDb(){
 		|| fail "filterdb died" 
 
 	#shellcheck disable=SC2086
-	"${MMSEQS}" filterdb "${TMP_PATH}/bitscorefiltDB" "${TMP_PATH}/bitscoresortedDB" --sort-entries 2 --filter-column 2 \
+	"${MMSEQS}" filterdb "${TMP_PATH}/bitscorefiltDB" "$2" --sort-entries 2 --filter-column 2 \
 		|| fail "sort DB decreasing died"
 
 	#shellcheck disable=SC2086

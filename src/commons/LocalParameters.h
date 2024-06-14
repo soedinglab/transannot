@@ -95,7 +95,7 @@ public:
         seqIdThr = 0.3;
 
     }
-    
+
 private:
     LocalParameters(LocalParameters const&);
     ~LocalParameters() {};
