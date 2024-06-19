@@ -31,18 +31,18 @@ preprocessDb(){
 
 	#column 2 contains alnScore (internal ali format)
 	#shellcheck disable=SC2086
-	"${MMSEQS}" filterdb "$1" "${TMP_PATH}/bitscorefiltDB" --comparison-operator ge --comparison-value 50 --filter-column 2 \
+	"${MMSEQS}" filterdb "$1" "$2" --comparison-operator ge --comparison-value 50 --filter-column 2 \
 		|| fail "filterdb died" 
 
 	# "${MMSEQS}" filterdb "${TMP_PATH}/bitscoresortedDB" "$2" --extract-lines 1 \
 	#	|| fail "extract best hit died"
 	
-	#shellcheck disable=SC2086
-	"${MMSEQS}" rmdb "${TMP_PATH}/bitscorefiltDB" ${VERBOSITY_PAR}
-	#shellcheck disable=SC2086
-	"${MMSEQS}" rmdb "${TMP_PATH}/indexfiltDB" ${VERBOSITY_PAR}
-	#shellcheck disable=SC2086
-	"${MMSEQS}" rmdb "${TMP_PATH}/nooverlapDB" ${VERBOSITY_PAR}
+	##shellcheck disable=SC2086
+	#"${MMSEQS}" rmdb "${TMP_PATH}/bitscorefiltDB" ${VERBOSITY_PAR}
+	##shellcheck disable=SC2086
+	#"${MMSEQS}" rmdb "${TMP_PATH}/indexfiltDB" ${VERBOSITY_PAR}
+	##shellcheck disable=SC2086
+	#"${MMSEQS}" rmdb "${TMP_PATH}/nooverlapDB" ${VERBOSITY_PAR}
 }
 
 non_overlapping_hits(){
