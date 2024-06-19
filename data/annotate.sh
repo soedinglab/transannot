@@ -220,7 +220,7 @@ if notExists "${TMP_PATH}/tmp_join.tsv"; then
 	rm -f "${TMP_PATH}/seq_searchDB.tsv"
 
 	join -j 1 -a1 -a2 -t ' ' "${TMP_PATH}/prof1_search_annot.tsv" "${TMP_PATH}/prof2_search_annot.tsv" >> "${TMP_PATH}/tmp_join.tsv"
-	join -j 1 -a1 -a2 -t ' ' "${TMP_PATH}/tmp_join.tsv" "${TMP_PATH}/seq_search_filt.tsv" >> "${TMP_PATH}/restmp"
+	join -j 1 -a1 -a2 -t ' ' "${TMP_PATH}/tmp_join.tsv" "${TMP_PATH}/seq_search_filt.tsv" >> "${RESULTS}"
 
 	rm -f "${TMP_PATH}/tmp_join.tsv"
 fi
