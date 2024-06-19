@@ -1,28 +1,19 @@
-queryID	targetID	header_or_description	e-value	sequenceidentity	bitscore	search_type	db_name	
-TRINITY_DN0_c3_g1_i11.p1	A9EYY7	sp|A9EYY7|SYL_SORC5 Leucine--tRNA ligase OS=Sorangium cellulosum (strain So ce56) OX=448385 GN=leuS PE=3 SV=1	8.217E-209	44.400	662	seq-seq search	SwissProt
-TRINITY_DN0_c3_g1_i12.p1	A9EYY7	sp|A9EYY7|SYL_SORC5 Leucine--tRNA ligase OS=Sorangium cellulosum (strain So ce56) OX=448385 GN=leuS PE=3 SV=1	8.217E-209	44.400	662	seq-seq search	SwissProt
-TRINITY_DN0_c3_g1_i14.p1	A9EYY7	sp|A9EYY7|SYL_SORC5 Leucine--tRNA ligase OS=Sorangium cellulosum (strain So ce56) OX=448385 GN=leuS PE=3 SV=1	8.217E-209	44.400	662	seq-seq search	SwissProt
-TRINITY_DN0_c3_g1_i9.p1	A9EYY7	sp|A9EYY7|SYL_SORC5 Leucine--tRNA ligase OS=Sorangium cellulosum (strain So ce56) OX=448385 GN=leuS PE=3 SV=1	8.217E-209	44.400	662	seq-seq search	SwissProt
-TRINITY_DN12_c2_g1_i1.p2	Q5RLZ1	sp|Q5RLZ1|NEP_NATMA Halolysin-like extracellular serine protease Nep OS=Natrialba magadii OX=13769 GN=nep PE=1 SV=2	1.661E-26	32.000	109	seq-seq search	SwissProt
-TRINITY_DN14_c0_g2_i3.p1	A7ZD16	sp|A7ZD16|SECA_CAMC1 Protein translocase subunit SecA OS=Campylobacter concisus (strain 13826) OX=360104 GN=secA PE=3 SV=1	6.916E-220	45.300	696	seq-seq search	SwissProt
-TRINITY_DN14_c0_g4_i1.p1	A7ZD16	sp|A7ZD16|SECA_CAMC1 Protein translocase subunit SecA OS=Campylobacter concisus (strain 13826) OX=360104 GN=secA PE=3 SV=1	6.916E-220	45.300	696	seq-seq search	SwissProt
-TRINITY_DN14_c0_g9_i1.p1	KOG0740	Belongs to the AAA ATPase family	3.833E-28	33.500	115	seq-prof search	eggNOG
-TRINITY_DN18_c0_g1_i8.p2	Q7P0A6	sp|Q7P0A6|MNMG_CHRVO tRNA uridine 5-carboxymethylaminomethyl modification enzyme MnmG OS=Chromobacterium violaceum (strain ATCC 12472 / DSM 30191 / JCM 1249 / NBRC 12614 / NCIMB 9131 / NCTC 9757) OX=243365 GN=mnmG PE=3 SV=2	1.661E-126	39.000	411	seq-seq search	SwissProt
-TRINITY_DN18_c0_g2_i1.p2	Q1R3R3	sp|Q1R3R3|G6PI_ECOUT Glucose-6-phosphate isomerase OS=Escherichia coli (strain UTI89 / UPEC) OX=364106 GN=pgi PE=3 SV=2	3.621E-201	59.600	625	seq-seq search	SwissProt
-TRINITY_DN18_c0_g3_i1.p1	PF01138.24	3' exoribonuclease family, domain 1	3.715E-16	32.500	76	seq-prof search	PfamA
-TRINITY_DN18_c0_g3_i2.p1	PF01138.24	3' exoribonuclease family, domain 1	3.715E-16	32.500	76	seq-prof search	PfamA
-TRINITY_DN18_c0_g3_i3.p1	PF01138.24	3' exoribonuclease family, domain 1	3.715E-16	32.500	76	seq-prof search	PfamA
-TRINITY_DN26_c0_g3_i8.p2	PF00389.33	D-isomer specific 2-hydroxyacid dehydrogenase, catalytic domain	1.443E-43	32.200	162	seq-prof search	PfamA
-TRINITY_DN32_c0_g2_i1.p3	P30616	sp|P30616|KPYK2_TRYBB Pyruvate kinase 2 OS=Trypanosoma brucei brucei OX=5702 GN=PYK2 PE=3 SV=1	1.168E-84	35.900	283	seq-seq search	SwissProt
-TRINITY_DN32_c0_g2_i2.p3	P30616	sp|P30616|KPYK2_TRYBB Pyruvate kinase 2 OS=Trypanosoma brucei brucei OX=5702 GN=PYK2 PE=3 SV=1	1.168E-84	35.900	283	seq-seq search	SwissProt
-TRINITY_DN39_c0_g1_i1.p1	Q8KIX2	sp|Q8KIX2|CH60_BUCTS Chaperonin GroEL OS=Buchnera aphidicola subsp. Thelaxes suberi OX=98797 GN=groEL PE=3 SV=1	4.354E-191	56.800	596	seq-seq search	SwissProt
-TRINITY_DN3_c1_g1_i11.p3	Q92AY8	sp|Q92AY8|MENE_LISIN 2-succinylbenzoate--CoA ligase OS=Listeria innocua serovar 6a (strain ATCC BAA-680 / CLIP 11262) OX=272626 GN=menE PE=3 SV=2	2.826E-35	36.300	128	seq-seq search	SwissProt
-TRINITY_DN3_c1_g1_i3.p2	PF00437.23	Type II/IV secretion system protein	3.080E-58	43.200	200	seq-prof search	PfamA
-TRINITY_DN3_c1_g1_i7.p1	PF00437.23	Type II/IV secretion system protein	4.825E-58	44.500	212	seq-prof search	PfamA
-TRINITY_DN44_c0_g1_i1.p1	C0ZBW7	sp|C0ZBW7|GCSPB_BREBN Probable glycine dehydrogenase (decarboxylating) subunit 2 OS=Brevibacillus brevis (strain 47 / JCM 6285 / NBRC 100599) OX=358681 GN=gcvPB PE=3 SV=1	5.872E-99	45.200	341	seq-seq search	SwissProt
-TRINITY_DN48_c1_g1_i1.p2	PF00437.23	Type II/IV secretion system protein	9.161E-26	33.400	98	seq-prof search	PfamA
-TRINITY_DN4_c2_g1_i1.p1	B1JIV5	sp|B1JIV5|EFG_YERPY Elongation factor G OS=Yersinia pseudotuberculosis serotype O:3 (strain YPIII) OX=502800 GN=fusA PE=3 SV=1	2.438E-130	37.000	425	seq-seq search	SwissProt
-TRINITY_DN5_c0_g1_i3.p1	B1JIV5	sp|B1JIV5|EFG_YERPY Elongation factor G OS=Yersinia pseudotuberculosis serotype O:3 (strain YPIII) OX=502800 GN=fusA PE=3 SV=1	3.302E-260	60.100	804	seq-seq search	SwissProt
-TRINITY_DN5_c0_g1_i3.p1	Q754I9	sp|Q754I9|RRF2M_ASHGO Ribosome-releasing factor 2, mitochondrial OS=Ashbya gossypii (strain ATCC 10895 / CBS 109.51 / FGSC 9923 / NRRL Y-1056) OX=284811 GN=MEF2 PE=3 SV=1	2.874E-111	31.600	370	seq-seq search	SwissProt
-TRINITY_DN5_c0_g1_i4.p1	B0K3Q4	sp|B0K3Q4|PURL_THEPX Phosphoribosylformylglycinamidine synthase subunit PurL OS=Thermoanaerobacter sp. (strain X514) OX=399726 GN=purL PE=3 SV=1	5.545E-212	49.500	666	seq-seq search	SwissProt
-query	target	theader	evalue	pident	bits	seq-seq search	SwissProt
+TRINITY_DN0_c3_g1_i11.p1	A9EYY7	40	856	sp|A9EYY7|SYL_SORC5 Leucine--tRNA ligase OS=Sorangium cellulosum (strain So ce56) OX=448385 GN=leuS PE=3 SV=1	8.217E-209	44.400	662	seq-seq search	SwissProt
+TRINITY_DN0_c3_g1_i12.p1	A9EYY7	40	856	sp|A9EYY7|SYL_SORC5 Leucine--tRNA ligase OS=Sorangium cellulosum (strain So ce56) OX=448385 GN=leuS PE=3 SV=1	8.217E-209	44.400	662	seq-seq search	SwissProt
+TRINITY_DN0_c3_g1_i14.p1	A9EYY7	40	856	sp|A9EYY7|SYL_SORC5 Leucine--tRNA ligase OS=Sorangium cellulosum (strain So ce56) OX=448385 GN=leuS PE=3 SV=1	8.217E-209	44.400	662	seq-seq search	SwissProt
+TRINITY_DN0_c3_g1_i9.p1	A9EYY7	40	856	sp|A9EYY7|SYL_SORC5 Leucine--tRNA ligase OS=Sorangium cellulosum (strain So ce56) OX=448385 GN=leuS PE=3 SV=1	8.217E-209	44.400	662	seq-seq search	SwissProt
+TRINITY_DN12_c2_g1_i1.p2	Q5RLZ1	173	386	sp|Q5RLZ1|NEP_NATMA Halolysin-like extracellular serine protease Nep OS=Natrialba magadii OX=13769 GN=nep PE=1 SV=2	1.661E-26	32.000	109	seq-seq search	SwissProt
+TRINITY_DN14_c0_g2_i3.p1	A7ZD16	13	867	sp|A7ZD16|SECA_CAMC1 Protein translocase subunit SecA OS=Campylobacter concisus (strain 13826) OX=360104 GN=secA PE=3 SV=1	6.916E-220	45.300	696	seq-seq search	SwissProt
+TRINITY_DN14_c0_g4_i1.p1	A7ZD16	13	867	sp|A7ZD16|SECA_CAMC1 Protein translocase subunit SecA OS=Campylobacter concisus (strain 13826) OX=360104 GN=secA PE=3 SV=1	6.916E-220	45.300	696	seq-seq search	SwissProt
+TRINITY_DN18_c0_g1_i8.p2	Q7P0A6	4	594	sp|Q7P0A6|MNMG_CHRVO tRNA uridine 5-carboxymethylaminomethyl modification enzyme MnmG OS=Chromobacterium violaceum (strain ATCC 12472 / DSM 30191 / JCM 1249 / NBRC 12614 / NCIMB 9131 / NCTC 9757) OX=243365 GN=mnmG PE=3 SV=2	1.661E-126	39.000	411	seq-seq search	SwissProt
+TRINITY_DN18_c0_g2_i1.p2	Q1R3R3	5	537	sp|Q1R3R3|G6PI_ECOUT Glucose-6-phosphate isomerase OS=Escherichia coli (strain UTI89 / UPEC) OX=364106 GN=pgi PE=3 SV=2	3.621E-201	59.600	625	seq-seq search	SwissProt
+TRINITY_DN32_c0_g2_i1.p3	P30616	2	470	sp|P30616|KPYK2_TRYBB Pyruvate kinase 2 OS=Trypanosoma brucei brucei OX=5702 GN=PYK2 PE=3 SV=1	1.168E-84	35.900	283	seq-seq search	SwissProt
+TRINITY_DN32_c0_g2_i2.p3	P30616	2	470	sp|P30616|KPYK2_TRYBB Pyruvate kinase 2 OS=Trypanosoma brucei brucei OX=5702 GN=PYK2 PE=3 SV=1	1.168E-84	35.900	283	seq-seq search	SwissProt
+TRINITY_DN39_c0_g1_i1.p1	Q8KIX2	2	546	sp|Q8KIX2|CH60_BUCTS Chaperonin GroEL OS=Buchnera aphidicola subsp. Thelaxes suberi OX=98797 GN=groEL PE=3 SV=1	4.354E-191	56.800	596	seq-seq search	SwissProt
+TRINITY_DN3_c1_g1_i11.p3	Q92AY8	1	208	sp|Q92AY8|MENE_LISIN 2-succinylbenzoate--CoA ligase OS=Listeria innocua serovar 6a (strain ATCC BAA-680 / CLIP 11262) OX=272626 GN=menE PE=3 SV=2	2.826E-35	36.300	128	seq-seq search	SwissProt
+TRINITY_DN44_c0_g1_i1.p1	C0ZBW7	473	890	sp|C0ZBW7|GCSPB_BREBN Probable glycine dehydrogenase (decarboxylating) subunit 2 OS=Brevibacillus brevis (strain 47 / JCM 6285 / NBRC 100599) OX=358681 GN=gcvPB PE=3 SV=1	5.872E-99	45.200	341	seq-seq search	SwissProt
+TRINITY_DN4_c2_g1_i1.p1	B1JIV5	4	661	sp|B1JIV5|EFG_YERPY Elongation factor G OS=Yersinia pseudotuberculosis serotype O:3 (strain YPIII) OX=502800 GN=fusA PE=3 SV=1	2.438E-130	37.000	425	seq-seq search	SwissProt
+TRINITY_DN5_c0_g1_i3.p1	B1JIV5	13	697	sp|B1JIV5|EFG_YERPY Elongation factor G OS=Yersinia pseudotuberculosis serotype O:3 (strain YPIII) OX=502800 GN=fusA PE=3 SV=1	3.302E-260	60.100	804	seq-seq search	SwissProt
+TRINITY_DN5_c0_g1_i3.p1	Q754I9	10	681	sp|Q754I9|RRF2M_ASHGO Ribosome-releasing factor 2, mitochondrial OS=Ashbya gossypii (strain ATCC 10895 / CBS 109.51 / FGSC 9923 / NRRL Y-1056) OX=284811 GN=MEF2 PE=3 SV=1	2.874E-111	31.600	370	seq-seq search	SwissProt
+TRINITY_DN5_c0_g1_i4.p1	B0K3Q4	14	743	sp|B0K3Q4|PURL_THEPX Phosphoribosylformylglycinamidine synthase subunit PurL OS=Thermoanaerobacter sp. (strain X514) OX=399726 GN=purL PE=3 SV=1	5.545E-212	49.500	666	seq-seq search	SwissProt
+query	target	qstart	qend	theader	evalue	pident	bits	seq-seq search	SwissProt
