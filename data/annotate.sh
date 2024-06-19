@@ -52,7 +52,7 @@ preprocessDb(){
 			echo "$line" >>$2
 			PREV_END="$END"
 		fi
-	done <<< "${TMP_PATH}/indexfiltDB"
+	done < "${TMP_PATH}/indexfiltDB"
 	#shellcheck disable=SC2086
 	# "${MMSEQS}" filterdb "${TMP_PATH}/bitscoresortedDB" "$2" --extract-lines 1 \
 	#	|| fail "extract best hit died"
