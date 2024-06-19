@@ -39,7 +39,7 @@ preprocessDb(){
 	"${MMSEQS}" filterdb "${TMP_PATH}/bitscorefiltDB" "${TMP_PATH}/indexfiltDB" --sort-entries 1 --filter-column 4 \
 		|| fail "sort DB increasing by qStart died"
 
-	printf "targetID\talnScore\tseqIdentity\teVal\tqStart\tqEnd\tqLen\ttStart\ttEnd\ttLen" >> "$2"
+	printf "targetID\talnScore\tseqIdentity\teVal\tqStart\tqEnd\tqLen\ttStart\ttEnd\ttLen" >> "${TMP_PATH}/nooverlapDB"
 	PREV_END=0
 	while IFS= read -r line; do
 		# obtain start and end of each query
@@ -49,11 +49,14 @@ preprocessDb(){
 		if [ "$START" -gt "$PREV_END" ]; then
 			# no overlap
 			#shellcheck disable=SC2086
-			echo "$line" >>$2
+			echo "$line" >> "${TMP_PATH}/nooverlapDB"
 			PREV_END="$END"
 		fi
 	done < "${TMP_PATH}/indexfiltDB"
+	
 	#shellcheck disable=SC2086
+	"${MMSEQS}" createdb "${TMP_PATH}/nooverlapDB" "$2"
+
 	# "${MMSEQS}" filterdb "${TMP_PATH}/bitscoresortedDB" "$2" --extract-lines 1 \
 	#	|| fail "extract best hit died"
 	
@@ -61,6 +64,8 @@ preprocessDb(){
 	"${MMSEQS}" rmdb "${TMP_PATH}/bitscorefiltDB" ${VERBOSITY_PAR}
 	#shellcheck disable=SC2086
 	"${MMSEQS}" rmdb "${TMP_PATH}/indexfiltDB" ${VERBOSITY_PAR}
+	#shellcheck disable=SC2086
+	"${MMSEQS}" rmdb "${TMP_PATH}/nooverlapDB" ${VERBOSITY_PAR}
 }
 
 convertalis_standard(){
