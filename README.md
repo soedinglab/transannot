@@ -111,11 +111,11 @@ and execute the below command to download the databases (Ensure the same keyword
 
 By default, `transannot` runs 3 searches in the subsequent `annotate` module against the following databases: (i) `Pfam-A.full` (profile database), (ii) `eggNOG` (profile database) and (iii) `UniProtKB/SwissProt` (sequence database). Hence, use the above command separately for each database to download them, for more information check [MMseqs2 user guide](https://github.com/soedinglab/MMseqs2/wiki#downloading-databases).We use the abovementioned databases for the default annotation workflow to ensure comprehensive set of annotations that include hand-reviewed homologs (`SwissProt`), fine-grained orthologs (`eggNOG`), and domains (`Pfam-A`). On demand, one can use [`annotatecustom`](##Use-of-custom-database-for-annotation) to perform annotation against user-defined database.
 
-`downloaddb` allows resuming the download of the DB if it's created in the provided directory path.
+`downloaddb` allows resuming the download of the DB if it's detected in the provided directory path.
 
 ### annotate
 
-This module extracts representative sequences from the query database using clustering (redundancy-free set) and uses them as search input for 3 transcriptome annotation searches (one sequence-sequence and two sequence-profile).
+This module extracts representative sequences from the query database using clustering (redundancy-free set) and uses them as search input for 3 transcriptome annotation searches (one sequence-sequence and two sequence-profile). To ensure deep coverage of the transcriptome, TransAnnot only retains non-overlapping hits for each query.
 
 To run the annotate module, execute the following command:
 
