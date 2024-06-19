@@ -39,7 +39,7 @@ preprocessDb(){
 	"${MMSEQS}" filterdb "${TMP_PATH}/bitscorefiltDB" "${TMP_PATH}/indexfiltDB" --sort-entries 1 --filter-column 4 \
 		|| fail "sort DB increasing by qStart died"
 
-	print "targetID\talnScore\tseqIdentity\teVal\tqStart\tqEnd\tqLen\ttStart\ttEnd\ttLen" >> "$2"
+	printf "targetID\talnScore\tseqIdentity\teVal\tqStart\tqEnd\tqLen\ttStart\ttEnd\ttLen" >> "$2"
 	PREV_END=0
 	while IFS= read -r line; do
 		# obtain start and end of each query
