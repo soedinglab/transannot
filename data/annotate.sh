@@ -27,16 +27,32 @@ abspath() {
 }
 
 preprocessDb(){
-	#filter decreasing DBs by bit score (and extract one best hit for each query)
+	#filter DB by start index (and extract non-overlapping hits)
 
+	#column 2 contains alnScore (internal ali format)
 	#shellcheck disable=SC2086
 	"${MMSEQS}" filterdb "$1" "${TMP_PATH}/bitscorefiltDB" --comparison-operator ge --comparison-value 50 --filter-column 2 \
 		|| fail "filterdb died" 
 
+	#column 4 contains qStart (internal ali format)
 	#shellcheck disable=SC2086
-	"${MMSEQS}" filterdb "${TMP_PATH}/bitscorefiltDB" "$2" --sort-entries 2 --filter-column 2 \
-		|| fail "sort DB decreasing died"
+	"${MMSEQS}" filterdb "${TMP_PATH}/bitscorefiltDB" "${TMP_PATH}/indexfiltDB" --sort-entries 1 --filter-column 4 \
+		|| fail "sort DB increasing by qStart died"
 
+	print "targetID\talnScore\tseqIdentity\teVal\tqStart\tqEnd\tqLen\ttStart\ttEnd\ttLen" >> "$2"
+	PREV_END=0
+	while IFS= read -r line; do
+		# obtain start and end of each query
+		START=$(echo "$line" | awk '{print $4}')
+		END=$(echo "$line" | awk '{print $5}')
+	
+		if [ "$START" -gt "$PREV_END" ]; then
+			# no overlap
+			#shellcheck disable=SC2086
+			echo "$line" >>$2
+			PREV_END="$END"
+		fi
+	done <<< "${TMP_PATH}/indexfiltDB"
 	#shellcheck disable=SC2086
 	# "${MMSEQS}" filterdb "${TMP_PATH}/bitscoresortedDB" "$2" --extract-lines 1 \
 	#	|| fail "extract best hit died"
@@ -44,7 +60,7 @@ preprocessDb(){
 	#shellcheck disable=SC2086
 	"${MMSEQS}" rmdb "${TMP_PATH}/bitscorefiltDB" ${VERBOSITY_PAR}
 	#shellcheck disable=SC2086
-	"${MMSEQS}" rmdb "${TMP_PATH}/bitscoresortedDB" ${VERBOSITY_PAR}
+	"${MMSEQS}" rmdb "${TMP_PATH}/indexfiltDB" ${VERBOSITY_PAR}
 }
 
 convertalis_standard(){
