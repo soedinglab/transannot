@@ -111,6 +111,8 @@ and execute the below command to download the databases (Ensure the same keyword
 
 By default, `transannot` runs 3 searches in the subsequent `annotate` module against the following databases: (i) `Pfam-A.full` (profile database), (ii) `eggNOG` (profile database) and (iii) `UniProtKB/SwissProt` (sequence database). Hence, use the above command separately for each database to download them, for more information check [MMseqs2 user guide](https://github.com/soedinglab/MMseqs2/wiki#downloading-databases).We use the abovementioned databases for the default annotation workflow to ensure comprehensive set of annotations that include hand-reviewed homologs (`SwissProt`), fine-grained orthologs (`eggNOG`), and domains (`Pfam-A`). On demand, one can use [`annotatecustom`](##Use-of-custom-database-for-annotation) to perform annotation against user-defined database.
 
+`downloaddb` allows resuming the download of the DB if it's created in the provided directory path.
+
 ### annotate
 
 This module extracts representative sequences from the query database using clustering (redundancy-free set) and uses them as search input for 3 transcriptome annotation searches (one sequence-sequence and two sequence-profile).
@@ -129,11 +131,13 @@ Annotates against user-specified databases. Run as follows:
 
 `TransAnnot`'s output is, in general, a tab-separated `.tsv` file containing the following columns:
 
-    queryID targetID description E-value sequenceIdentity bitScore typeOfSearch nameOfDatabase 
+    queryID targetID qstart qend description E-value sequenceIdentity bitScore typeOfSearch nameOfDatabase 
 
 Where,
 * `queryID` is the sequence identifier for the annotated transcript.
 * `targetID` is the identifier for the sequence/profile from which the annotation is sourced.
+* `qstart` start index of the annotated query.
+* `qend` end index of the annotated query.
 * `description` is the string (e.g., `FASTA` header from the matched `Swiss-Prot` sequence) supplying the human-readable annotation (e.g., "XYZ protein").
 * `E-value` is the expectation value for this particular match (combination of query and target sequences) which indicates, loosely, the confidence one can have that the match is real (i.e., due to shared evolutionary history) and not due to chance (lower the `E-value` the better).
 * `sequenceIdentity` is the number of positions in both sequences that are identical to one another, represented as a fraction of the total (sum) of the sequence length(s). This is a percentage value.
