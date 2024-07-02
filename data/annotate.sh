@@ -31,18 +31,16 @@ preprocessDb(){
 
 	#column 2 contains alnScore (internal ali format)
 	#shellcheck disable=SC2086
-	"${MMSEQS}" filterdb "$1" "$2" --comparison-operator ge --comparison-value 50 --filter-column 2 \
-		|| fail "filterdb died" 
+	"${MMSEQS}" filterdb "$1" "${TMP_PATH}/bitscorefiltDB" --comparison-operator ge --comparison-value 50 --filter-column 2 \
+	 	|| fail "filterdb died" 
 
-	# "${MMSEQS}" filterdb "${TMP_PATH}/bitscoresortedDB" "$2" --extract-lines 1 \
-	#	|| fail "extract best hit died"
+	"${MMSEQS}" filterdb "${TMP_PATH}/bitscoresortedDB" "$2" --extract-lines 1 \
+		|| fail "extract best hit died"
 	
-	##shellcheck disable=SC2086
-	#"${MMSEQS}" rmdb "${TMP_PATH}/bitscorefiltDB" ${VERBOSITY_PAR}
+	#shellcheck disable=SC2086
+	"${MMSEQS}" rmdb "${TMP_PATH}/bitscorefiltDB" ${VERBOSITY_PAR}
 	##shellcheck disable=SC2086
 	#"${MMSEQS}" rmdb "${TMP_PATH}/indexfiltDB" ${VERBOSITY_PAR}
-	##shellcheck disable=SC2086
-	#"${MMSEQS}" rmdb "${TMP_PATH}/nooverlapDB" ${VERBOSITY_PAR}
 }
 
 non_overlapping_hits(){
@@ -148,16 +146,16 @@ if [ -n "${TAXONOMY_ID}" ]; then
 	elif [ -z "${TAXONOMY_ID}" ]; then
 		if notExists "${RESULTS}.dbtype"; then
 			#shellcheck disable=SC2086
-			"$MMSEQS" search "${TMP_PATH}/clu_rep" "${PROF_TARGET1}" "${TMP_PATH}/prof1_searchDB" "${TMP_PATH}/search_tmp" ${SEARCH_PAR} \
+			"$MMSEQS" search "${TMP_PATH}/clu_rep" "${PROF_TARGET1}" "${TMP_PATH}/prof1_searchDB" "${TMP_PATH}/search_tmp" ${SEARCH_PAR} --greedy-best-hit --alt-ali 3\
 				|| fail "first sequence-profile search died"
 
 			preprocessDb "${TMP_PATH}/prof1_searchDB" "${TMP_PATH}/prof1_searchDB_filt"
 
 			#shellcheck disable=SC2086
-			"$MMSEQS" search "${TMP_PATH}/clu_rep" "${PROF_TARGET2}" "${TMP_PATH}/prof2_searchDB" "${TMP_PATH}/search_tmp" ${SEARCH_PAR} \
+			"$MMSEQS" search "${TMP_PATH}/clu_rep" "${PROF_TARGET2}" "${TMP_PATH}/prof2_searchDB" "${TMP_PATH}/search_tmp" ${SEARCH_PAR} --greedy-best-hit --alt-ali 3\
 				|| fail "second sequence-profile search died"
 			
-			preprocessDb "${TMP_PATH}/prof2_searchDB" "${TMP_PATH}/prof2_searchDB_filt"
+			# preprocessDb "${TMP_PATH}/prof2_searchDB" "${TMP_PATH}/prof2_searchDB_filt"
 			
 			#shellcheck disable=SC2086
 			"$MMSEQS" search "${TMP_PATH}/clu_rep" "${SEQ_TARGET}" "${TMP_PATH}/seq_searchDB" "${TMP_PATH}/search_tmp" ${SEARCH_PAR} \
@@ -167,18 +165,18 @@ if [ -n "${TAXONOMY_ID}" ]; then
 
 			if [ -n "${SIMPLE_OUTPUT}" ]; then
 				echo "Simplified output will be provided"
-				convertalis_simple "${PROF_TARGET1}" "${TMP_PATH}/prof1_searchDB_filt" "${TMP_PATH}/prof1_searchDB.tsv"
-				non_overlapping_hits "${TMP_PATH}/prof1_searchDB.tsv" "${TMP_PATH}/prof1_searchDB_nooverlap.tsv"
-				convertalis_simple "${PROF_TARGET2}" "${TMP_PATH}/prof2_searchDB_filt" "${TMP_PATH}/prof2_searchDB.tsv"
-				non_overlapping_hits "${TMP_PATH}/prof2_searchDB.tsv" "${TMP_PATH}/prof2_searchDB_nooverlap.tsv"
+				convertalis_simple "${PROF_TARGET1}" "${TMP_PATH}/prof1_searchDB" "${TMP_PATH}/prof1_searchDB.tsv"
+				# non_overlapping_hits "${TMP_PATH}/prof1_searchDB.tsv" "${TMP_PATH}/prof1_searchDB_nooverlap.tsv"
+				convertalis_simple "${PROF_TARGET2}" "${TMP_PATH}/prof2_searchDB" "${TMP_PATH}/prof2_searchDB.tsv"
+				# non_overlapping_hits "${TMP_PATH}/prof2_searchDB.tsv" "${TMP_PATH}/prof2_searchDB_nooverlap.tsv"
 				convertalis_simple "${SEQ_TARGET}" "${TMP_PATH}/seq_searchDB_filt" "${TMP_PATH}/seq_searchDB.tsv"
 
 			else
 				echo "Standard output will be provided"
 				convertalis_standard "${PROF_TARGET1}" "${TMP_PATH}/prof1_searchDB_filt" "${TMP_PATH}/prof1_searchDB.tsv"
-				non_overlapping_hits "${TMP_PATH}/prof1_searchDB.tsv" "${TMP_PATH}/prof1_searchDB_nooverlap.tsv"
+				# non_overlapping_hits "${TMP_PATH}/prof1_searchDB.tsv" "${TMP_PATH}/prof1_searchDB_nooverlap.tsv"
 				convertalis_standard "${PROF_TARGET2}" "${TMP_PATH}/prof2_searchDB_filt" "${TMP_PATH}/prof2_searchDB.tsv"
-				non_overlapping_hits "${TMP_PATH}/prof2_searchDB.tsv" "${TMP_PATH}/prof2_searchDB_nooverlap.tsv"
+				# non_overlapping_hits "${TMP_PATH}/prof2_searchDB.tsv" "${TMP_PATH}/prof2_searchDB_nooverlap.tsv"
 				convertalis_standard "${SEQ_TARGET}" "${TMP_PATH}/seq_searchDB_filt" "${TMP_PATH}/seq_searchDB.tsv"
 			fi
 
@@ -220,20 +218,20 @@ if notExists "${TMP_PATH}/tmp_join.tsv"; then
 	rm -f "${TMP_PATH}/seq_searchDB.tsv"
 
 	join -j 1 -a1 -a2 -t ' ' "${TMP_PATH}/prof1_search_annot.tsv" "${TMP_PATH}/prof2_search_annot.tsv" >> "${TMP_PATH}/tmp_join.tsv"
-	join -j 1 -a1 -a2 -t ' ' "${TMP_PATH}/tmp_join.tsv" "${TMP_PATH}/seq_search_filt.tsv" >> "${RESULTS}"
+	join -j 1 -a1 -a2 -t ' ' "${TMP_PATH}/tmp_join.tsv" "${TMP_PATH}/seq_search_filt.tsv" >> "${TMP_PATH}/restmp"
 
 	rm -f "${TMP_PATH}/tmp_join.tsv"
 fi
 
-## add headers
-#if [ -n "${SIMPLE_OUTPUT}" ]; then
-#		echo "Simple output"
-#		awk -F'\t' -v OFS='\t' 'BEGIN { print "queryID\ttargetID\theader_or_description\te-value\tsearch_type\tdb_name\t"}{print}' "${TMP_PATH}/restmp" >> "${RESULTS}"
-#	else
-#		echo "Standard output"
-#		awk -F'\t' -v OFS='\t' 'BEGIN { print "queryID\ttargetID\theader_or_description\te-value\tsequenceidentity\tbitscore\tsearch_type\tdb_name\t"}{print}' "${TMP_PATH}/restmp" >> "${RESULTS}"
-#fi
-#rm -f "${TMP_PATH}/restmp"
+# add headers
+if [ -n "${SIMPLE_OUTPUT}" ]; then
+		echo "Simple output"
+		awk -F'\t' -v OFS='\t' 'BEGIN { print "queryID\ttargetID\tquery_start\tquery_end\theader_or_description\te-value\tsearch_type\tdb_name\t"}{print}' "${TMP_PATH}/restmp" >> "${RESULTS}"
+	else
+		echo "Standard output"
+		awk -F'\t' -v OFS='\t' 'BEGIN { print "queryID\ttargetID\tquery_start\tquery_end\theader_or_description\te-value\tsequenceidentity\tbitscore\tsearch_type\tdb_name\t"}{print}' "${TMP_PATH}/restmp" >> "${RESULTS}"
+fi
+rm -f "${TMP_PATH}/restmp"
 
 #remove temporary files and directories
 if [ -n "${REMOVE_TMP}" ]; then
