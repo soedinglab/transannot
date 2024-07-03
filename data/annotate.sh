@@ -183,8 +183,8 @@ if [ -n "${TAXONOMY_ID}" ]; then
 			rm -f "${TMP_PATH}/prof1_searchDB."[0-9]*
 			rm -f "${TMP_PATH}/prof2_searchDB."[0-9]*
 			rm -f "${TMP_PATH}/seq_searchDB."[0-9]*
-			rm -f "${TMP_PATH}/prof1_searchDB.tsv"
-			rm -f "${TMP_PATH}/prof2_searchDB.tsv"
+			# rm -f "${TMP_PATH}/prof1_searchDB.tsv"
+			# rm -f "${TMP_PATH}/prof2_searchDB.tsv"
 		fi
 	fi
 
