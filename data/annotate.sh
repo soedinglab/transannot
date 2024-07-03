@@ -126,11 +126,11 @@ elif [ -n "${NO_LINCLUST}" ]; then
 	echo "No linclust will be performed"
 	if notExists "${TMP_PATH}/clu_rep"; then
 		#shellcheck disable=SC2086
-		"$MMSEQS" cpdb "${INPUT}" "${TMP_PATH}/clu_rep" ${VERBOSITY} \
+		"$MMSEQS" cpdb "${INPUT}" "${TMP_PATH}/clu_rep" ${VERBOSITY_PAR} \
 			|| fail "copy db died"
 		
 		#shellcheck disable=SC2086
-		"$MMSEQS" cpdb "${INPUT}_h" "${TMP_PATH}/clu_rep_h" ${VERBOSITY} \
+		"$MMSEQS" cpdb "${INPUT}_h" "${TMP_PATH}/clu_rep_h" ${VERBOSITY_PAR} \
 			|| fail "copy header db died"
 	fi
 fi
@@ -146,17 +146,25 @@ if [ -n "${TAXONOMY_ID}" ]; then
 	elif [ -z "${TAXONOMY_ID}" ]; then
 		if notExists "${RESULTS}.dbtype"; then
 			#shellcheck disable=SC2086
-			"$MMSEQS" search "${TMP_PATH}/clu_rep" "${PROF_TARGET1}" "${TMP_PATH}/prof1_searchDB" "${TMP_PATH}/search_tmp" ${SEARCH_PAR} --alt-ali 3\
+			"$MMSEQS" search "${TMP_PATH}/clu_rep" "${PROF_TARGET1}" "${TMP_PATH}/prof1_searchDB_no_summ" "${TMP_PATH}/search_tmp" ${SEARCH_PAR} --alt-ali 3 \
+				|| fail "first sequence-profile search died"
+
+			#shellcheck disable=SC2086
+			"$MMSEQS" summarizeresults "${TMP_PATH}/prof1_searchDB_no_summ" "${TMP_PATH}/prof1_searchDB" ${SUMMARIZE_PAR} \
 				|| fail "first sequence-profile search died"
 
 			# preprocessDb "${TMP_PATH}/prof1_searchDB" "${TMP_PATH}/prof1_searchDB_filt"
 
 			#shellcheck disable=SC2086
-			"$MMSEQS" search "${TMP_PATH}/clu_rep" "${PROF_TARGET2}" "${TMP_PATH}/prof2_searchDB" "${TMP_PATH}/search_tmp" ${SEARCH_PAR} --alt-ali 3\
+			"$MMSEQS" search "${TMP_PATH}/clu_rep" "${PROF_TARGET2}" "${TMP_PATH}/prof2_searchDB_no_summ" "${TMP_PATH}/search_tmp" ${SEARCH_PAR} --alt-ali 3 \
 				|| fail "second sequence-profile search died"
 			
 			# preprocessDb "${TMP_PATH}/prof2_searchDB" "${TMP_PATH}/prof2_searchDB_filt"
 			
+			#shellcheck disable=SC2086
+			"$MMSEQS" summarizeresults "${TMP_PATH}/prof2_searchDB_no_summ" "${TMP_PATH}/prof2_searchDB" ${SUMMARIZE_PAR} \
+				|| fail "second sequence-profile search died"
+
 			#shellcheck disable=SC2086
 			"$MMSEQS" search "${TMP_PATH}/clu_rep" "${SEQ_TARGET}" "${TMP_PATH}/seq_searchDB" "${TMP_PATH}/search_tmp" ${SEARCH_PAR} \
 				|| fail "sequence-sequence search died"
@@ -251,6 +259,9 @@ if [ -n "${REMOVE_TMP}" ]; then
 	"$MMSEQS" rmdb "${TMP_PATH}/prof2_searchDB_filt" ${VERBOSITY_PAR}
 	#shellcheck disable=SC2086
 	"$MMSEQS" rmdb "${TMP_PATH}/seq_searchDB_filt" ${VERBOSITY_PAR}
-
+	#shellcheck disable=SC2086
+	"$MMSEQS" rmdb "${TMP_PATH}/prof1_searchDB_no_summ" ${VERBOSITY_PAR}
+	#shellcheck disable=SC2086
+	"$MMSEQS" rmdb "${TMP_PATH}/prof2_searchDB_no_summ" ${VERBOSITY_PAR}
 	rm -f "${TMP_PATH}/annotate.sh"
 fi

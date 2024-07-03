@@ -25,6 +25,7 @@ int annotate(int argc, const char **argv, const Command &command){
     cmd.addVariable("SIMPLE_OUTPUT", par.simpleOutput ? "TRUE" : NULL);
     cmd.addVariable("NO_LINCLUST", par.noPerformClust ? "TRUE" : NULL);
     cmd.addVariable("SEARCH_PAR", par.createParameterString(par.searchworkflow, true).c_str());
+    cmd.addVariable("SUMMARIZE_PAR", par.createParameterString(par.summarizeresult).c_str());
     // cmd.addVariable("INFOSELECT_PAR", infoSelection.c_str());
     // cmd.addVariable("TAXONOMY_ID", par.taxId == 1 ? "TRUE" : NULL);
     cmd.addVariable("CLUSTER_PAR", par.createParameterString(par.linclustworkflow, true).c_str());
