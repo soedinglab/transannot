@@ -149,7 +149,7 @@ if [ -n "${TAXONOMY_ID}" ]; then
 			"$MMSEQS" search "${TMP_PATH}/clu_rep" "${PROF_TARGET1}" "${TMP_PATH}/prof1_searchDB" "${TMP_PATH}/search_tmp" ${SEARCH_PAR} --alt-ali 3\
 				|| fail "first sequence-profile search died"
 
-			preprocessDb "${TMP_PATH}/prof1_searchDB" "${TMP_PATH}/prof1_searchDB_filt"
+			# preprocessDb "${TMP_PATH}/prof1_searchDB" "${TMP_PATH}/prof1_searchDB_filt"
 
 			#shellcheck disable=SC2086
 			"$MMSEQS" search "${TMP_PATH}/clu_rep" "${PROF_TARGET2}" "${TMP_PATH}/prof2_searchDB" "${TMP_PATH}/search_tmp" ${SEARCH_PAR} --alt-ali 3\
@@ -173,9 +173,9 @@ if [ -n "${TAXONOMY_ID}" ]; then
 
 			else
 				echo "Standard output will be provided"
-				convertalis_standard "${PROF_TARGET1}" "${TMP_PATH}/prof1_searchDB_filt" "${TMP_PATH}/prof1_searchDB.tsv"
+				convertalis_standard "${PROF_TARGET1}" "${TMP_PATH}/prof1_searchDB" "${TMP_PATH}/prof1_searchDB.tsv"
 				# non_overlapping_hits "${TMP_PATH}/prof1_searchDB.tsv" "${TMP_PATH}/prof1_searchDB_nooverlap.tsv"
-				convertalis_standard "${PROF_TARGET2}" "${TMP_PATH}/prof2_searchDB_filt" "${TMP_PATH}/prof2_searchDB.tsv"
+				convertalis_standard "${PROF_TARGET2}" "${TMP_PATH}/prof2_searchDB" "${TMP_PATH}/prof2_searchDB.tsv"
 				# non_overlapping_hits "${TMP_PATH}/prof2_searchDB.tsv" "${TMP_PATH}/prof2_searchDB_nooverlap.tsv"
 				convertalis_standard "${SEQ_TARGET}" "${TMP_PATH}/seq_searchDB_filt" "${TMP_PATH}/seq_searchDB.tsv"
 			fi
