@@ -34,7 +34,7 @@ preprocessDb(){
 	"${MMSEQS}" filterdb "$1" "${TMP_PATH}/bitscorefiltDB" --comparison-operator ge --comparison-value 50 --filter-column 2 \
 	 	|| fail "filterdb died" 
 
-	"${MMSEQS}" filterdb "${TMP_PATH}/bitscoresortedDB" "$2" --extract-lines 1 \
+	"${MMSEQS}" filterdb "${TMP_PATH}/bitscorefiltDB" "$2" --extract-lines 1 \
 		|| fail "extract best hit died"
 	
 	#shellcheck disable=SC2086
