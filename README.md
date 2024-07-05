@@ -61,6 +61,7 @@ Possible inputs are assembled on the protein level:
 * assembled transcriptomes (obtained e.g. using Trinity) or raw transcriptome reads, which will be *de novo* assembled on the protein level using `plass`
 * metatranscriptomes
 * single-organism transcriptomes
+* TransAnnot can work with the long reads input too. Thus, to enable PLASS assembly, input should be provided as a concatenated single file for single-end reads
 <!-- in such case it is possible to check for the contamination with `contamination` module, which is based on MMseqs2 taxonomy workflow -->
 
 ## Running
