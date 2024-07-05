@@ -150,7 +150,7 @@ if [ -n "${TAXONOMY_ID}" ]; then
 				|| fail "first sequence-profile search died"
 
 			#shellcheck disable=SC2086
-			$RUNNER "$MMSEQS" summarizeresults "${TMP_PATH}/prof1_searchDB_no_summ" "${TMP_PATH}/prof1_searchDB" ${SUMMARIZE_PAR} \
+			$RUNNER "$MMSEQS" summarizeresult "${TMP_PATH}/prof1_searchDB_no_summ" "${TMP_PATH}/prof1_searchDB" ${SUMMARIZE_PAR} \
 				|| fail "first sequence-profile search died"
 
 			# preprocessDb "${TMP_PATH}/prof1_searchDB" "${TMP_PATH}/prof1_searchDB_filt"
