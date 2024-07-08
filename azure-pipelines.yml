@@ -167,10 +167,10 @@ jobs:
           mkdir transannot
           cp -f README.md LICENCE.md transannot
           mkdir transannot/bin
-      - task: DownloadPipelineArtifact@1
-        inputs:
-          artifactName: transannot-darwin-universal
-          targetPath: $(Build.SourcesDirectory)/transannot/bin
+      # - task: DownloadPipelineArtifact@1
+      #   inputs:
+      #     artifactName: transannot-darwin-universal
+      #     targetPath: $(Build.SourcesDirectory)/transannot/bin
       - script:
           chmod +x "${BUILD_SOURCESDIRECTORY}/transannot/bin/transannot"
       - task: ArchiveFiles@2
