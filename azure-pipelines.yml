@@ -171,8 +171,8 @@ jobs:
       #   inputs:
       #     artifactName: transannot-darwin-universal
       #     targetPath: $(Build.SourcesDirectory)/transannot/bin
-      - script:
-          chmod +x "${BUILD_SOURCESDIRECTORY}/transannot/bin/transannot"
+      # - script:
+      #     chmod +x "${BUILD_SOURCESDIRECTORY}/transannot/bin/transannot"
       - task: ArchiveFiles@2
         inputs:
           rootFolderOrFile: $(Build.SourcesDirectory)/transannot
