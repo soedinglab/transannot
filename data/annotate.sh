@@ -198,18 +198,20 @@ if [ -n "${TAXONOMY_ID}" ]; then
 
 if notExists "${TMP_PATH}/tmp_join.tsv"; then
 
-	TRANSANNOT="$(abspath "$(command -v "${MMSEQS}")")"
-	SCRIPT="${TRANSANNOT%/build*}"
+	# TRANSANNOT="$(abspath "$(command -v "${MMSEQS}")")"
+	# SCRIPT="${TRANSANNOT%/build*}"
 
 	echo "obtain names of the Pfam families"
+	wget -O "${TMP_PATH}/pfamA_desc.tsv" https://raw.githubusercontent.com/soedinglab/transannot/main/data/Pfam-A.clans.tsv
 	awk -F '\t' -v OFS='\t' '{sub(/\.[^\.]+$/,"",$3)}1' "${TMP_PATH}/prof1_searchDB.tsv" >> "${TMP_PATH}/tmpfile"; mv -f "${TMP_PATH}/tmpfile" "${TMP_PATH}/prof1_searchDB_proc.tsv"
 
-	awk -F '\t' -v OFS='\t' '{print $1, $5}' "${SCRIPT}/data/Pfam-A.clans.tsv" >> "${TMP_PATH}/PfamMappingFile"
+	awk -F '\t' -v OFS='\t' '{print $1, $5}' "${TMP_PATH}/pfamA_desc.tsv" >> "${TMP_PATH}/PfamMappingFile"
 	awk -F '\t' -v OFS='\t' 'BEGIN{OFS=FS="\t"} NR==FNR{clr[$1]=$2; next} { if ($3 in clr) {$3=clr[$3]; print}}' "${TMP_PATH}/PfamMappingFile" "${TMP_PATH}/prof1_searchDB_proc.tsv" | \
 	 LC_ALL=C sort -s -k1b,1 | awk -F '\t' -v OFS='\t' '{ $(NF+1) = "seq-prof search"; print}' | awk -F '\t' -v OFS='\t' '{ $(NF+1) = "PfamA"; print}'  >> "${TMP_PATH}/prof1_search_annot.tsv"
 
 	rm -f "${TMP_PATH}/prof1_searchDB.tsv"
 	rm -f "${TMP_PATH}/PfamMappingFile"
+	rm -f "${TMP_PATH}/pfamA_desc.tsv"
 
 	echo "download eggNOG annotation file"
 	wget -O "${TMP_PATH}/nog_annotations.tsv" http://eggnog5.embl.de/download/eggnog_5.0/e5.og_annotations.tsv
