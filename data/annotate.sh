@@ -202,7 +202,7 @@ if notExists "${TMP_PATH}/tmp_join.tsv"; then
 	# SCRIPT="${TRANSANNOT%/build*}"
 
 	echo "obtain names of the Pfam families"
-	wget -O "${TMP_PATH}/pfamA_desc.tsv" https://raw.githubusercontent.com/soedinglab/transannot/main/data/Pfam-A.clans.tsv
+	wget -O "${TMP_PATH}/pfamA_desc.tsv" http://raw.githubusercontent.com/soedinglab/transannot/main/data/Pfam-A.clans.tsv
 	awk -F '\t' -v OFS='\t' '{sub(/\.[^\.]+$/,"",$3)}1' "${TMP_PATH}/prof1_searchDB.tsv" >> "${TMP_PATH}/tmpfile"; mv -f "${TMP_PATH}/tmpfile" "${TMP_PATH}/prof1_searchDB_proc.tsv"
 
 	awk -F '\t' -v OFS='\t' '{print $1, $5}' "${TMP_PATH}/pfamA_desc.tsv" >> "${TMP_PATH}/PfamMappingFile"
