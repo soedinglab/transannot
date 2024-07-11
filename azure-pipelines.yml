@@ -165,8 +165,9 @@ jobs:
       - script: |
           cd "${BUILD_SOURCESDIRECTORY}"
           mkdir transannot
-          cp -f README.md LICENCE.md transannot
+          cp -f README.md LICENCE.md data/Pfam-A.clans.tsv transannot
           mkdir transannot/bin
+          mv -f data/Pfam-A.clans.tsv transannot/bin
       # - task: DownloadPipelineArtifact@1
       #   inputs:
       #     artifactName: transannot-darwin-universal
