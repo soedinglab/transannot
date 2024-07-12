@@ -200,7 +200,7 @@ if notExists "${TMP_PATH}/tmp_join.tsv"; then
 
 	TRANSANNOT="$(abspath "$(command -v "${MMSEQS}")")"
 	SCRIPT="${TRANSANNOT%/build*}"
-	SCRIPT_NO_BUILD="${TRANSANNOT%/*}"
+	SCRIPT_NO_BUILD="${TRANSANNOT%/*/*}"
 
 	echo "obtain names of the Pfam families"
 	# wget -O "${TMP_PATH}/pfamA_desc.tsv" --mirror http://raw.githubusercontent.com/soedinglab/transannot/main/data/Pfam-A.clans.tsv
