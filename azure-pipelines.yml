@@ -168,6 +168,7 @@ jobs:
           cp -f README.md LICENCE.md data/Pfam-A.clans.tsv transannot
           mkdir transannot/bin
           mv -f data/Pfam-A.clans.tsv transannot/bin
+          rm -f transannot/Pfam-A.clans.tsv
       # - task: DownloadPipelineArtifact@1
       #   inputs:
       #     artifactName: transannot-darwin-universal
