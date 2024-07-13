@@ -204,6 +204,7 @@ if notExists "${TMP_PATH}/tmp_join.tsv"; then
 	SCRIPT_NO_BUILD=$(echo "$TRANSANNOT" | awk -F'/' '{if (NF > 2) {for (i=1; i<=NF-2; i++) {printf "%s/", $i}}}')
 
 	echo "obtain names of the Pfam families"
+	echo "$SCRIPT_NO_BUILD"
 	# wget -O "${TMP_PATH}/pfamA_desc.tsv" --mirror http://raw.githubusercontent.com/soedinglab/transannot/main/data/Pfam-A.clans.tsv
 	awk -F '\t' -v OFS='\t' '{sub(/\.[^\.]+$/,"",$3)}1' "${TMP_PATH}/prof1_searchDB.tsv" >> "${TMP_PATH}/tmpfile"; mv -f "${TMP_PATH}/tmpfile" "${TMP_PATH}/prof1_searchDB_proc.tsv"
 

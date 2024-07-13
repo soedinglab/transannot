@@ -169,12 +169,12 @@ jobs:
           mkdir transannot/bin
           mv -f data/Pfam-A.clans.tsv transannot/bin
           rm -f transannot/Pfam-A.clans.tsv
-      # - task: DownloadPipelineArtifact@1
-      #   inputs:
-      #     artifactName: transannot-darwin-universal
-      #     targetPath: $(Build.SourcesDirectory)/transannot/bin
-      # - script:
-      #     chmod +x "${BUILD_SOURCESDIRECTORY}/transannot/bin/transannot"
+      - task: DownloadPipelineArtifact@1
+        inputs:
+          artifactName: transannot-darwin-universal
+          targetPath: $(Build.SourcesDirectory)/transannot/bin
+      - script:
+          chmod +x "${BUILD_SOURCESDIRECTORY}/transannot/bin/transannot"
       - task: ArchiveFiles@2
         inputs:
           rootFolderOrFile: $(Build.SourcesDirectory)/transannot
