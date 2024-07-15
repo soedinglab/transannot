@@ -46,15 +46,43 @@ Other dependencies for the compilation from the source are `zlib` and `bzip`.
 
 `tmp` folder keeps temporary files. By default, all the intermediate output files from different modules will be kept in this folder. To clear `tmp` pass `--remove-tmp-files` parameter.
 
-## Quick start
+## Quick-ish start
+For the fastest results, please consider assembling the data and translating it into amino acid sequences beforehand.
 
+#### STEP 1: Download default databases
+(THIS IS A ONE-TIME PROCESS THAT WILL ONLY HAVE TO BE EXECUTED THE FIRST TIME AFTER `TRANSANNOT` HAS BEEN DOWNLOADED.)
+
+Download the default databases using `transannot downloaddb`:
+    transannot downloaddb eggNOG <path_to_output>/<eggNOGDB_name> <eggNOGDB_tmpdir_name> [options]
+    transannot downloaddb Pfam <path_to_output>/<PfamDB_name> <PfamDB_tmpdir_name> [options]
+    transannot downloaddb SwissProt <path_to_output>/<SwissProtDB_name> <SwissProtDB_tmpdir_name> [options]
+
+(The downloads can take quite long depending on the download server loads, so it is advisable to execute these commands inside a windows manager such as `tmux` or `screen`.)
+
+#### STEP 2: Annotating the data
+This can be done in one of the following three ways (we strongly recommend option C).
+
+###### Option A: Starting with sequencing reads
 The quickest way to run TransAnnot is by using the `easytransannot` module:
 
     transannot easytransannot <inputReads.fastq> Pfam-A.full eggNOG UniProtKB/Swiss-Prot <resDB> <tmp> [options]
 
 If (one of the) target databases is already downloaded in MMseqs2 format, directly provide the path to them, otherwise simply specify their names, and the databases will be downloaded automatically. `easytransannot` uses Plass assembler, for more details check the descriptions for `assemblereads` module below.
 
-## Input
+###### Option B: Starting with assembled nucleotide sequences (NOT RECOMMENDED)
+Should a nucleotide assembly already be available (e.g., in `<input.fasta>`), it can be annotated as follows:
+
+    transannot createquerydb <input.fasta> <input_queryDB_name> <tmp> [options]
+    transannot annotate <input_queryDB_name> Pfam-A.full eggNOG UniProtKB/Swiss-Prot <resDB> <tmp> [options]
+
+(`<input_queryDB_name>` is just a string providing either the name and additionally the path to the MMseqs2-formatted database for the input sequences.)
+
+We recommend against starting with nucleotide sequences as of the current release because the translated search that `TransAnnot` relies upon is quite slow.
+
+###### Option C: Starting with assembled, in silico translated amino acid sequences (RECOMMENDED)
+It is far more preferable to translate the assembly with a tool such as [TransDecoder](https://github.com/TransDecoder/TransDecoder) prior to annotation with `TransAnnot` as the searches are very fast in this case. The workflow in this case is identical to the one described above; simply provide the input `FASTA` file containing the translated amino acid sequences to `tranannot createquerydb` and then supply the created query DB as input to `transannot annotate`.
+
+## Inputs
 
 Possible inputs are assembled on the protein level:
 
@@ -64,7 +92,7 @@ Possible inputs are assembled on the protein level:
 * TransAnnot can work with the long reads input too. Thus, to enable PLASS assembly, input should be provided as a concatenated single file for single-end reads
 <!-- in such case it is possible to check for the contamination with `contamination` module, which is based on MMseqs2 taxonomy workflow -->
 
-## Running
+## Execution
 
 ### Modules
 
