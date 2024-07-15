@@ -214,7 +214,7 @@ if notExists "${TMP_PATH}/tmp_join.tsv"; then
 		awk -F '\t' -v OFS='\t' '{print $1, $5}' "${SCRIPT_NO_BUILD}/bin/Pfam-A.clans.tsv" >> "${TMP_PATH}/PfamMappingFile"
 	fi
 	# awk -F '\t' -v OFS='\t' '{print $1, $5}' "${SCRIPT}/data/Pfam-A.clans.tsv" >> "${TMP_PATH}/PfamMappingFile" || awk -F '\t' -v OFS='\t' '{print $1, $5}' "${SCRIPT_NO_BUILD}/bin/Pfam-A.clans.tsv" >> "${TMP_PATH}/PfamMappingFile"
-	awk -F '\t' -v OFS='\t' 'BEGIN{OFS=FS="\t"} NR==FNR{clr[$1]=$2; next} { if ($3 in clr) {$3=clr[$3]; print}}' "${TMP_PATH}/PfamMappingFile" "${TMP_PATH}/prof1_searchDB_proc.tsv" | \
+	awk -F '\t' -v OFS='\t' 'BEGIN{OFS=FS="\t"} NR==FNR{clr[$1]=$2; next} { if ($5 in clr) {$5=clr[$5]; print}}' "${TMP_PATH}/PfamMappingFile" "${TMP_PATH}/prof1_searchDB_proc.tsv" | \
 	 LC_ALL=C sort -s -k1b,1 | awk -F '\t' -v OFS='\t' '{ $(NF+1) = "seq-prof search"; print}' | awk -F '\t' -v OFS='\t' '{ $(NF+1) = "PfamA"; print}'  >> "${TMP_PATH}/prof1_search_annot.tsv"
 
 	rm -f "${TMP_PATH}/prof1_searchDB.tsv"
@@ -227,7 +227,7 @@ if notExists "${TMP_PATH}/tmp_join.tsv"; then
 	echo "obtain descriptions of the eggNOG orthology groups"
 	awk -F '\t' -v OFS='\t' 'BEGIN{OFS=FS="\t"} {print $2, $4}' "${TMP_PATH}/nog_annotations.tsv" >> "${TMP_PATH}/mappingFile" 
 	rm -f "${TMP_PATH}/nog_annotations.tsv" 
-	awk -F '\t' -v OFS='\t' 'BEGIN{OFS=FS="\t"} NR==FNR{clr[$1]=$2; next} { if ($3 in clr) {$3=clr[$3]; print}}' "${TMP_PATH}/mappingFile" "${TMP_PATH}/prof2_searchDB.tsv" | \
+	awk -F '\t' -v OFS='\t' 'BEGIN{OFS=FS="\t"} NR==FNR{clr[$1]=$2; next} { if ($5 in clr) {$5=clr[$5]; print}}' "${TMP_PATH}/mappingFile" "${TMP_PATH}/prof2_searchDB.tsv" | \
 	 LC_ALL=C sort -s -k1b,1 | awk -F '\t' -v OFS='\t' '{ $(NF+1) = "seq-prof search"; print}' | awk -F '\t' -v OFS='\t' '{ $(NF+1) = "eggNOG"; print}' >> "${TMP_PATH}/prof2_search_annot.tsv"
 
 	rm -f "${TMP_PATH}/prof2_searchDB.tsv"
