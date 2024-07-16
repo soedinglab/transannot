@@ -1,3 +1,8 @@
+queryID	targetID	query_start	query_end	header_or_description	e-value	sequenceidentity	bitscore	search_type	db_name	
+TRINITY_DN0_c3_g1_i11.p1	A9EYY7	40	856	sp|A9EYY7|SYL_SORC5 Leucine--tRNA ligase OS=Sorangium cellulosum (strain So ce56) OX=448385 GN=leuS PE=3 SV=1	8.217E-209	44.400	662	seq-seq search	SwissProt
+TRINITY_DN0_c3_g1_i12.p1	A9EYY7	40	856	sp|A9EYY7|SYL_SORC5 Leucine--tRNA ligase OS=Sorangium cellulosum (strain So ce56) OX=448385 GN=leuS PE=3 SV=1	8.217E-209	44.400	662	seq-seq search	SwissProt
+TRINITY_DN0_c3_g1_i14.p1	A9EYY7	40	856	sp|A9EYY7|SYL_SORC5 Leucine--tRNA ligase OS=Sorangium cellulosum (strain So ce56) OX=448385 GN=leuS PE=3 SV=1	8.217E-209	44.400	662	seq-seq search	SwissProt
+TRINITY_DN0_c3_g1_i9.p1	A9EYY7	40	856	sp|A9EYY7|SYL_SORC5 Leucine--tRNA ligase OS=Sorangium cellulosum (strain So ce56) OX=448385 GN=leuS PE=3 SV=1	8.217E-209	44.400	662	seq-seq search	SwissProt
 TRINITY_DN0_c9_g1_i1.p2	PF12911.10	17	53	N-terminal TM domain of oligopeptide transport permease C	1.165E-06	56.000	43	seq-prof search	PfamA
 TRINITY_DN12_c2_g1_i1.p2	Q5RLZ1	173	386	sp|Q5RLZ1|NEP_NATMA Halolysin-like extracellular serine protease Nep OS=Natrialba magadii OX=13769 GN=nep PE=1 SV=2	1.661E-26	32.000	109	seq-seq search	SwissProt
 TRINITY_DN14_c0_g2_i3.p1	A7ZD16	13	867	sp|A7ZD16|SECA_CAMC1 Protein translocase subunit SecA OS=Campylobacter concisus (strain 13826) OX=360104 GN=secA PE=3 SV=1	6.916E-220	45.300	696	seq-seq search	SwissProt
