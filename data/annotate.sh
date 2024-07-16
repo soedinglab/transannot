@@ -206,7 +206,7 @@ if notExists "${TMP_PATH}/tmp_join.tsv"; then
 	echo "obtain names of the Pfam families"
 	
 	# wget -O "${TMP_PATH}/pfamA_desc.tsv" --mirror http://raw.githubusercontent.com/soedinglab/transannot/main/data/Pfam-A.clans.tsv
-	awk -F '\t' -v OFS='\t' '{sub(/\.[^\.]+$/,"",$3)}1' "${TMP_PATH}/prof1_searchDB.tsv" >> "${TMP_PATH}/tmpfile"; mv -f "${TMP_PATH}/tmpfile" "${TMP_PATH}/prof1_searchDB_proc.tsv"
+	awk -F '\t' -v OFS='\t' '{sub(/\.[^\.]+$/,"",$5)}1' "${TMP_PATH}/prof1_searchDB.tsv" >> "${TMP_PATH}/tmpfile"; mv -f "${TMP_PATH}/tmpfile" "${TMP_PATH}/prof1_searchDB_proc.tsv"
 
 	if [ -e "${SCRIPT}/data/Pfam-A.clans.tsv" ]; then
 		awk -F '\t' -v OFS='\t' '{print $1, $5}' "${SCRIPT}/data/Pfam-A.clans.tsv" >> "${TMP_PATH}/PfamMappingFile"
@@ -214,8 +214,8 @@ if notExists "${TMP_PATH}/tmp_join.tsv"; then
 		awk -F '\t' -v OFS='\t' '{print $1, $5}' "${SCRIPT_NO_BUILD}/bin/Pfam-A.clans.tsv" >> "${TMP_PATH}/PfamMappingFile"
 	fi
 	# awk -F '\t' -v OFS='\t' '{print $1, $5}' "${SCRIPT}/data/Pfam-A.clans.tsv" >> "${TMP_PATH}/PfamMappingFile" || awk -F '\t' -v OFS='\t' '{print $1, $5}' "${SCRIPT_NO_BUILD}/bin/Pfam-A.clans.tsv" >> "${TMP_PATH}/PfamMappingFile"
-	awk -F '\t' -v OFS='\t' 'BEGIN{OFS=FS="\t"} NR==FNR{clr[$1]=$2; next} { if ($5 in clr) {$5=clr[$2]; print}}' "${TMP_PATH}/PfamMappingFile" "${TMP_PATH}/prof1_searchDB_proc.tsv" | \
-	 LC_ALL=C sort -s -k1b,1 | awk -F '\t' -v OFS='\t' '{ $(NF+1) = "seq-prof search"; print}' | awk -F '\t' -v OFS='\t' '{ $(NF+1) = "PfamA"; print}'  >> "${TMP_PATH}/prof1_search_annot.tsv"
+	awk -F '\t' -v OFS='\t' 'BEGIN{OFS=FS="\t"} NR==FNR{clr[$1]=$2; next} { if ($5 in clr) {$5=clr[$5]; print}}' "${TMP_PATH}/PfamMappingFile" "${TMP_PATH}/prof1_searchDB_proc.tsv" | \
+	LC_ALL=C sort -s -k1b,1 | awk -F '\t' -v OFS='\t' '{ $(NF+1) = "seq-prof search"; print}' | awk -F '\t' -v OFS='\t' '{ $(NF+1) = "PfamA"; print}'  >> "${TMP_PATH}/prof1_search_annot.tsv"
 
 	rm -f "${TMP_PATH}/prof1_searchDB.tsv"
 	rm -f "${TMP_PATH}/PfamMappingFile"
