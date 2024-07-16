@@ -1,4 +1,8 @@
-queryID	targetID	query_start	query_end	header_or_description	e-value	sequenceidentity	bitscore	search_type	db_name
+TRINITY_DN0_c9_g1_i1.p2	PF12911.10	17	53	N-terminal TM domain of oligopeptide transport permease C	1.165E-06	56.000	43	seq-prof search	PfamA
+TRINITY_DN12_c2_g1_i1.p2	Q5RLZ1	173	386	sp|Q5RLZ1|NEP_NATMA Halolysin-like extracellular serine protease Nep OS=Natrialba magadii OX=13769 GN=nep PE=1 SV=2	1.661E-26	32.000	109	seq-seq search	SwissProt
+TRINITY_DN14_c0_g2_i3.p1	A7ZD16	13	867	sp|A7ZD16|SECA_CAMC1 Protein translocase subunit SecA OS=Campylobacter concisus (strain 13826) OX=360104 GN=secA PE=3 SV=1	6.916E-220	45.300	696	seq-seq search	SwissProt
+TRINITY_DN14_c0_g4_i1.p1	A7ZD16	13	867	sp|A7ZD16|SECA_CAMC1 Protein translocase subunit SecA OS=Campylobacter concisus (strain 13826) OX=360104 GN=secA PE=3 SV=1	6.916E-220	45.300	696	seq-seq search	SwissProt
+TRINITY_DN14_c0_g9_i1.p1	KOG0740	206	416	Belongs to the AAA ATPase family	3.833E-28	33.500	115	seq-prof search	eggNOG
 TRINITY_DN18_c0_g1_i8.p2	Q7P0A6	4	594	sp|Q7P0A6|MNMG_CHRVO tRNA uridine 5-carboxymethylaminomethyl modification enzyme MnmG OS=Chromobacterium violaceum (strain ATCC 12472 / DSM 30191 / JCM 1249 / NBRC 12614 / NCIMB 9131 / NCTC 9757) OX=243365 GN=mnmG PE=3 SV=2	1.661E-126	39.000	411	seq-seq search	SwissProt
 TRINITY_DN18_c0_g2_i1.p2	Q1R3R3	5	537	sp|Q1R3R3|G6PI_ECOUT Glucose-6-phosphate isomerase OS=Escherichia coli (strain UTI89 / UPEC) OX=364106 GN=pgi PE=3 SV=2	3.621E-201	59.600	625	seq-seq search	SwissProt
 TRINITY_DN18_c0_g3_i1.p1	PF01138.24	354	495	3' exoribonuclease family, domain 1	3.715E-16	32.500	76	seq-prof search	PfamA
