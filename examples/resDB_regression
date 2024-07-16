@@ -1,4 +1,4 @@
-queryID	targetID	query_start	query_end	header_or_description	e-value	sequenceidentity	bitscore	search_type	db_name	
+queryID	targetID	query_start	query_end	header_or_description	e-value	sequenceidentity	bitscore	search_type	db_name
 TRINITY_DN18_c0_g1_i8.p2	Q7P0A6	4	594	sp|Q7P0A6|MNMG_CHRVO tRNA uridine 5-carboxymethylaminomethyl modification enzyme MnmG OS=Chromobacterium violaceum (strain ATCC 12472 / DSM 30191 / JCM 1249 / NBRC 12614 / NCIMB 9131 / NCTC 9757) OX=243365 GN=mnmG PE=3 SV=2	1.661E-126	39.000	411	seq-seq search	SwissProt
 TRINITY_DN18_c0_g2_i1.p2	Q1R3R3	5	537	sp|Q1R3R3|G6PI_ECOUT Glucose-6-phosphate isomerase OS=Escherichia coli (strain UTI89 / UPEC) OX=364106 GN=pgi PE=3 SV=2	3.621E-201	59.600	625	seq-seq search	SwissProt
 TRINITY_DN18_c0_g3_i1.p1	PF01138.24	354	495	3' exoribonuclease family, domain 1	3.715E-16	32.500	76	seq-prof search	PfamA
