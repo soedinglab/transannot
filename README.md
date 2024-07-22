@@ -62,14 +62,14 @@ Download the default databases using `transannot downloaddb`:
 #### STEP 2: Annotating the data
 This can be done in one of the following three ways (we strongly recommend option C).
 
-###### Option A: Starting with sequencing reads
+##### Option A: Starting with sequencing reads
 The quickest way to run TransAnnot is by using the `easytransannot` module:
 
     transannot easytransannot <inputReads.fastq> Pfam-A.full eggNOG UniProtKB/Swiss-Prot <resDB> <tmp> [options]
 
 If (one of the) target databases is already downloaded in MMseqs2 format, directly provide the path to them, otherwise simply specify their names, and the databases will be downloaded automatically. `easytransannot` uses Plass assembler, for more details check the descriptions for `assemblereads` module below.
 
-###### Option B: Starting with assembled nucleotide sequences (NOT RECOMMENDED)
+##### Option B: Starting with assembled nucleotide sequences (NOT RECOMMENDED)
 Should a nucleotide assembly already be available (e.g., in `<input.fasta>`), it can be annotated as follows:
 
     transannot createquerydb <input.fasta> <input_queryDB_name> <tmp> [options]
@@ -79,7 +79,7 @@ Should a nucleotide assembly already be available (e.g., in `<input.fasta>`), it
 
 We recommend against starting with nucleotide sequences as of the current release because the translated search that `TransAnnot` relies upon is quite slow.
 
-###### Option C: Starting with assembled, in silico translated amino acid sequences (RECOMMENDED)
+##### Option C: Starting with assembled, in silico translated amino acid sequences (RECOMMENDED)
 It is far more preferable to translate the assembly with a tool such as [TransDecoder](https://github.com/TransDecoder/TransDecoder) prior to annotation with `TransAnnot` as the searches are very fast in this case. The workflow in this case is identical to the one described above; simply provide the input `FASTA` file containing the translated amino acid sequences to `tranannot createquerydb` and then supply the created query DB as input to `transannot annotate`.
 
 ## Inputs
