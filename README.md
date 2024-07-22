@@ -79,7 +79,7 @@ Should a nucleotide assembly already be available (e.g., in `<input.fasta>`), it
 
 We recommend against starting with nucleotide sequences as of the current release because the translated search that `TransAnnot` relies upon is quite slow.
 
-##### Option C: Starting with assembled, in silico translated amino acid sequences (RECOMMENDED)
+##### Option C: Starting with assembled, _in silico_ translated amino acid sequences (RECOMMENDED)
 It is far more preferable to translate the assembly with a tool such as [TransDecoder](https://github.com/TransDecoder/TransDecoder) prior to annotation with `TransAnnot` as the searches are very fast in this case. The workflow in this case is identical to the one described above; simply provide the input `FASTA` file containing the translated amino acid sequences to `tranannot createquerydb` and then supply the created query DB as input to `transannot annotate`.
 
 ## Inputs
