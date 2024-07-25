@@ -84,7 +84,7 @@ convertalis_simple(){
 }
 #pre-processing
 [ -z "$MMSEQS" ] && echo "Please set the environment variable \$MMSEQS to your current binary." && exit 1;
-hasCommand wget
+hasCommand curl
 
 #checking how many input variables are provided
 [ "$#" -ne 6 ] && echo "Please provide <assembled transciptome> <profile target DB> <sequence target DB> <outDB> <tmp>" && exit 1;
@@ -209,8 +209,12 @@ if notExists "${TMP_PATH}/tmp_join.tsv"; then
 
 	if [ -e "${SCRIPT}/data/Pfam-A.clans.tsv" ]; then
 		awk -F '\t' -v OFS='\t' '{print $1, $5}' "${SCRIPT}/data/Pfam-A.clans.tsv" >> "${TMP_PATH}/PfamMappingFile"
-	else
+	elif [ -e "${SCRIPT_NO_BUILD}/bin/Pfam-A.clans.tsv" ]; then
 		awk -F '\t' -v OFS='\t' '{print $1, $5}' "${SCRIPT_NO_BUILD}/bin/Pfam-A.clans.tsv" >> "${TMP_PATH}/PfamMappingFile"
+	else
+		curl -o "${TMP_PATH}/pfamA_desc.tsv" https://raw.githubusercontent.com/soedinglab/transannot/main/data/Pfam-A.clans.tsv >> "${TMP_PATH}/PfamMappingFile"
+		awk -F '\t' -v OFS='\t' '{print $1, $5}' "${TMP_PATH}/pfamA_desc.tsv"
+		rm -rf "${TMP_PATH}/pfamA_desc.tsv"
 	fi
 	# awk -F '\t' -v OFS='\t' '{print $1, $5}' "${SCRIPT}/data/Pfam-A.clans.tsv" >> "${TMP_PATH}/PfamMappingFile" || awk -F '\t' -v OFS='\t' '{print $1, $5}' "${SCRIPT_NO_BUILD}/bin/Pfam-A.clans.tsv" >> "${TMP_PATH}/PfamMappingFile"
 	awk -F '\t' -v OFS='\t' 'BEGIN{OFS=FS="\t"} NR==FNR{clr[$1]=$2; next} { if ($5 in clr) {$5=clr[$5]; print}}' "${TMP_PATH}/PfamMappingFile" "${TMP_PATH}/prof1_searchDB_proc.tsv" | \
@@ -221,7 +225,7 @@ if notExists "${TMP_PATH}/tmp_join.tsv"; then
 	rm -f "${TMP_PATH}/pfamA_desc.tsv"
 
 	echo "download eggNOG annotation file"
-	wget -O "${TMP_PATH}/nog_annotations.tsv" http://eggnog5.embl.de/download/eggnog_5.0/e5.og_annotations.tsv
+	curl -o "${TMP_PATH}/nog_annotations.tsv" http://eggnog5.embl.de/download/eggnog_5.0/e5.og_annotations.tsv
 
 	echo "obtain descriptions of the eggNOG orthology groups"
 	awk -F '\t' -v OFS='\t' 'BEGIN{OFS=FS="\t"} {print $2, $4}' "${TMP_PATH}/nog_annotations.tsv" >> "${TMP_PATH}/mappingFile" 
