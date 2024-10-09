@@ -118,7 +118,7 @@ fi
 if notExists "${TMP_PATH}/search_not_proc.dbtype"; then
     echo "Running MMseqs2 search"
     #shellcheck disable=SC2086
-    "$MMSEQS" search "${TMP_PATH}/clu_rep" "${TARGET}" "${TMP_PATH}/search_not_proc" "${TMP_PATH}/tmp_search" ${SEARCH_PAR} \
+    "$MMSEQS" search "${TMP_PATH}/clu_rep" "${TARGET}" "${TMP_PATH}/search_not_proc" "${TMP_PATH}/tmp_search" ${SEARCH_PAR} --alt-ali 3 \
         || fail "MMseqs2 search died"
 fi
 
