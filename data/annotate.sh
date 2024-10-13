@@ -256,7 +256,7 @@ if [ -n "${SIMPLE_OUTPUT}" ]; then
 fi
 rm -f "${TMP_PATH}/restmp"
 
-mv -f "${INPUT}*" "${TMP_PATH}"
+mv -f "${INPUT}"* "${TMP_PATH}"
 
 #remove temporary files and directories
 if [ -n "${REMOVE_TMP}" ]; then
