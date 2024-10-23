@@ -120,20 +120,24 @@ if notExists "${TMP_PATH}/search_not_proc.dbtype"; then
     #shellcheck disable=SC2086
     "$MMSEQS" search "${TMP_PATH}/clu_rep" "${TARGET}" "${TMP_PATH}/search_not_proc" "${TMP_PATH}/tmp_search" ${SEARCH_PAR} --alt-ali 3 \
         || fail "MMseqs2 search died"
+	
+	#shellcheck disable=SC2086
+	$RUNNER "$MMSEQS" summarizeresult "${TMP_PATH}/search_not_proc" "${TMP_PATH}/searchDB" ${SUMMARIZE_PAR} \
+		|| fail "first sequence-profile search died"
 fi
 
-if notExists "${TMP_PATH}/search_not_proc_filt.dbtype"; then
+# if notExists "${TMP_PATH}/search_not_proc_filt.dbtype"; then
 	#TODO pre-process DB here -> "${TMP_PATH}/search_not_proc_filt"
 	#filter output
-	preprocessDb "${TMP_PATH}/search_not_proc" "${TMP_PATH}/search_not_proc_filt"
-fi
+	# preprocessDb "${TMP_PATH}/search_not_proc" "${TMP_PATH}/search_not_proc_filt"
+# fi
 
 #add headers
 if [ -n "${SIMPLE_OUTPUT}" ]; then
-	convertalis_simple "${TARGET}" "${TMP_PATH}/search_not_proc_filt" "${RESULTS}.tsv"
+	convertalis_simple "${TARGET}" "${TMP_PATH}/searchDB" "${RESULTS}.tsv"
 else
 	echo "Standard output will be provided"
-	convertalis_standard "${TARGET}" "${TMP_PATH}/search_not_proc_filt" "${RESULTS}.tsv"
+	convertalis_standard "${TARGET}" "${TMP_PATH}/searchDB" "${RESULTS}.tsv"
 fi
 
 #remove temporary files and directories
