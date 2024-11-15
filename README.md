@@ -5,6 +5,7 @@ Optionally, TransAnnot can use [Plass](https://github.com/soedinglab/plass) for 
 
 TransAnnot is a free and open-source (GPLv3), modular toolkit developed in C++.
 
+Now published in Bioinformatics Advances: [https://doi.org/10.1093/bioadv/vbae152](https://doi.org/10.1093/bioadv/vbae152)
 
 <p align="center"><img src="https://github.com/soedinglab/transannot/blob/main/.github/TransAnnot_logo.png" height="400" /></p>
 
@@ -200,3 +201,7 @@ The user-provided database will be converted to the MMseqs2 format within the mo
 ## TransAnnot wiki
 
 The `TransAnnot` wiki can be found here: [https://github.com/soedinglab/transannot/wiki](https://github.com/soedinglab/transannot/wiki).
+
+## Citing TransAnnot
+
+Please cite our publication ([https://doi.org/10.1093/bioadv/vbae152](https://doi.org/10.1093/bioadv/vbae152)) in Bioinformatics Advances.
