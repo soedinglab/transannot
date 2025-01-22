@@ -54,6 +54,7 @@ For the fastest results, please consider assembling the data and translating it 
 (THIS IS A ONE-TIME PROCESS THAT WILL ONLY HAVE TO BE EXECUTED THE FIRST TIME AFTER `TRANSANNOT` HAS BEEN DOWNLOADED.)
 
 Download the default databases using `transannot downloaddb`:
+
     transannot downloaddb eggNOG <path_to_output>/<eggNOGDB_name> <eggNOGDB_tmpdir_name> [options]
     transannot downloaddb Pfam <path_to_output>/<PfamDB_name> <PfamDB_tmpdir_name> [options]
     transannot downloaddb SwissProt <path_to_output>/<SwissProtDB_name> <SwissProtDB_tmpdir_name> [options]
