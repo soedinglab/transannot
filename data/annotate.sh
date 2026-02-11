@@ -224,13 +224,18 @@ if notExists "${TMP_PATH}/tmp_join.tsv"; then
 	rm -f "${TMP_PATH}/PfamMappingFile"
 	rm -f "${TMP_PATH}/pfamA_desc.tsv"
 
-	echo "download eggNOG annotation file"
-	curl -o "${TMP_PATH}/nog_annotations.tsv" http://eggnog5.embl.de/download/eggnog_5.0/e5.og_annotations.tsv
+	echo "download eggNOG 7 protein families file"
+	curl -o "${TMP_PATH}/nog_families.tsv.gz" https://eggnogdb.org/public/eggnog7/e7.protein_families.tsv.gz && gunzip -f "${TMP_PATH}/nog_families.tsv.gz"
 
 	echo "obtain descriptions of the eggNOG orthology groups"
-	awk -F '\t' -v OFS='\t' 'BEGIN{OFS=FS="\t"} {print $2, $4}' "${TMP_PATH}/nog_annotations.tsv" >> "${TMP_PATH}/mappingFile" 
-	rm -f "${TMP_PATH}/nog_annotations.tsv" 
-	awk -F '\t' -v OFS='\t' 'BEGIN{OFS=FS="\t"} NR==FNR{clr[$1]=$2; next} { if ($5 in clr) {$5=clr[$5]; print}}' "${TMP_PATH}/mappingFile" "${TMP_PATH}/prof2_searchDB.tsv" | \
+	# Build OG → family name mapping from the protein families file.
+	# Column 7 lists all OGs per family (comma-separated), column 1 is the
+	# family name. Normalize pipe chars to hyphens so OG names match the
+	# profile DB headers (which use pipes in family names, e.g. 14|3|3
+	# instead of 14-3-3).
+	awk -F '\t' -v OFS='\t' '{n=split($7, ogs, ","); for(i=1;i<=n;i++) {key=ogs[i]; gsub(/\|/, "-", key); print key, $1}}' "${TMP_PATH}/nog_families.tsv" >> "${TMP_PATH}/mappingFile"
+	rm -f "${TMP_PATH}/nog_families.tsv"
+	awk -F '\t' -v OFS='\t' 'BEGIN{OFS=FS="\t"} NR==FNR{clr[$1]=$2; next} {key=$5; sub(/\.faa\.gz$/, "", key); gsub(/\|/, "-", key); if (key in clr) {$5=clr[key]; print}}' "${TMP_PATH}/mappingFile" "${TMP_PATH}/prof2_searchDB.tsv" | \
 	 LC_ALL=C sort -s -k1b,1 | awk -F '\t' -v OFS='\t' '{ $(NF+1) = "seq-prof search"; print}' | awk -F '\t' -v OFS='\t' '{ $(NF+1) = "eggNOG"; print}' >> "${TMP_PATH}/prof2_search_annot.tsv"
 
 	rm -f "${TMP_PATH}/prof2_searchDB.tsv"
